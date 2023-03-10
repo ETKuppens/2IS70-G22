@@ -1,14 +1,11 @@
 package com.example.cardhub;
 
+import java.util.List;
+
 public class InventoryRepository implements InventoryRepositoryInterface {
 
     @Override
-    public void getCards() {
-
-    }
-
-    @Override
-    public Card getCard(int i) {
+    public List<Card> getCards() {
         return null;
     }
 
