@@ -2,20 +2,22 @@ package com.example.cardhub;
 
 import java.util.List;
 
-public class InventoryRepository implements InventoryRepositoryInterface {
+/**
+The repository that stores cards for the inventory
+ */
+public interface InventoryRepository {
+    /**
+     * Get all cards that belong to the user
+     */
+    public List<Card> getCards();
 
-    @Override
-    public List<Card> getCards() {
-        return null;
-    }
+    /**
+     * Remove a card from the users inventory
+     */
+    public void removeCard(Card card);
 
-    @Override
-    public void removeCard(Card card) {
-
-    }
-
-    @Override
-    public void addCard(Card card) {
-
-    }
+    /**
+     * Add a card to the users inventory
+     */
+    public void addCard(Card card);
 }
