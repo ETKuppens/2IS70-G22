@@ -3,8 +3,11 @@ package com.example.cardhub;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -28,11 +31,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Log.d("TESTEST", "aiwjdiawdjoadw");
-
+        Button btn_login = findViewById(R.id.button_login);
+        btn_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            }
+        });
 
         db = FirebaseFirestore.getInstance();
 
-        getUser();
+//        getUser();
     }
 
     private void addUser() {
