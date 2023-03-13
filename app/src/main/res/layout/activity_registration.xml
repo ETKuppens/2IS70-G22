@@ -62,29 +62,29 @@
         android:id="@+id/textView_signinreferral"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="50dp"
         android:text="Already have an account? Click here to sign in!"
         app:layout_constraintEnd_toEndOf="@+id/button_register"
         app:layout_constraintStart_toStartOf="@+id/button_register"
         app:layout_constraintTop_toBottomOf="@+id/button_register" />
 
-    <TextView
-        android:id="@+id/textView_tos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Terms of Service Template"
-        app:layout_constraintEnd_toEndOf="@+id/editText_confirm"
-        app:layout_constraintStart_toStartOf="@+id/editText_confirm"
-        app:layout_constraintTop_toBottomOf="@+id/editText_confirm" />
-
     <Button
         android:id="@+id/button_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:text="Register"
-        app:layout_constraintEnd_toEndOf="@+id/textView_tos"
-        app:layout_constraintStart_toStartOf="@+id/textView_tos"
-        app:layout_constraintTop_toBottomOf="@+id/textView_tos" />
+        app:layout_constraintEnd_toEndOf="@+id/checkBox_tos"
+        app:layout_constraintStart_toStartOf="@+id/checkBox_tos"
+        app:layout_constraintTop_toBottomOf="@+id/checkBox_tos" />
+
+    <CheckBox
+        android:id="@+id/checkBox_tos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="I agree to all the Terms and Conditions"
+        app:layout_constraintEnd_toEndOf="@+id/editText_confirm"
+        app:layout_constraintStart_toStartOf="@+id/editText_confirm"
+        app:layout_constraintTop_toBottomOf="@+id/editText_confirm" />
 </androidx.constraintlayout.widget.ConstraintLayout>

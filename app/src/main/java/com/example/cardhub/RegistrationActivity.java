@@ -6,10 +6,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,9 +38,20 @@ public class RegistrationActivity extends AppCompatActivity {
         EditText et_registeremail = findViewById(R.id.editText_registeremail);
         EditText et_registerpassword = findViewById(R.id.editText_registerpassword);
         EditText et_confirm = findViewById(R.id.editText_confirm);
-        TextView tv_tos = findViewById(R.id.textView_tos);
+        CheckBox cb_tos = findViewById(R.id.checkBox_tos);
         TextView tv_loginreferral = findViewById(R.id.textView_signinreferral);
         Button btn_register = findViewById(R.id.button_register);
+
+        // TOS disables btn
+        btn_register.setEnabled(false);
+
+        // TOS are agreed to
+        cb_tos.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                btn_register.setEnabled(b);
+            }
+        });
 
         // Register button was pressed
         btn_register.setOnClickListener(new View.OnClickListener() {
