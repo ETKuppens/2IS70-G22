@@ -50,9 +50,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="150dp"
         android:text="Don't have an account? Register now!"
-        app:layout_constraintEnd_toEndOf="@+id/button"
-        app:layout_constraintStart_toStartOf="@+id/button"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintEnd_toEndOf="@+id/button_login"
+        app:layout_constraintStart_toStartOf="@+id/button_login"
+        app:layout_constraintTop_toBottomOf="@+id/button_login" />
 
     <TextView
         android:id="@+id/textView_forgot"
@@ -65,7 +65,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editText_password" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/button_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -73,4 +73,5 @@
         app:layout_constraintEnd_toEndOf="@+id/textView_forgot"
         app:layout_constraintStart_toStartOf="@+id/textView_forgot"
         app:layout_constraintTop_toBottomOf="@+id/textView_forgot" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
