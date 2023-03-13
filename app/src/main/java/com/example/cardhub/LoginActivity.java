@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -36,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         EditText et_email = findViewById(R.id.editText_email);
         EditText et_password = findViewById(R.id.editText_password);
         TextView tv_forgot = findViewById(R.id.textView_forgot);
-        TextView tv_register = findViewById(R.id.textView_register);
+        TextView tv_register = findViewById(R.id.textView_registerreferral);
         Button btn_login = findViewById(R.id.button_login);
 
         // Login Button is Pressed
@@ -55,7 +54,6 @@ public class LoginActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d(TAG, "signInWithEmail:success");
-                                    FirebaseUser user = mAuth.getCurrentUser();
                                     Toast.makeText(LoginActivity.this, "Authentication succeeded.",
                                             Toast.LENGTH_SHORT).show();
                                     // Move to next screen
@@ -72,6 +70,13 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                             }
                         });
+            }
+        });
+
+        tv_register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), RegistrationActivity.class));
             }
         });
     }
