@@ -7,8 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import javax.inject.Inject;
+
 public class InventoryRepositoryImpl implements InventoryRepository {
     InventoryData data;
+    @Inject
+    InventoryState state;
 
     public InventoryRepositoryImpl() {
         data = new InventoryData();

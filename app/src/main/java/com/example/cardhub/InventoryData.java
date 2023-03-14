@@ -23,11 +23,17 @@ import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
 /**
  * Interact with the database with information related to the database
  */
+@AndroidEntryPoint
 public class InventoryData {
     FirebaseFirestore db;
+    @Inject InventoryRepositoryImpl inventoryRepository;
 
     /**
      * Get the database instance
