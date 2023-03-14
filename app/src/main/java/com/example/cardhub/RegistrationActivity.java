@@ -4,10 +4,13 @@ import static android.content.ContentValues.TAG;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.text.HtmlCompat;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -41,9 +44,15 @@ public class RegistrationActivity extends AppCompatActivity {
         CheckBox cb_tos = findViewById(R.id.checkBox_tos);
         TextView tv_loginreferral = findViewById(R.id.textView_signinreferral);
         Button btn_register = findViewById(R.id.button_register);
+        TextView tv_tos = findViewById(R.id.textView_tos);
 
         // TOS disables btn
         btn_register.setEnabled(false);
+
+        // Make Terms of Service clickable
+        tv_tos.setText(Html.fromHtml("I have read and agree to the <br> <a href='https://www.youtube.com/watch?v=xvFZjo5PgG0'>Terms and Conditions</a>", HtmlCompat.FROM_HTML_MODE_LEGACY));
+        tv_tos.setClickable(true);
+        tv_tos.setMovementMethod(LinkMovementMethod.getInstance());
 
         // TOS are agreed to
         cb_tos.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
