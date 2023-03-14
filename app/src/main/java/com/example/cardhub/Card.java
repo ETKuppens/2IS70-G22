@@ -17,25 +17,25 @@ public class Card {
     final String NAME;        // The name of this card
     final String DESCRIPTION; // An optional description of the card
     final Rarity RARITY;      // The rarity of this card
-    final int IMAGE;       // The image of this card
+    final String IMAGE_URL;       // The image of this card
 
     /**
      * Instantiate a card with a description
      */
-    Card(String name, String description, Rarity rarity, int image) {
+    Card(String name, String description, Rarity rarity, String imageUrl) {
         this.NAME = name;
         this.DESCRIPTION = description;
         this.RARITY = rarity;
-        this.IMAGE = image;
+        this.IMAGE_URL = imageUrl;
     }
 
     /**
      * Instantiate a card without a description
      */
-    Card(String name, Rarity rarity, int image) {
+    Card(String name, Rarity rarity, String imageUrl) {
         this.NAME = name;
         this.DESCRIPTION = "";
         this.RARITY = rarity;
-        this.IMAGE = image;
+        this.IMAGE_URL = imageUrl;
     }
 }

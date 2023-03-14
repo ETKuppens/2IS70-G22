@@ -2,31 +2,68 @@ package com.example.cardhub;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class InventoryState {
     List<Card> cards = new ArrayList<>();
     InventoryRepository repository;
+    InventoryActivity activity;
 
-    public InventoryState() {
-        repository = new InventoryRepositoryImpl();
+    /**
+     * Initialize the class with a new repository
+     */
+    public InventoryState(final InventoryActivity activity) {
+        this.activity = activity;
+        this.repository = new InventoryRepositoryImpl();
     }
 
-    public List<Card> getCards() {
-        cards = repository.getCards();
-        return cards;
+    /**
+     * Get the cards from the repository and add to the state
+     * @return cards
+     */
+    public void requestCards() {
+        repository.requestCards(new GetCardsCallback(this));
     }
 
+    /**
+     * Get a specific card from the state
+     * @param index index of the card
+     * @return the card at {@code index}
+     */
     public Card getCard(int index) {
         return cards.get(index);
     }
 
+    /**
+     * Add a card on the database and refresh local state
+     * @param card the card to add
+     */
     public void addCard(Card card) {
         repository.addCard(card);
-        getCards();
+        requestCards();
     }
 
+    /**
+     * Remove a given card from the database
+     * @param card the card to remove
+     */
     public void removeCard(Card card) {
         repository.removeCard(card);
-        getCards();
+        requestCards();
+    }
+
+
+    public class GetCardsCallback extends Callback {
+        InventoryState base;
+        GetCardsCallback(final InventoryState base) {
+            this.base = base;
+        }
+
+        @Override
+        public void run(final List<Card> cards) {
+            base.cards = cards;
+        }
     }
 }
+
+

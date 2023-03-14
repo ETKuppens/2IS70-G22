@@ -1,7 +1,9 @@
 package com.example.cardhub;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,8 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 import java.util.ServiceConfigurationError;
 
@@ -72,7 +76,14 @@ public class CardGridAdapter extends BaseAdapter {
 
 
         ImageView cardImage = view.findViewById(R.id.card_image);
-        cardImage.setImageResource(thisCard.IMAGE);
+        try {
+            InputStream is = (InputStream) new URL(thisCard.IMAGE_URL).getContent();
+            Drawable d = Drawable.createFromStream(is, "src name");
+            cardImage.setImageDrawable(d);
+        }
+        catch (Exception e) {
+            Log.d("CARDGRID", e.toString());
+        }
         return view;
     }
 }

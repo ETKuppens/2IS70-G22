@@ -1,7 +1,8 @@
 package com.example.cardhub;
 
 import java.util.List;
+import java.util.Map;
 
-public interface Callback {
-    public void run(final List<Card> cards);
+public abstract class Callback {
+
 }

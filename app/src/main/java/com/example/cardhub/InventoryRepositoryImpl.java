@@ -1,34 +1,53 @@
 package com.example.cardhub;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
 public class InventoryRepositoryImpl implements InventoryRepository {
-    List<Card> cards;
+    InventoryData data;
 
-    /**
-     * Generate local mock cards for now
-     * will fetch from firebase (without constructor) later
-     */
     public InventoryRepositoryImpl() {
-        cards = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            addCard(new Card("Card: " + i, Card.Rarity.COMMON, R.drawable.placeholder));
+        data = new InventoryData();
+    }
+
+    @Override
+    public void requestCards(final Callback getCardsCallback) {
+        data.requestCards(this::getCards, getCardsCallback, updateGridCallback);
+    }
+
+    @Override
+    public void getCards(List<Map<String, Object>> cardsRaw, Consumer<List<Card>> callback) {
+        List<Card> cards = new ArrayList<>();
+        for (Map<String,Object> cardRaw : cardsRaw) {
+            cards.add(new Card(
+                    (String) cardRaw.get("name"),
+                    (String) cardRaw.get("description"),
+                    (Card.Rarity) cardRaw.get("rarity"),
+                    (String) cardRaw.get("imageurl")
+            ));
+            Log.d("CARDRAW", (String)cardRaw.get("name"));
+        }
+        callback.accept(cards);
+    }
+
+    public class ProcessCardsCallback extends Callback {
+        public void run(final List<Map<String, Object>> cardsRaw, final Callback callback) {
+
         }
     }
 
-    @Override
-    public List<Card> getCards() {
-        return cards;
-    }
 
     @Override
     public void removeCard(Card card) {
-        cards.remove(card);
+
     }
 
     @Override
     public void addCard(Card card) {
-        cards.add(card);
+
     }
 }
