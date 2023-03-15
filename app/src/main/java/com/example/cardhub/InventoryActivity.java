@@ -18,9 +18,9 @@ public class InventoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory);
 
-        state = new InventoryState(this);
+        state = new InventoryState();
 
-        state.requestCards();
+        state.requestCards(new GetCardsCallbackImpl());
 
         GridView cardGridView = findViewById(R.id.card_grid);
         cardGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -31,10 +31,13 @@ public class InventoryActivity extends AppCompatActivity {
         });
     }
 
+    public class GetCardsCallbackImpl implements GetCardsCallback {
 
-    public void updateAdapter(List<Card> cards) {
-        GridView cardGridView = findViewById(R.id.card_grid);
-        cardGridView.setAdapter(new CardGridAdapter(getApplicationContext(), cards));
+        @Override
+        public void run(List<Card> cards) {
+            GridView cardGridView = findViewById(R.id.card_grid);
+            cardGridView.setAdapter(new CardGridAdapter(getApplicationContext(), cards));
+        }
     }
 
 }

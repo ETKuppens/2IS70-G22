@@ -15,8 +15,9 @@ public class InventoryRepositoryImpl implements InventoryRepository {
     }
 
     @Override
-    public void requestCards(final Callback getCardsCallback) {
-        data.requestCards(this::getCards, getCardsCallback, updateGridCallback);
+    public void requestCards(final GetCardsCallback inventoryStateCallback,
+                             final GetCardsCallback inventoryActivityCallback) {
+        data.requestCards(this::getCards, inventoryStateCallback, inventoryActivityCallback);
     }
 
     @Override

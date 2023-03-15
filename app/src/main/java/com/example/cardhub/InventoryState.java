@@ -7,13 +7,11 @@ import java.util.function.Consumer;
 public class InventoryState {
     List<Card> cards = new ArrayList<>();
     InventoryRepository repository;
-    InventoryActivity activity;
 
     /**
      * Initialize the class with a new repository
      */
-    public InventoryState(final InventoryActivity activity) {
-        this.activity = activity;
+    public InventoryState() {
         this.repository = new InventoryRepositoryImpl();
     }
 
@@ -21,8 +19,8 @@ public class InventoryState {
      * Get the cards from the repository and add to the state
      * @return cards
      */
-    public void requestCards() {
-        repository.requestCards(new GetCardsCallback(this));
+    public void requestCards(GetCardsCallback inventoryActivityCallback) {
+        repository.requestCards(new GetCardsCallback(this), inventoryActivityCallback);
     }
 
     /**
@@ -53,15 +51,16 @@ public class InventoryState {
     }
 
 
-    public class GetCardsCallback extends Callback {
+    public class GetCardsCallbackImpl implements GetCardsCallback{
         InventoryState base;
-        GetCardsCallback(final InventoryState base) {
+        GetCardsCallbackImpl(final InventoryState base) {
             this.base = base;
         }
 
         @Override
-        public void run(final List<Card> cards) {
+        public void run(final List<Card> cards, GetCardsCallback inventoryActivityCallback) {
             base.cards = cards;
+            inventoryActivityCallback.run(cards);
         }
     }
 }
