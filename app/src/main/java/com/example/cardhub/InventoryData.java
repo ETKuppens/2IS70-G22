@@ -5,35 +5,29 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
-import java.util.function.BinaryOperator;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * Interact with the database with information related to the database
  */
 public class InventoryData {
     FirebaseFirestore db;
+    InventoryRepository repository;
 
     /**
      * Get the database instance
      */
-    public InventoryData() {
+    public InventoryData(InventoryRepository repository) {
         db = FirebaseFirestore.getInstance();
+        this.repository = repository;
     }
 
 
@@ -41,20 +35,21 @@ public class InventoryData {
      * Request the cards that belong to a specific user from the database
      * @return list of cards
      */
-    public void requestCards(Consume<List<Map<String,Object>>,Consumer<List<Card>>> callback,
-                             Consumer<List<Card>> callback2,
-                             Consumer<List<Card>> updateGridCallback
-                             ) {
+    public void requestCards() {
+        final List<Map<String,Object>> cards = new ArrayList<>();
+        cards.add(new HashMap<>());
+        cards.get(0).put("EMPTY",null);
+
         db.collection("users/IwbZhyP69IZFqJdJ9Lcj/cards").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
-                        List<Map<String,Object>> cards = new ArrayList<>();
+                        cards.clear();
                         for (DocumentSnapshot documentSnapshots : task.getResult()) {
                             cards.add(documentSnapshots.getData());
                         }
-                        callback.accept(cards, callback2, updateGridCallback);
+                        repository.cardRequestCallback(cards);
                         Log.d("CARDREQUEST", "success");
                     } else {
                         Log.d("CARDREQUEST", "fail: " + task.getException());

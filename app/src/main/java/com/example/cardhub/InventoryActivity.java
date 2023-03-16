@@ -11,18 +11,21 @@ import android.widget.Toast;
 import java.util.List;
 
 public class InventoryActivity extends AppCompatActivity {
-    InventoryState state;
+    InventoryStateImpl state;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory);
 
-        state = new InventoryState();
+        state = new InventoryStateImpl(this);
 
-        state.requestCards(new GetCardsCallbackImpl());
+        state.requestCards();
+    }
 
+    public void updateGrid() {
         GridView cardGridView = findViewById(R.id.card_grid);
+        cardGridView.setAdapter(new CardGridAdapter(getApplicationContext(), state.cards));
         cardGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -31,13 +34,5 @@ public class InventoryActivity extends AppCompatActivity {
         });
     }
 
-    public class GetCardsCallbackImpl implements GetCardsCallback {
-
-        @Override
-        public void run(List<Card> cards) {
-            GridView cardGridView = findViewById(R.id.card_grid);
-            cardGridView.setAdapter(new CardGridAdapter(getApplicationContext(), cards));
-        }
-    }
 
 }

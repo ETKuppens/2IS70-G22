@@ -76,14 +76,22 @@ public class CardGridAdapter extends BaseAdapter {
 
 
         ImageView cardImage = view.findViewById(R.id.card_image);
-        try {
-            InputStream is = (InputStream) new URL(thisCard.IMAGE_URL).getContent();
-            Drawable d = Drawable.createFromStream(is, "src name");
-            cardImage.setImageDrawable(d);
-        }
-        catch (Exception e) {
-            Log.d("CARDGRID", e.toString());
-        }
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    InputStream is = (InputStream) new URL(thisCard.IMAGE_URL).getContent();
+                    Drawable d = Drawable.createFromStream(is, "src name");
+                    cardImage.setImageDrawable(d);
+                }
+                catch (Exception e) {
+                    Log.d("CARDGRID", e.toString());
+                }
+            }
+        });
+
+        thread.start();
+
         return view;
     }
 }

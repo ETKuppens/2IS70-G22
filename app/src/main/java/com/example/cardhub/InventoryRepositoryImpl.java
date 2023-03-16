@@ -9,30 +9,38 @@ import java.util.function.Consumer;
 
 public class InventoryRepositoryImpl implements InventoryRepository {
     InventoryData data;
+    InventoryState state;
 
-    public InventoryRepositoryImpl() {
-        data = new InventoryData();
+    public InventoryRepositoryImpl(InventoryState state) {
+        data = new InventoryData(this);
+        this.state = state;
     }
 
     @Override
-    public void requestCards(final GetCardsCallback inventoryStateCallback,
-                             final GetCardsCallback inventoryActivityCallback) {
-        data.requestCards(this::getCards, inventoryStateCallback, inventoryActivityCallback);
+    public void requestCards() {
+        data.requestCards();
     }
 
     @Override
-    public void getCards(List<Map<String, Object>> cardsRaw, Consumer<List<Card>> callback) {
+    public void cardRequestCallback(List<Map<String, Object>> cardsRaw) {
+        List<Card> cards = processCards(cardsRaw);
+        state.setCards(cards);
+    }
+
+    @Override
+    public List<Card> processCards(List<Map<String, Object>> cardsRaw) {
         List<Card> cards = new ArrayList<>();
         for (Map<String,Object> cardRaw : cardsRaw) {
             cards.add(new Card(
                     (String) cardRaw.get("name"),
                     (String) cardRaw.get("description"),
-                    (Card.Rarity) cardRaw.get("rarity"),
+                    Card.Rarity.values()[(int)((long)cardRaw.get("rarity"))],
                     (String) cardRaw.get("imageurl")
             ));
             Log.d("CARDRAW", (String)cardRaw.get("name"));
         }
-        callback.accept(cards);
+
+        return cards;
     }
 
     public class ProcessCardsCallback extends Callback {
@@ -40,7 +48,6 @@ public class InventoryRepositoryImpl implements InventoryRepository {
 
         }
     }
-
 
     @Override
     public void removeCard(Card card) {

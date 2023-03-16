@@ -2,7 +2,6 @@ package com.example.cardhub;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 /**
 The repository that stores cards for the inventory
@@ -11,9 +10,11 @@ public interface InventoryRepository {
     /**
      * Get all cards that belong to the user
      */
-    public void requestCards(Consumer<List<Card>> callback, Consumer<List<Card>> updateGridCallback);
+    public void requestCards();
 
-    void getCards(List<Map<String, Object>> cardsRaw, Consumer<List<Card>> callback);
+    public void cardRequestCallback(List<Map<String, Object>> cardsRaw);
+
+    public List<Card> processCards(List<Map<String, Object>> cardsRaw);
 
     /**
      * Remove a card from the users inventory on the database
