@@ -43,12 +43,6 @@ public class InventoryRepositoryImpl implements InventoryRepository {
         return cards;
     }
 
-    public class ProcessCardsCallback extends Callback {
-        public void run(final List<Map<String, Object>> cardsRaw, final Callback callback) {
-
-        }
-    }
-
     @Override
     public void removeCard(Card card) {
 
