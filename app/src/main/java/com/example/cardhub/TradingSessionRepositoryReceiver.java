@@ -33,8 +33,8 @@ public interface TradingSessionRepositoryReceiver {
      *
      * @param tradeAccepted whether the trade was accepted by the other client instance.
      */
-    void acceptProposedTradeReponse(boolean tradeAccepted);
+    void acceptProposedTradeResponse(boolean tradeAccepted);
 
 
-    
+
 }
