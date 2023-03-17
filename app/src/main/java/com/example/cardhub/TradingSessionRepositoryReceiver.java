@@ -1,5 +1,7 @@
 package com.example.cardhub;
 
+import java.util.Set;
+
 /**
  * Binds a TradeModeState to a TradingSessionRepository
  */
@@ -36,5 +38,19 @@ public interface TradingSessionRepositoryReceiver {
     void acceptProposedTradeResponse(boolean tradeAccepted);
 
 
+    /**
+     * Request the server to update the other client with a difference in proposed cards.
+     *
+     * @param clientID the ID of the application instance that will be used by the server to
+     * identify which side of the trading session has requested to update their proposed cards.
+     * @param diffs a set of CardDiffs that should be applied to the other clients' instance of
+     * TradingSession.
+     */
+    void changeProposedCards(int clientID, Set<CardDiff> diffs);
 
+    /**
+     * Retrieve a response from the server after calling {@code changeProposedCards(int ClientID,
+     * Set<CardDiff> diffs)}, as a confirmation that the changed proposed cards were handled correctly.
+     */
+    void changeProposedCardsResponse();
 }
