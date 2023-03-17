@@ -21,6 +21,15 @@ public interface TradingSessionRepositoryReceiver {
     void cancelTradingSession();
 
     /**
+     * Send a confirmation message to the server that the client has cancelled the trading session
+     * correctly.
+     *
+     * @param clientID the ID of the application instance that will be used by the server to
+     * identify which side of the trading session has cancelled their trading session correctly.
+     */
+    void cancelTradingSessionConfirm(int clientID);
+
+    /**
      * Retrieve a response from the server after calling {@code cancelTradingSession(int clientID)},
      * as a confirmation that the current trading session should be cancelled.
      */
@@ -43,6 +52,15 @@ public interface TradingSessionRepositoryReceiver {
      */
     void acceptProposedTradeResponse(boolean tradeAccepted);
 
+    /**
+     * Send a confirmation message to the server that the current trade acceptance has been
+     * canceled correctly.
+     *
+     * @param clientID the ID of the application instance that will be used by the server to
+     * identify which side of the trading session has requested to cancel the trade accept request.
+     */
+    void cancelAcceptTrade(int clientID);
+
 
     /**
      * Request the server to update the other client with a difference in proposed cards.
@@ -63,6 +81,15 @@ public interface TradingSessionRepositoryReceiver {
      * TradingSession.
      */
     void changeProposedCards(Set<CardDiff> diffs);
+
+    /**
+     * Send a confirmation message to the server that the client has changed the proposed cards
+     * correctly.
+     *
+     * @param clientID the ID of the application instance that will be used by the server to
+     * identify which side of the trading session has just changed their TradingSession data.
+     */
+    void changeProposedCardsConfirm(int clientID);
 
     /**
      * Retrieve a response from the server after calling {@code changeProposedCards(int ClientID,
