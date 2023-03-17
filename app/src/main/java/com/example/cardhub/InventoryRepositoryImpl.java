@@ -9,11 +9,11 @@ import java.util.function.Consumer;
 
 public class InventoryRepositoryImpl implements InventoryRepository {
     InventoryData data;
-    InventoryState state;
+    InventoryRepositoryReceiver receiver;
 
-    public InventoryRepositoryImpl(InventoryState state) {
+    public InventoryRepositoryImpl(InventoryRepositoryReceiver receiver) {
         data = new InventoryData(this);
-        this.state = state;
+        this.receiver = receiver;
     }
 
     @Override
@@ -24,7 +24,7 @@ public class InventoryRepositoryImpl implements InventoryRepository {
     @Override
     public void cardRequestCallback(List<Map<String, Object>> cardsRaw) {
         List<Card> cards = processCards(cardsRaw);
-        state.setCards(cards);
+        this.receiver.receiveCardsResponse(cards);
     }
 
     @Override
