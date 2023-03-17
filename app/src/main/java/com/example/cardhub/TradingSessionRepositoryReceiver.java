@@ -15,6 +15,12 @@ public interface TradingSessionRepositoryReceiver {
     void cancelTradingSession(int clientID);
 
     /**
+     * Retrieve a method call request from the server to cancel the current trading session. This
+     * method may be called when another client instance requests the trading session to be cancelled.
+     */
+    void cancelTradingSession();
+
+    /**
      * Retrieve a response from the server after calling {@code cancelTradingSession(int clientID)},
      * as a confirmation that the current trading session should be cancelled.
      */
