@@ -1,6 +1,8 @@
 package com.example.cardhub;
 
-public class TradeModeState {
+import java.util.Set;
+
+public class TradeModeState implements TradingSessionRepositoryReceiver {
     TradeModeActivity activity;
 
     // TradingSession instance that keeps track which user proposes which cards in the current
@@ -20,5 +22,62 @@ public class TradeModeState {
      */
     private void updateUI() {
         activity.updateUI(tradingSession);
+    }
+
+    @Override
+    public void cancelTradingSession(int clientID){
+
+    }
+
+    @Override
+    public void cancelTradingSession() {
+
+    }
+
+    @Override
+    public void cancelTradingSessionConfirm(int clientID) {
+
+    }
+
+    @Override
+    public void cancelTradingSessionResponse() {
+
+    }
+
+
+    @Override
+    public void acceptProposedTrade(int clientID) {
+
+    }
+
+    @Override
+    public void acceptProposedTradeResponse(boolean tradeAccepted) {
+
+    }
+
+    @Override
+    public void cancelAcceptTrade(int clientID) {
+
+    }
+
+
+    @Override
+    public void changeProposedCards(int clientID, Set<CardDiff> diffs) {
+
+    }
+
+    @Override
+    public void changeProposedCards(Set<CardDiff> diffs) {
+
+    }
+
+    @Override
+    public void changeProposedCardsConfirm(int clientID) {
+
+    }
+
+    @Override
+    public void changeProposedCardsResponse() {
+
     }
 }
