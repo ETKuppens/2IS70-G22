@@ -19,5 +19,22 @@ public interface TradingSessionRepositoryReceiver {
     void cancelTradingSessionResponse();
 
 
+    /**
+     * Request the server to accept the currently proposed trade.
+     *
+     * @param clientID the ID of the application instance that will be used by the server to
+     * identify which side of the trading session has requested to accept the proposed trade.
+     */
+    void acceptProposedTrade(int clientID);
+
+    /**
+     * Retrieve a response from the server after calling {@code acceptProposedTrade(int clientID)},
+     * together with information on whether the other client instance also accepted the trade.
+     *
+     * @param tradeAccepted whether the trade was accepted by the other client instance.
+     */
+    void acceptProposedTradeReponse(boolean tradeAccepted);
+
+
     
 }
