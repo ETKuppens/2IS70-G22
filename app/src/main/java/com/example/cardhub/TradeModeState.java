@@ -3,6 +3,8 @@ package com.example.cardhub;
 import java.util.Set;
 
 public class TradeModeState implements TradingSessionRepositoryReceiver {
+    int clientID = 0;
+
     TradeModeActivity activity;
 
     // TradingSession instance that keeps track which user proposes which cards in the current
@@ -68,7 +70,9 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
 
     @Override
     public void changeProposedCards(Set<CardDiff> diffs) {
-
+        this.tradingSession.AddCardDiffsForOtherUser(diffs);
+        updateUI();
+        changeProposedCardsConfirm(this.clientID);
     }
 
     @Override
