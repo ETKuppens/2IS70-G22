@@ -26,6 +26,10 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
         activity.updateUI(tradingSession);
     }
 
+    private void cancelTradeMode() {
+        this.activity.cancelTradeMode();
+    }
+
     @Override
     public void cancelTradingSession(int clientID){
 
@@ -33,7 +37,8 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
 
     @Override
     public void cancelTradingSession() {
-
+        cancelTradingSessionConfirm(this.clientID);
+        cancelTradeMode();
     }
 
     @Override

@@ -17,4 +17,8 @@ public class TradeModeActivity extends AppCompatActivity {
      * TODO: implement this method
      */
     public void updateUI(TradingSession tradingSession) {}
+
+    public void cancelTradeMode() {
+        finish();
+    }
 }
