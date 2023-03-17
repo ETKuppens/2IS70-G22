@@ -55,6 +55,16 @@ public interface TradingSessionRepositoryReceiver {
     void changeProposedCards(int clientID, Set<CardDiff> diffs);
 
     /**
+     * Retrieve a method call request from the server to update the TradingSession, and to update
+     * the UI. This method may be called when another client instance calls
+     * {@code changeProposedCards(int clientID, Set<CardDiff> diffs)}.
+     *
+     * @param diffs a set of CardDiffs that should be applied to this clients' instance of
+     * TradingSession.
+     */
+    void changeProposedCards(Set<CardDiff> diffs);
+
+    /**
      * Retrieve a response from the server after calling {@code changeProposedCards(int ClientID,
      * Set<CardDiff> diffs)}, as a confirmation that the changed proposed cards were handled correctly.
      */
