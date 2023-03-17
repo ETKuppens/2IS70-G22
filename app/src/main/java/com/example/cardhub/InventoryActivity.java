@@ -14,7 +14,7 @@ public class InventoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layoutactivity_inventory);
+        setContentView(R.layout.activity_inventory);
 
         state = new InventoryState(this);
 
