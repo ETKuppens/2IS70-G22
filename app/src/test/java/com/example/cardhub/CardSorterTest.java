@@ -1,4 +1,4 @@
-package com.example.cardsprototype;
+package com.example.cardhub;
 
 import static org.junit.Assert.*;
 
@@ -22,7 +22,7 @@ public class CardSorterTest {
         String name = "c1";
         String description = "description1";
         Card.Rarity rarity = Card.Rarity.COMMON;
-        int image = R.drawable.amongsus;
+        int image = 0; //R.drawable.amongsus;
         Card c1 = new Card(name, description, rarity, image);
 
         name = "c2";
@@ -64,10 +64,10 @@ public class CardSorterTest {
     }
 
     /**
-     * Check whether a list of Strings is in alphabetical order.
+     * Check whether a list of Strings is in default alphabetical order.
      * @param listToCheck the list to check whether it is ordered alphabetically.
      */
-    private boolean OrderedAlphabetically(List<String> listToCheck) {
+    private boolean DefaultOrderedAlphabetically(List<String> listToCheck) {
         // The list is always ordered if it contains at most one element.
         if (listToCheck.size() == 0 || listToCheck.size() == 1) {
             return true;
@@ -91,6 +91,52 @@ public class CardSorterTest {
             if (leftString != null) {
                 // Compare the two elements
                 int comparison = leftString.compareToIgnoreCase(rightString);
+
+                // Check if the leftString has a greater lexiconic value compared
+                // to the rightString.
+                // If this is the case, the leftString is not ordered compared to
+                // the rightString; the listToCheck is not ordered.
+                if (comparison > 0) {
+                    return false;
+                }
+            }
+
+            leftString = rightString;
+        }
+        // All neighbouring elements are in order
+        // ==> the entire list is in order.
+
+        return true;
+    }
+
+    /**
+     * Check whether a list of Strings is in reverse alphabetical order.
+     * @param listToCheck the list to check whether it is ordered alphabetically.
+     */
+    private boolean ReverseOrderedAlphabetically(List<String> listToCheck) {
+        // The list is always ordered if it contains at most one element.
+        if (listToCheck.size() == 0 || listToCheck.size() == 1) {
+            return true;
+        }
+        // listToCheck.size() > 1
+        // Compare the elements for order
+
+        // String variables that will be used to compare elements in listToCheck
+        String leftString = null;
+        String rightString = null;
+
+        // Go through every element in listToCheck, and
+        // check whether it is in order with the element that
+        // comes before it.
+        for (String element : listToCheck) {
+            rightString = element;
+
+            // If at least two elements in listToCheck have
+            // been read already.
+            // (two strings are needed for comparison)
+            if (leftString != null) {
+                // Compare the two elements
+                int comparison = leftString.compareToIgnoreCase(rightString) * -1;
 
                 // Check if the leftString has a greater lexiconic value compared
                 // to the rightString.
@@ -156,11 +202,11 @@ public class CardSorterTest {
 
     /**
      * Check whether a list of cards that are grouped together by rarity are sorted on name
-     * in alphabetical order for each group.
+     * in default alphabetical order for each group.
      * @param listToCheck a list of cards to check
      * @pre Cards in listToCheck are grouped together by Card.Rarity.
      */
-    private boolean EveryGroupOrderedAlphabetically(List<Card> listToCheck) {
+    private boolean EveryGroupDefaultOrderedAlphabetically(List<Card> listToCheck) {
         // Group every card by rarity, and check whether the names of the cards are sorted
         // alphabetically within each group.
         List<String> groupCardNames = new ArrayList<String>();
@@ -171,7 +217,7 @@ public class CardSorterTest {
             // check if the current group is ordered alphabetically, and flush
             // the list holding the card names.
             if (!card.RARITY.equals(currentGroupRarity)) {
-                if (!OrderedAlphabetically(groupCardNames)) {
+                if (!DefaultOrderedAlphabetically(groupCardNames)) {
                     return false;
                 }
 
@@ -187,7 +233,7 @@ public class CardSorterTest {
         }
 
         // Check if the last group is ordered alphabetically.
-        if (!OrderedAlphabetically(groupCardNames)) {
+        if (!DefaultOrderedAlphabetically(groupCardNames)) {
             return false;
         }
 
@@ -217,10 +263,10 @@ public class CardSorterTest {
     }
 
     /**
-     * Check whether a list of rarities is ordered correctly.
+     * Check whether a list of rarities is ordered correctly in default order.
      * @param listToCheck the list of rarities the check for order
      */
-    private boolean OrderedRarities(List<Card.Rarity> listToCheck) {
+    private boolean DefaultOrderedRarities(List<Card.Rarity> listToCheck) {
         // The list is always ordered if it contains at most one element.
         if (listToCheck.size() == 0 || listToCheck.size() == 1) {
             return true;
@@ -256,13 +302,53 @@ public class CardSorterTest {
         return true;
     }
 
+    /**
+     * Check whether a list of rarities is ordered correctly in reverse order.
+     * @param listToCheck the list of rarities the check for order
+     */
+    private boolean ReverseOrderedRarities(List<Card.Rarity> listToCheck) {
+        // The list is always ordered if it contains at most one element.
+        if (listToCheck.size() == 0 || listToCheck.size() == 1) {
+            return true;
+        }
+        // listToCheck.size() > 1
+        // Compare the elements for order
+
+        // String variables that will be used to compare elements in listToCheck
+        Card.Rarity leftRarity = null;
+        Card.Rarity rightRarity = null;
+
+        // Go through every element in listToCheck, and
+        // check whether it is in order with the element that
+        // comes before it.
+        for (Card.Rarity element : listToCheck) {
+            rightRarity = element;
+
+            // If at least two elements in listToCheck have
+            // been read already.
+            // (two rarities are needed for comparison)
+            if (leftRarity != null) {
+                // Compare the two elements
+                if (RaritySmallerEquals(leftRarity, rightRarity) && (leftRarity != rightRarity)) {
+                    return false;
+                }
+            }
+
+            leftRarity = rightRarity;
+        }
+        // All neighbouring elements are in order
+        // ==> the entire list is in order.
+
+        return true;
+    }
+
     @Test
-    public void SortTestOnName() {
+    public void SortTestOnNameDefaultOrder() {
         // Create a list of cards, unsorted by the name attribute.
         List<Card> cards = GetUnsortedCards();
 
         // Sort the list of unsorted cards by the name attribute.
-        CardSorter.Sort(cards, CardSorter.SortAttribute.NAME);
+        CardSorter.Sort(cards, CardSorter.SortAttribute.NAME, CardSorter.SortOrder.DEFAULT);
 
         // Copy the names of all cards in the sorted cards list to a new list of strings,
         // maintaining the order of cards in the sorted cards list.
@@ -273,17 +359,38 @@ public class CardSorterTest {
         }
 
         // Test whether the names of the cards are in alphabetical order.
-        assertTrue("SortTestOnName: OrderedAlphabetically",
-                OrderedAlphabetically(namesList));
+        assertTrue("SortTestOnNameDefaultOrder: OrderedAlphabetically",
+                DefaultOrderedAlphabetically(namesList));
     }
 
     @Test
-    public void SortTestOnRarity() {
+    public void SortTestOnNameReverseOrder() {
+        // Create a list of cards, unsorted by the name attribute.
+        List<Card> cards = GetUnsortedCards();
+
+        // Sort the list of unsorted cards by the name attribute.
+        CardSorter.Sort(cards, CardSorter.SortAttribute.NAME, CardSorter.SortOrder.REVERSE);
+
+        // Copy the names of all cards in the sorted cards list to a new list of strings,
+        // maintaining the order of cards in the sorted cards list.
+        List<String> namesList = new ArrayList<String>();
+
+        for (Card card : cards) {
+            namesList.add(card.NAME);
+        }
+
+        // Test whether the names of the cards are in alphabetical order.
+        assertTrue("SortTestOnNameReverseOrder: OrderedAlphabetically",
+                ReverseOrderedAlphabetically(namesList));
+    }
+
+    @Test
+    public void SortTestOnRarityDefault() {
         // Create a list of cards, unsorted by the rarity attribute.
         List<Card> cards = GetUnsortedCards();
 
         // Sort the list of unsorted cards by the rarity attribute.
-        CardSorter.Sort(cards, CardSorter.SortAttribute.RARITY);
+        CardSorter.Sort(cards, CardSorter.SortAttribute.RARITY, CardSorter.SortOrder.DEFAULT);
 
         // Copy the rarities of all cards in the sorted cards list to a new list of rarities,
         // maintaining the order of cards in the sorted cards list.
@@ -294,14 +401,42 @@ public class CardSorterTest {
         }
 
         // Test whether the rarities are grouped together in the sorted cards list.
-        assertTrue("SortTestOnRarity: RaritiesGroupedTogether",
+        assertTrue("SortTestOnRarityDefault: RaritiesGroupedTogether",
                 RaritiesGroupedTogether(raritiesList));
 
         // Test whether every group of rarities is alphabetically sorted on name individually.
-        assertTrue("SortTestOnRarity: EveryGroupOrderedAlphabetically",
-                EveryGroupOrderedAlphabetically(cards));
+        assertTrue("SortTestOnRarityDefault: EveryGroupOrderedAlphabetically",
+                EveryGroupDefaultOrderedAlphabetically(cards));
 
         // Test whether every rarity is in the right order.
-        assertTrue("SortTestOnRarity: OrderedRarities", OrderedRarities(raritiesList));
+        assertTrue("SortTestOnRarityDefault: OrderedRarities", DefaultOrderedRarities(raritiesList));
+    }
+
+    @Test
+    public void SortTestOnRarityReverse() {
+        // Create a list of cards, unsorted by the rarity attribute.
+        List<Card> cards = GetUnsortedCards();
+
+        // Sort the list of unsorted cards by the rarity attribute.
+        CardSorter.Sort(cards, CardSorter.SortAttribute.RARITY, CardSorter.SortOrder.REVERSE);
+
+        // Copy the rarities of all cards in the sorted cards list to a new list of rarities,
+        // maintaining the order of cards in the sorted cards list.
+        List<Card.Rarity> raritiesList = new ArrayList<Card.Rarity>();
+
+        for (Card card : cards) {
+            raritiesList.add(card.RARITY);
+        }
+
+        // Test whether the rarities are grouped together in the sorted cards list.
+        assertTrue("SortTestOnRarityReverse: RaritiesGroupedTogether",
+                RaritiesGroupedTogether(raritiesList));
+
+        // Test whether every group of rarities is alphabetically sorted on name individually.
+        assertTrue("SortTestOnRarityReverse: EveryGroupOrderedAlphabetically",
+                EveryGroupDefaultOrderedAlphabetically(cards));
+
+        // Test whether every rarity is in the right order.
+        assertTrue("SortTestOnRarityReverse: OrderedRarities", ReverseOrderedRarities(raritiesList));
     }
 }

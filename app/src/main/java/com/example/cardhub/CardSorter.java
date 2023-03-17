@@ -1,6 +1,4 @@
-package com.example.cardsprototype;
-
-import androidx.appcompat.content.res.AppCompatResources;
+package com.example.cardhub;
 
 import java.util.List;
 
@@ -54,22 +52,6 @@ public class CardSorter {
     }
 
     /**
-     * Sort a list of cards using the correct comparison function, based on the given SortOrder.
-     * @modifies cards
-     */
-    private static void SortOnRarity(List<Card> cards, SortOrder sortOrder) {
-        switch(sortOrder) {
-            case DEFAULT:
-                SortOnRarityDefaultOrder(cards);
-                break;
-
-            case REVERSE:
-                SortOnRarityReverseOrder(cards);
-                break;
-        }
-    }
-
-    /**
      * Sort a list of cards based on their names, alphabetically, in default order.
      * @modifies cards
      */
@@ -84,7 +66,7 @@ public class CardSorter {
      */
     private static void SortOnNameReverseOrder(List<Card> cards) {
         // Sort the cards on their name alphabetically, ignoring upper/lower case, in reverse order.
-        cards.sort((c1, c2) -> c1.NAME.compareToIgnoreCase(c2.NAME)) * -1;
+        cards.sort((c1, c2) -> (c1.NAME.compareToIgnoreCase(c2.NAME)) * -1);
     }
 
     /**
@@ -145,11 +127,11 @@ public class CardSorter {
     }
 
     /**
-     * Sort a list of cards based on their rarity, in reverse order,
+     * Sort a list of cards based on their rarity, in default order,
      * ignoring their names.
      * @modifies cards
      */
-    private static void SortOnRarityDefaultOrder(List<Card> cards) {
+    private static void SortOnRarityReverseOrder(List<Card> cards) {
         // Sort the cards based on their rarity
         cards.sort((c1, c2) -> CompareRarities(c1.RARITY, c2.RARITY) * -1);
     }
@@ -189,7 +171,7 @@ public class CardSorter {
             if (!card.RARITY.equals(currentGroupRarity)) {
                 List<Card> group = cards.subList(fromIndex, toIndex);
 
-                SortOnName(group);
+                SortOnName(group, SortOrder.DEFAULT);
 
                 currentGroupRarity = card.RARITY;
                 fromIndex = toIndex;
@@ -202,33 +184,6 @@ public class CardSorter {
         // Sort the last group on name alphabetically.
         List<Card> group = cards.subList(fromIndex, toIndex);
 
-        SortOnName(group);
-    }
-
-    /**
-     * Reverse an array of cards, such that the first element in the array becomes the last, etc.
-     * @param cards the list of cards to reverse
-     * @modifies cards
-     */
-    public static void Reverse(List<Card> cards) {
-        // A list of one card or none cards is its own reverse.
-        if (cards.size() <= 1) {
-            return;
-        }
-
-        // Indices in the cards list that start at its edges, and move towards its centre.
-        int leftIndex = 0;
-        int rightIndex = cards.size() - 1;
-
-        while (leftIndex < rightIndex) {
-            // Swap the cards at the leftIndex and rightIndex
-            Card bufferCard = cards.get(leftIndex);
-            cards.set(leftIndex, cards.get(rightIndex));
-            cards.set(rightIndex, bufferCard);
-
-            // Adjust the indices to move towards the centre of the cards list.
-            leftIndex++;
-            rightIndex--;
-        }
+        SortOnName(group, SortOrder.DEFAULT);
     }
 }
