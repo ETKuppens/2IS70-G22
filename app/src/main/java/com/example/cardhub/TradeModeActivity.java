@@ -11,4 +11,10 @@ public class TradeModeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trade_mode);
     }
+
+    /**
+     * Update the UI in activity using the data from the TradingSession instance.
+     * TODO: implement this method
+     */
+    public void updateUI(TradingSession tradingSession) {}
 }
