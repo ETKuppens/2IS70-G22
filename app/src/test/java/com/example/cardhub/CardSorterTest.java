@@ -22,7 +22,7 @@ public class CardSorterTest {
         String name = "c1";
         String description = "description1";
         Card.Rarity rarity = Card.Rarity.COMMON;
-        int image = 0; //R.drawable.amongsus;
+        String image = "https://en.ws-tcg.com/wp/wp-content/uploads/20210519181156/DAL_W79_E003_SAMPLE.png";
         Card c1 = new Card(name, description, rarity, image);
 
         name = "c2";
