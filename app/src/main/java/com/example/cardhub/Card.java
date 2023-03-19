@@ -1,9 +1,11 @@
 package com.example.cardhub;
 
+import java.io.Serializable;
+
 /**
  * Class that stores data of a card instance.
  */
-public class Card {
+public class Card implements Serializable {
     /**
      * Enum for the rarity of a card.
      */

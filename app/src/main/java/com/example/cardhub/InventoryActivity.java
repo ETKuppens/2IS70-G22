@@ -1,12 +1,17 @@
 package com.example.cardhub;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
+
+import com.google.android.gms.dynamic.SupportFragmentWrapper;
 
 public class InventoryActivity extends AppCompatActivity {
     InventoryState state;
@@ -30,7 +35,11 @@ public class InventoryActivity extends AppCompatActivity {
         cardGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(InventoryActivity.this, state.getCard(i).NAME, Toast.LENGTH_SHORT).show();
+                Log.d("FRAGMENT", "card clicked");
+                FragmentManager fragMan = getSupportFragmentManager();
+                Fragment frag = CardFragment.newInstance(state.getCard(i));
+                fragMan.beginTransaction().setReorderingAllowed(true).
+                        add(R.id.fragment_container, frag).commit();
             }
         });
     }

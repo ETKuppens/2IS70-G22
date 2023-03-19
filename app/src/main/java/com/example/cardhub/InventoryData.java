@@ -40,7 +40,7 @@ public class InventoryData {
         cards.add(new HashMap<>());
         cards.get(0).put("EMPTY",null);
 
-        db.collection("users/IwbZhyP69IZFqJdJ9Lcj/cards").get()
+        db.collection("cards").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
