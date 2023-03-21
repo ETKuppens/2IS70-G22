@@ -6,4 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".trading.TradingActivity">
 
+    <Button
+        android:id="@+id/btnSelectCards"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="132dp"
+        android:layout_marginTop="615dp"
+        android:layout_marginEnd="133dp"
+        android:layout_marginBottom="68dp"
+        android:text="Select Cards"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView3"
+        android:layout_width="412dp"
+        android:layout_height="584dp"
+        android:layout_marginBottom="31dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnSelectCards"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_card_selection" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
