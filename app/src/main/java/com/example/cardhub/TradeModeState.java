@@ -48,7 +48,7 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
 
     @Override
     public void cancelTradingSessionResponse() {
-
+        this.activity.cancelTradeMode();
     }
 
 
