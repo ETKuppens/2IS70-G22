@@ -13,29 +13,40 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegistrationActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        // Firebase Authentication
+        // Firebase Initialization
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         // Instantiate layout components
         EditText et_registeremail = findViewById(R.id.editText_registeremail);
@@ -45,6 +56,12 @@ public class RegistrationActivity extends AppCompatActivity {
         TextView tv_loginreferral = findViewById(R.id.textView_signinreferral);
         Button btn_register = findViewById(R.id.button_register);
         TextView tv_tos = findViewById(R.id.textView_tos);
+        Spinner spr_role = findViewById(R.id.spinner_role);
+
+        // Create dropdown list
+        String[] roles = new String[]{"Card Collector", "Card Creator"};
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, roles);
+        spr_role.setAdapter(arrayAdapter);
 
         // TOS disables btn
         btn_register.setEnabled(false);
@@ -70,6 +87,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 String email = et_registeremail.getText().toString();
                 String password = et_registerpassword.getText().toString();
                 String confirm = et_confirm.getText().toString();
+                String role = spr_role.getSelectedItem().toString();
 
                 if (password.equals(confirm)) {
                     // Create account
@@ -78,6 +96,28 @@ public class RegistrationActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
+                                        // Upload role to users collection
+                                        FirebaseUser user = mAuth.getCurrentUser();
+                                        String uid = user.getUid();
+                                        Map<String, Object> userEntry = new HashMap<>();
+                                        userEntry.put("role", role);
+
+                                        // Add a new document with a generated ID
+                                        db.collection("users").document(uid)
+                                                .set(userEntry)
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        Log.d("FIRESTORE", "DocumentSnapshot successfully written!");
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Log.w("FIRESTORE", "Error writing document", e);
+                                                    }
+                                                });
+
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d(TAG, "signUpWithEmail:success");
                                         Toast.makeText(RegistrationActivity.this, "Registration succeeded.",

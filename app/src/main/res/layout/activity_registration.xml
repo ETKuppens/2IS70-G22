@@ -10,7 +10,7 @@
         android:id="@+id/textView_signup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:text="Sign Up"
         android:textSize="48sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,7 +21,7 @@
         android:id="@+id/editText_registeremail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="30dp"
         android:ems="10"
         android:hint="Email"
         android:inputType="textPersonName"
@@ -40,9 +40,9 @@
         android:hint="Password"
         android:inputType="textPassword"
         android:minHeight="48dp"
-        app:layout_constraintEnd_toEndOf="@+id/editText_registeremail"
-        app:layout_constraintStart_toStartOf="@+id/editText_registeremail"
-        app:layout_constraintTop_toBottomOf="@+id/editText_registeremail" />
+        app:layout_constraintEnd_toEndOf="@+id/spinner_role"
+        app:layout_constraintStart_toStartOf="@+id/spinner_role"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_role" />
 
     <EditText
         android:id="@+id/editText_confirm"
@@ -96,4 +96,15 @@
         app:layout_constraintEnd_toEndOf="@+id/editText_confirm"
         app:layout_constraintStart_toStartOf="@+id/editText_confirm"
         app:layout_constraintTop_toBottomOf="@+id/editText_confirm" />
+
+    <Spinner
+        android:contentDescription="Enter your role"
+        android:id="@+id/spinner_role"
+        android:layout_width="210dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/editText_registeremail"
+        app:layout_constraintStart_toStartOf="@+id/editText_registeremail"
+        app:layout_constraintTop_toBottomOf="@+id/editText_registeremail" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
