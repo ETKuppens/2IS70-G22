@@ -21,4 +21,12 @@ public class TradeModeActivity extends AppCompatActivity {
     public void cancelTradeMode() {
         finish();
     }
+
+    public void disableChangeTradeProposal() {
+
+    }
+
+    public void enableChangeTradeProposal() {
+
+    }
 }

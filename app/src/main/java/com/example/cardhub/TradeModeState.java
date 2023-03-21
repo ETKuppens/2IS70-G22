@@ -19,6 +19,15 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
         this.activity = activity;
     }
 
+    // List of flags that are used to check when certain functionality can be called.
+    /**
+     * Whether the cards that this user proposes in the trade may be changed. Must be false when
+     * this app instance is currently waiting for a response from the server stating that a previous
+     * proposed cards changed was handled correctly.
+     */
+    boolean proposedCardsMayBeChanged = true;
+
+
     /**
      * Update the UI in activity using the data from the TradingSession instance.
      */
@@ -70,7 +79,14 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
 
     @Override
     public void changeProposedCards(int clientID, Set<CardDiff> diffs) {
+        if (!this.proposedCardsMayBeChanged)
+        {
+            throw new RuntimeException("TradeModeState.changeProposedCards: the trade session is" +
+                    "currently in a state where the proposed cards may not be changed.");
+        }
 
+        this.proposedCardsMayBeChanged = false;
+        this.activity.disableChangeTradeProposal();
     }
 
     @Override
@@ -87,6 +103,7 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
 
     @Override
     public void changeProposedCardsResponse() {
-
+        this.proposedCardsMayBeChanged = true;
+        this.activity.enableChangeTradeProposal();
     }
 }
