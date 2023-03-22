@@ -6,6 +6,7 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
     int clientID = 0;
 
     TradeModeActivity activity;
+    TradingSessionRepository repository;
 
     // TradingSession instance that keeps track which user proposes which cards in the current
     // trading session.
@@ -39,21 +40,26 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
         this.activity.cancelTradeMode();
     }
 
-    @Override
-    public void cancelTradingSession(int clientID){
 
-    }
-
-    @Override
-    public void cancelTradingSession() {
-        cancelTradingSessionConfirm(this.clientID);
+    /**
+     * Perform the steps needed to cancel the trading session;
+     * 1. Make sure that the proposed cards cannot be changed anymore
+     * 2. Ask the server to also cancel the trading mode of the other client instance in this
+     * trading session
+     * 3. Cancel the trading session of this client instance.
+     */
+    public void cancelTradingSessionFromUI() {
+        this.proposedCardsMayBeChanged = false;
+        this.repository.cancelAcceptTrade(this.clientID);
         cancelTradeMode();
     }
 
     @Override
-    public void cancelTradingSessionConfirm(int clientID) {
-
+    public void cancelTradingSession() {
+        this.repository.cancelTradingSessionConfirm(this.clientID);
+        cancelTradeMode();
     }
+
 
     @Override
     public void cancelTradingSessionResponse() {
@@ -62,23 +68,11 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
 
 
     @Override
-    public void acceptProposedTrade(int clientID) {
-
-    }
-
-    @Override
     public void acceptProposedTradeResponse(boolean tradeAccepted) {
 
     }
 
-    @Override
-    public void cancelAcceptTrade(int clientID) {
-
-    }
-
-
-    @Override
-    public void changeProposedCards(int clientID, Set<CardDiff> diffs) {
+    public void changeProposedCardsFromUI(Set<CardDiff> diffs) {
         if (!this.proposedCardsMayBeChanged)
         {
             throw new RuntimeException("TradeModeState.changeProposedCards: the trade session is" +
@@ -87,18 +81,15 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
 
         this.proposedCardsMayBeChanged = false;
         this.activity.disableChangeTradeProposal();
+
+        this.repository.changeProposedCards(this.clientID, diffs);
     }
 
     @Override
     public void changeProposedCards(Set<CardDiff> diffs) {
         this.tradingSession.AddCardDiffsForOtherUser(diffs);
         updateUI();
-        changeProposedCardsConfirm(this.clientID);
-    }
-
-    @Override
-    public void changeProposedCardsConfirm(int clientID) {
-
+        this.repository.changeProposedCardsConfirm(this.clientID);
     }
 
     @Override
