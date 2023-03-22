@@ -28,6 +28,18 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
      */
     boolean proposedCardsMayBeChanged = true;
 
+    public void changeProposedCardsFromUI(Set<CardDiff> diffs) {
+        if (!this.proposedCardsMayBeChanged)
+        {
+            throw new RuntimeException("TradeModeState.changeProposedCards: the trade session is" +
+                    "currently in a state where the proposed cards may not be changed.");
+        }
+
+        this.proposedCardsMayBeChanged = false;
+        this.activity.disableChangeTradeProposal();
+
+        this.repository.changeProposedCards(this.clientID, diffs);
+    }
 
     /**
      * Update the UI in activity using the data from the TradingSession instance.
@@ -90,19 +102,6 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
 
             this.repository.cancelAcceptTrade(this.clientID);
         }
-    }
-
-    public void changeProposedCardsFromUI(Set<CardDiff> diffs) {
-        if (!this.proposedCardsMayBeChanged)
-        {
-            throw new RuntimeException("TradeModeState.changeProposedCards: the trade session is" +
-                    "currently in a state where the proposed cards may not be changed.");
-        }
-
-        this.proposedCardsMayBeChanged = false;
-        this.activity.disableChangeTradeProposal();
-
-        this.repository.changeProposedCards(this.clientID, diffs);
     }
 
     @Override
