@@ -45,7 +45,7 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
 
 
     private void cancelButtonClicked() {
-        
+        state.cancelTradingSessionFromUI();
     }
 
     private void readyButtonClicked() {
