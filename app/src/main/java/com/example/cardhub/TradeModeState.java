@@ -40,6 +40,13 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
         this.activity.cancelTradeMode();
     }
 
+    /**
+     * Apply the proposed cards to the inventory of this user, and exit this trading session.
+     */
+    private void acceptTrade() {
+
+    }
+
 
     /**
      * Perform the steps needed to cancel the trading session;
@@ -74,7 +81,12 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
 
     @Override
     public void acceptProposedTradeResponse(boolean tradeAccepted) {
-
+        if (tradeAccepted) {
+            acceptTrade();
+        }
+        else { // !tradeAccepted
+            this.repository.cancelAcceptTrade(this.clientID);
+        }
     }
 
     public void changeProposedCardsFromUI(Set<CardDiff> diffs) {
