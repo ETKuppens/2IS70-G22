@@ -85,6 +85,9 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
             acceptTrade();
         }
         else { // !tradeAccepted
+            this.proposedCardsMayBeChanged = true;
+            this.activity.enableChangeTradeProposal();
+
             this.repository.cancelAcceptTrade(this.clientID);
         }
     }
