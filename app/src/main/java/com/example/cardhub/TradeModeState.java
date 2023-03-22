@@ -42,6 +42,21 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
     }
 
     /**
+     * Perform the steps needed to cancel the trading session;
+     * 1. Make sure that the proposed cards cannot be changed anymore
+     * 2. Ask the server to also cancel the trading mode of the other client instance in this
+     * trading session
+     * 3. Cancel the trading session of this client instance.
+     */
+    public void cancelTradingSessionFromUI() {
+        this.proposedCardsMayBeChanged = false;
+        this.activity.disableChangeTradeProposal();
+
+        this.repository.cancelAcceptTrade(this.clientID);
+        cancelTradeMode();
+    }
+
+    /**
      * Update the UI in activity using the data from the TradingSession instance.
      */
     private void updateUI() {
@@ -59,21 +74,6 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
 
     }
 
-
-    /**
-     * Perform the steps needed to cancel the trading session;
-     * 1. Make sure that the proposed cards cannot be changed anymore
-     * 2. Ask the server to also cancel the trading mode of the other client instance in this
-     * trading session
-     * 3. Cancel the trading session of this client instance.
-     */
-    public void cancelTradingSessionFromUI() {
-        this.proposedCardsMayBeChanged = false;
-        this.activity.disableChangeTradeProposal();
-
-        this.repository.cancelAcceptTrade(this.clientID);
-        cancelTradeMode();
-    }
 
     @Override
     public void cancelTradingSession() {
