@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 public class TradeModeActivity extends AppCompatActivity {
 
+    TradeModeState state;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
