@@ -8,10 +8,10 @@ import android.widget.Button;
 
 public class TradeModeActivity extends AppCompatActivity implements View.OnClickListener {
 
-    TradeModeState state;
+    private TradeModeState state;
 
-    Button readyButton;
-    Button cancelButton;
+    private Button readyButton;
+    private Button cancelButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +45,7 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
 
 
     private void cancelButtonClicked() {
-
+        
     }
 
     private void readyButtonClicked() {

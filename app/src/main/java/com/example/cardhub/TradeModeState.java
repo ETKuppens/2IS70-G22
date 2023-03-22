@@ -3,14 +3,14 @@ package com.example.cardhub;
 import java.util.Set;
 
 public class TradeModeState implements TradingSessionRepositoryReceiver {
-    int clientID = 0;
+    private int clientID = 0;
 
-    TradeModeActivity activity;
-    TradingSessionRepository repository;
+    private TradeModeActivity activity;
+    private TradingSessionRepository repository;
 
     // TradingSession instance that keeps track which user proposes which cards in the current
     // trading session.
-    TradingSession tradingSession = new TradingSession();
+    private TradingSession tradingSession = new TradingSession();
 
     /**
      * Construct a new TradeModeState that is linked to an existing TradeModeActivity.
@@ -26,7 +26,7 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
      * this app instance is currently waiting for a response from the server stating that a previous
      * proposed cards changed was handled correctly.
      */
-    boolean proposedCardsMayBeChanged = true;
+    private boolean proposedCardsMayBeChanged = true;
 
     public void changeProposedCardsFromUI(Set<CardDiff> diffs) {
         if (!this.proposedCardsMayBeChanged)
