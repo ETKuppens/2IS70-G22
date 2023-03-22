@@ -50,12 +50,17 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
      */
     public void cancelTradingSessionFromUI() {
         this.proposedCardsMayBeChanged = false;
+        this.activity.disableChangeTradeProposal();
+
         this.repository.cancelAcceptTrade(this.clientID);
         cancelTradeMode();
     }
 
     @Override
     public void cancelTradingSession() {
+        this.proposedCardsMayBeChanged = false;
+        this.activity.disableChangeTradeProposal();
+
         this.repository.cancelTradingSessionConfirm(this.clientID);
         cancelTradeMode();
     }
