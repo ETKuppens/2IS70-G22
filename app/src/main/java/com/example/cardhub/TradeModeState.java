@@ -171,6 +171,11 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
     }
 
     @Override
+    public void acceptProposedTradeFromOtherTrader() {
+        this.activity.enableOtherPlayerReadyMessage();
+    }
+
+    @Override
     public void changeProposedCards(Set<CardDiff> diffs) {
         this.tradingSession.AddCardDiffsForOtherUser(diffs);
         updateUI();

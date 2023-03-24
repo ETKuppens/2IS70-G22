@@ -27,6 +27,13 @@ public interface TradingSessionRepositoryReceiver {
      */
     void acceptProposedTradeResponse(boolean tradeAccepted);
 
+    /**
+     * Retrieve a method call request from the server to show that the other user is trying to accept
+     * the current trade proposal. This method should be called on the other app instance
+     * immediately after the server receives {@code acceptTrade(int clientID)}.
+     */
+    void acceptProposedTradeFromOtherTrader();
+
 
     /**
      * Retrieve a method call request from the server to update the TradingSession, and to update

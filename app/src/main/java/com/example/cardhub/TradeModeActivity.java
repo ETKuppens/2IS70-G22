@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class TradeModeActivity extends AppCompatActivity implements View.OnClickListener {
@@ -14,6 +15,8 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
     private Button readyButton;
     private Button cancelButton;
     private Button cardSelectButton;
+
+    private TextView otherPlayerReadyText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +30,9 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
         readyButton.setOnClickListener(this);
         cancelButton.setOnClickListener(this);
         cardSelectButton.setOnClickListener(this);
+
+        otherPlayerReadyText = findViewById(R.id.PlayerReadyToTradeTextView);
+        this.disableOtherPlayerReadyMessage();
 
         state = new TradeModeState(this);
     }
@@ -63,6 +69,14 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
 
     public void enableCancelTrade() {
         this.cancelButton.setEnabled(true);
+    }
+
+    public void disableOtherPlayerReadyMessage() {
+        this.otherPlayerReadyText.setVisibility(View.GONE);
+    }
+
+    public void enableOtherPlayerReadyMessage() {
+        this.otherPlayerReadyText.setVisibility(View.VISIBLE);
     }
 
 
