@@ -1,5 +1,7 @@
 package com.example.cardhub;
 
+import com.example.cardhub.inventory.InventoryRepositoryReceiver;
+
 import java.util.Set;
 
 /**
