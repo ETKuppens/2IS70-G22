@@ -1,6 +1,6 @@
 package Collector;
 
-import com.myapplication.R;
+import com.example.cardhub.R;
 
 public class CollectorTradingActivity extends CollectorBaseActivity {
 

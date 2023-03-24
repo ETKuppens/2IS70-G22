@@ -1,6 +1,6 @@
 package Creator;
 
-import com.myapplication.R;
+import com.example.cardhub.R;
 
 public class CreatorProfileActivity extends CreatorBaseActivity {
 
