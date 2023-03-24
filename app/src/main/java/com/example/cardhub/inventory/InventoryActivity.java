@@ -1,17 +1,15 @@
-package com.example.cardhub;
+package com.example.cardhub.inventory;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
-import com.google.android.gms.dynamic.SupportFragmentWrapper;
+import com.example.cardhub.R;
 
 public class InventoryActivity extends AppCompatActivity {
     InventoryState state;
@@ -36,10 +34,9 @@ public class InventoryActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.d("FRAGMENT", "card clicked");
-                FragmentManager fragMan = getSupportFragmentManager();
-                Fragment frag = CardFragment.newInstance(state.getCard(i));
-                fragMan.beginTransaction().setReorderingAllowed(true).
-                        add(R.id.fragment_container, frag).commit();
+                Intent intent = new Intent(getApplicationContext(), CardActivity.class);
+                intent.putExtra("card", state.getCard(i));
+                startActivity(intent);
             }
         });
     }
