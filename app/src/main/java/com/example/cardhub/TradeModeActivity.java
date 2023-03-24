@@ -46,6 +46,14 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
         this.cardSelectButton.setEnabled(true);
     }
 
+    public void disableAcceptTrade() {
+        this.readyButton.setEnabled(false);
+    }
+
+    public void enableAcceptTrade() {
+        this.readyButton.setEnabled(true);
+    }
+
 
     private void cancelButtonClicked() {
         state.cancelTradingSessionFromUI();

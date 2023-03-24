@@ -27,6 +27,12 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
      * proposed cards changed was handled correctly.
      */
     private boolean proposedCardsMayBeChanged = true;
+    /**
+     * Whether the current trading proposal may be accepted by this app instance. May be false when
+     * this app instance is currently canceling the trading session, or when this app instance is
+     * already proposing the trade to be accepted.
+     */
+    private boolean proposedTradeMayBeAccepted = true;
 
     public void changeProposedCardsFromUI(Set<CardDiff> diffs) {
         if (!this.proposedCardsMayBeChanged)
@@ -52,6 +58,9 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
         this.proposedCardsMayBeChanged = false;
         this.activity.disableChangeTradeProposal();
 
+        this.proposedTradeMayBeAccepted = false;
+        this.activity.disableAcceptTrade();
+
         this.repository.cancelAcceptTrade(this.clientID);
         cancelTradeMode();
     }
@@ -71,6 +80,9 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
     }
 
     private void cancelTradeMode() {
+        this.proposedTradeMayBeAccepted = false;
+        this.activity.disableAcceptTrade();
+
         this.activity.cancelTradeMode();
     }
 
@@ -81,6 +93,9 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
         this.proposedCardsMayBeChanged = false;
         this.activity.disableChangeTradeProposal();
 
+        this.proposedTradeMayBeAccepted = false;
+        this.activity.disableAcceptTrade();
+
         this.repository.acceptProposedTrade(this.clientID);
     }
 
@@ -89,6 +104,9 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
     public void cancelTradingSession() {
         this.proposedCardsMayBeChanged = false;
         this.activity.disableChangeTradeProposal();
+
+        this.proposedTradeMayBeAccepted = false;
+        this.activity.disableAcceptTrade();
 
         this.repository.cancelTradingSessionConfirm(this.clientID);
         cancelTradeMode();
@@ -109,6 +127,9 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
         else { // !tradeAccepted
             this.proposedCardsMayBeChanged = true;
             this.activity.enableChangeTradeProposal();
+
+            this.proposedTradeMayBeAccepted = true;
+            this.activity.enableAcceptTrade();
 
             this.repository.cancelAcceptTrade(this.clientID);
         }
