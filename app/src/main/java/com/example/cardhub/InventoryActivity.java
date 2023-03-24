@@ -2,11 +2,14 @@ package com.example.cardhub;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
+
+import com.example.cardhub.trading.TradingActivity;
 
 public class InventoryActivity extends AppCompatActivity {
     InventoryState state;
@@ -19,6 +22,10 @@ public class InventoryActivity extends AppCompatActivity {
         state = new InventoryState(this);
 
         state.requestCards();
+
+        Intent newIntent = new Intent(this, TradingActivity.class);
+        this.startActivity(newIntent);
+
     }
 
     /**

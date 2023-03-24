@@ -31,4 +31,16 @@ public class TradingSession {
     public List<Card> getRemoteSelection () {
         return this.remoteSelection;
     }
+
+    public void selectCard(Card c) {
+        this.localSelection.add(c);
+        // Send update to server
+    }
+
+    public void deselectCard(Card c) {
+        if (this.localSelection.contains(c)) {
+            this.localSelection.remove(c);
+        // Send update to server
+        }
+    }
 }

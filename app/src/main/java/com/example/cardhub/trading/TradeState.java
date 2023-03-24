@@ -11,5 +11,15 @@ import java.util.List;
 public class TradeState {
     TradingSession currentSession;
 
-    //TODO: Make fragment for Card Selection
+    public List<Card> getLocalSelectedCards() {
+        return currentSession.getLocalSelection();
+    }
+
+    public void selectCard(Card c) {
+        currentSession.selectCard(c);
+    }
+
+    public void deselectCard(Card c) {
+        currentSession.selectCard(c);
+    }
 }
