@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -28,7 +29,12 @@ public class CardActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
-        Card card = (Card) intent.getSerializableExtra("card");
+        Card card;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            card = intent.getSerializableExtra("card", Card.class);
+        } else { // Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU
+            card = (Card)intent.getSerializableExtra("card");
+        }
 
         TextView nameView = findViewById(R.id.card_title);
         nameView.setText(card.NAME);

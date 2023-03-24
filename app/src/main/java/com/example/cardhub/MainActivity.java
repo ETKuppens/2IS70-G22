@@ -39,6 +39,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button btn_trading_session = findViewById(R.id.button_start_trading_session);
+        btn_trading_session.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), TradeModeActivity.class));
+            }
+        });
+
         db = FirebaseFirestore.getInstance();
 
 //        getUser();
