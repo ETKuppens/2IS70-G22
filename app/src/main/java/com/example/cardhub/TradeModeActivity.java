@@ -26,6 +26,8 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
         readyButton.setOnClickListener(this);
         cancelButton.setOnClickListener(this);
         cardSelectButton.setOnClickListener(this);
+
+        state = new TradeModeState(this);
     }
 
     /**
