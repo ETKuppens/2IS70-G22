@@ -1,12 +1,15 @@
-package com.example.cardhub;
+package com.example.cardhub.inventory;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
+
+import com.example.cardhub.R;
 
 public class InventoryActivity extends AppCompatActivity {
     InventoryState state;
@@ -30,7 +33,10 @@ public class InventoryActivity extends AppCompatActivity {
         cardGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(InventoryActivity.this, state.getCard(i).NAME, Toast.LENGTH_SHORT).show();
+                Log.d("FRAGMENT", "card clicked");
+                Intent intent = new Intent(getApplicationContext(), CardActivity.class);
+                intent.putExtra("card", state.getCard(i));
+                startActivity(intent);
             }
         });
     }

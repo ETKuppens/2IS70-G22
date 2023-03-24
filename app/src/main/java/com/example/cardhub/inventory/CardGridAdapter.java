@@ -1,4 +1,4 @@
-package com.example.cardhub;
+package com.example.cardhub.inventory;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -12,6 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
+
+import com.example.cardhub.Card;
+import com.example.cardhub.R;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -83,8 +86,7 @@ public class CardGridAdapter extends BaseAdapter {
                     InputStream is = (InputStream) new URL(thisCard.IMAGE_URL).getContent();
                     Drawable d = Drawable.createFromStream(is, "src name");
                     cardImage.setImageDrawable(d);
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     Log.d("CARDGRID", e.toString());
                 }
             }
