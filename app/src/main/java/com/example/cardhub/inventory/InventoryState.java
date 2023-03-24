@@ -1,4 +1,6 @@
-package com.example.cardhub;
+package com.example.cardhub.inventory;
+
+import com.example.cardhub.Card;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,7 @@ public class InventoryState implements InventoryRepositoryReceiver {
 
     /**
      * Creates an Inventory state for the InventoryActivity
+     *
      * @param activity the activity the state is responsible for
      */
     public InventoryState(InventoryActivity activity) {
@@ -31,6 +34,7 @@ public class InventoryState implements InventoryRepositoryReceiver {
 
     /**
      * Returns the list of cards.
+     *
      * @return all the cards
      */
     public List<Card> getCards() {
@@ -39,6 +43,7 @@ public class InventoryState implements InventoryRepositoryReceiver {
 
     /**
      * Get a specific card.
+     *
      * @param i card at index to get
      * @return the specific card
      */

@@ -1,11 +1,12 @@
-package com.example.cardhub;
+package com.example.cardhub.inventory;
 
 import android.util.Log;
+
+import com.example.cardhub.Card;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 public class InventoryRepositoryImpl implements InventoryRepository {
     InventoryData data;
@@ -30,14 +31,14 @@ public class InventoryRepositoryImpl implements InventoryRepository {
     @Override
     public List<Card> processCards(List<Map<String, Object>> cardsRaw) {
         List<Card> cards = new ArrayList<>();
-        for (Map<String,Object> cardRaw : cardsRaw) {
+        for (Map<String, Object> cardRaw : cardsRaw) {
             cards.add(new Card(
                     (String) cardRaw.get("name"),
                     (String) cardRaw.get("description"),
-                    Card.Rarity.values()[(int)((long)cardRaw.get("rarity"))],
+                    Card.Rarity.values()[(int) ((long) cardRaw.get("rarity"))],
                     (String) cardRaw.get("imageurl")
             ));
-            Log.d("CARDRAW", (String)cardRaw.get("name"));
+            Log.d("CARDRAW", (String) cardRaw.get("name"));
         }
 
         return cards;
