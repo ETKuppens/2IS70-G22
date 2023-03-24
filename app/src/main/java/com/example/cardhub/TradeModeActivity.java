@@ -1,12 +1,24 @@
 package com.example.cardhub;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.cardhub.inventory.InventoryActivity;
+import com.google.gson.Gson;
+
+import java.util.Arrays;
+import java.util.HashSet;
 
 public class TradeModeActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -91,8 +103,38 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
     private void cardSelectButtonClicked() {
         // CardDiff diff;
 
+        Intent intent = new Intent(TradeModeActivity.this, InventoryActivity.class);
+        intent.putExtra("origin","TradeModeActivity"); // Show that the inventory activity is
+                                                                  // started from a TradeModeActivity.
+
+        //int
+        //startActivityForResult(intent, requestCode);
+        cardSelectResultLauncher.launch(intent);
+
         // state.changeProposedCardsFromUI(diff);
     }
+
+    ActivityResultLauncher<Intent> cardSelectResultLauncher = registerForActivityResult(
+        new ActivityResultContracts.StartActivityForResult(),
+        new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if (result.getResultCode() != RESULT_OK) {
+                    Toast.makeText(TradeModeActivity.this, "Requesting carddiff from " +
+                            "inventory activity did not result in OK.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                // result.getResultCode() == RESULT_OK
+
+                String encodedCardDiff = result.getData().getStringExtra("CardDiff");
+
+                Gson converter = new Gson();
+                CardDiff decodedCardDiff = converter.fromJson(encodedCardDiff, CardDiff.class);
+
+                state.changeProposedCardsFromUI(new HashSet<>(Arrays.asList(decodedCardDiff)));
+            }
+        }
+    );
 
     @Override
     public void onClick(View view) {

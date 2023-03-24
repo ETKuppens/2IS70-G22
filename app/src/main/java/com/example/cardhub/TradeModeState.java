@@ -51,6 +51,9 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
         this.proposedCardsMayBeChanged = false;
         this.activity.disableChangeTradeProposal();
 
+        this.tradingSession.AddCardDiffsForThisUser(diffs);
+        updateUI();
+
         this.repository.changeProposedCards(this.clientID, diffs);
     }
 
