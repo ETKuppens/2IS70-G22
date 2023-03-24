@@ -7,23 +7,17 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import com.example.cardhub.Card;
 import com.example.cardhub.CardDiff;
 import com.example.cardhub.R;
 
-import com.example.cardhub.TradeModeActivity;
 import com.google.gson.Gson;
-
-import java.util.Arrays;
-import java.util.HashSet;
 
 public class InventoryActivity extends AppCompatActivity {
     InventoryState state;
@@ -105,9 +99,6 @@ public class InventoryActivity extends AppCompatActivity {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() != RESULT_OK) {
-                        Toast.makeText(InventoryActivity.this, "Requesting whether a " +
-                                "card is chosen from " +
-                                "CardActivity did not result in OK.", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     // result.getResultCode() == RESULT_OK

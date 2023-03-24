@@ -7,7 +7,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -106,7 +105,7 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
         Intent intent = new Intent(TradeModeActivity.this, InventoryActivity.class);
         intent.putExtra("origin","TradeModeActivity"); // Show that the inventory activity is
                                                                   // started from a TradeModeActivity.
-        
+
         cardSelectResultLauncher.launch(intent);
     }
 
@@ -116,8 +115,6 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void onActivityResult(ActivityResult result) {
                 if (result.getResultCode() != RESULT_OK) {
-                    Toast.makeText(TradeModeActivity.this, "Requesting carddiff from " +
-                            "inventory activity did not result in OK.", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 // result.getResultCode() == RESULT_OK
