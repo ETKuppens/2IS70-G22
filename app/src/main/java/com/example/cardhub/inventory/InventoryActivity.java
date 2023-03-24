@@ -1,33 +1,45 @@
 package com.example.cardhub.inventory;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
+import com.example.cardhub.Card;
 import com.example.cardhub.CardDiff;
 import com.example.cardhub.R;
 
+import com.example.cardhub.TradeModeActivity;
 import com.google.gson.Gson;
+
+import java.util.Arrays;
+import java.util.HashSet;
 
 public class InventoryActivity extends AppCompatActivity {
     InventoryState state;
 
     boolean shouldSupportChoosingACard = false;
     CardDiff diff = null;
-    Intent intent;
+    Intent thisIntent;
+    Intent displayCardIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory);
 
-        this.intent = getIntent();
-        Bundle intentBundle = intent.getExtras();
+        this.thisIntent = getIntent();
+        Bundle intentBundle = thisIntent.getExtras();
 
         if (intentBundle != null) {
             String intentOrigin = intentBundle.getString("origin");
@@ -50,12 +62,12 @@ public class InventoryActivity extends AppCompatActivity {
     public void stopActivity() {
         if (shouldSupportChoosingACard) {
             if (diff == null) {
-                setResult(RESULT_CANCELED, intent);
+                setResult(RESULT_CANCELED, thisIntent);
             } else { // diff != null
                 Gson converter = new Gson();
                 String convertedCardDiff = converter.toJson(diff);
-                intent.putExtra("CardDiff", convertedCardDiff);
-                setResult(RESULT_OK, intent);
+                thisIntent.putExtra("CardDiff", convertedCardDiff);
+                setResult(RESULT_OK, thisIntent);
             }
         }
 
@@ -72,12 +84,43 @@ public class InventoryActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.d("FRAGMENT", "card clicked");
-                Intent intent = new Intent(getApplicationContext(), CardActivity.class);
-                intent.putExtra("card", state.getCard(i));
-                startActivity(intent);
+                displayCardIntent = new Intent(getApplicationContext(), CardActivity.class);
+
+                Card cardToEncode = state.getCard(i);
+
+                Gson converter = new Gson();
+                String encodedCard = converter.toJson(cardToEncode);
+
+                displayCardIntent.putExtra("card", encodedCard);
+                displayCardIntent.putExtra("ShouldSupportChoosingACard", shouldSupportChoosingACard);
+
+                cardPreviewResultLauncher.launch(displayCardIntent);
             }
         });
     }
 
+    ActivityResultLauncher<Intent> cardPreviewResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() != RESULT_OK) {
+                        Toast.makeText(InventoryActivity.this, "Requesting whether a " +
+                                "card is chosen from " +
+                                "CardActivity did not result in OK.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    // result.getResultCode() == RESULT_OK
+
+                    Gson converter = new Gson();
+                    String encodedCard = displayCardIntent.getStringExtra("card");
+                    Card card = converter.fromJson(encodedCard, Card.class);
+
+                    diff = new CardDiff(card, CardDiff.DiffOption.ADD);
+
+                    stopActivity();
+                }
+            }
+    );
 
 }

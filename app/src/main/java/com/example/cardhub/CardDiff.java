@@ -12,7 +12,7 @@ public class CardDiff {
     final Card card;
     final DiffOption diff;
 
-    CardDiff(Card card, DiffOption diff) {
+    public CardDiff(Card card, DiffOption diff) {
         this.card = card;
         this.diff = diff;
     }
