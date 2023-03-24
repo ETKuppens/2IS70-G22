@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class TradeModeActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -98,5 +99,17 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        this.state.backPressedFromUI();
+    }
+
+    public void showCancelByBackPressedToast() {
+        Toast toast = Toast.makeText(TradeModeActivity.this,
+                                 "Cannot currently cancel",
+                                      Toast.LENGTH_LONG);
+        toast.show();
     }
 }

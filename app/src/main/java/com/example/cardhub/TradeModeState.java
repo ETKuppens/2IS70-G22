@@ -1,5 +1,7 @@
 package com.example.cardhub;
 
+import android.widget.Toast;
+
 import java.util.Set;
 
 public class TradeModeState implements TradingSessionRepositoryReceiver {
@@ -77,6 +79,14 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
 
         this.repository.cancelAcceptTrade(this.clientID);
         cancelTradeMode();
+    }
+
+    public void backPressedFromUI() {
+        if (this.proposedTradeMayBeCanceled) {
+            this.cancelTradingSessionFromUI();
+        } else {
+            this.activity.showCancelByBackPressedToast();
+        }
     }
 
     /**
