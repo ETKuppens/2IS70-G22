@@ -12,6 +12,7 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
 
     private Button readyButton;
     private Button cancelButton;
+    private Button cardSelectButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,9 +21,11 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
 
         readyButton = findViewById(R.id.ReadyButton);
         cancelButton = findViewById(R.id.CancelButton);
+        cardSelectButton = findViewById(R.id.CardSelectButton);
 
         readyButton.setOnClickListener(this);
         cancelButton.setOnClickListener(this);
+        cardSelectButton.setOnClickListener(this);
     }
 
     /**
@@ -36,11 +39,11 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
     }
 
     public void disableChangeTradeProposal() {
-
+        this.cardSelectButton.setEnabled(false);
     }
 
     public void enableChangeTradeProposal() {
-
+        this.cardSelectButton.setEnabled(true);
     }
 
 
@@ -49,7 +52,13 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void readyButtonClicked() {
+        state.readyFromUI();
+    }
 
+    private void cardSelectButtonClicked() {
+        // CardDiff diff;
+
+        // state.changeProposedCardsFromUI(diff);
     }
 
     @Override
@@ -62,6 +71,10 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
 
             case R.id.ReadyButton:
                 readyButtonClicked();
+                break;
+
+            case R.id.CardSelectButton:
+                cardSelectButtonClicked();
                 break;
 
             default:

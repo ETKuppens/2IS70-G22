@@ -57,6 +57,13 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
     }
 
     /**
+     * Receive a message that the ready button was clicked in the UI.
+     */
+    public void readyFromUI() {
+        acceptTrade();
+    }
+
+    /**
      * Update the UI in activity using the data from the TradingSession instance.
      */
     private void updateUI() {
@@ -71,7 +78,10 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
      * Apply the proposed cards to the inventory of this user, and exit this trading session.
      */
     private void acceptTrade() {
+        this.proposedCardsMayBeChanged = false;
+        this.activity.disableChangeTradeProposal();
 
+        this.repository.acceptProposedTrade(this.clientID);
     }
 
 

@@ -80,4 +80,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/CardSelectButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Select Cards"
+        app:layout_constraintBottom_toTopOf="@+id/ReadyButton"
+        app:layout_constraintStart_toEndOf="@+id/VerticalHelplineLeftOfReadyButton" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/VerticalHelplineLeftOfReadyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toStartOf="@+id/ReadyButton"
+        app:layout_constraintGuide_begin="20dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
