@@ -33,6 +33,11 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
      * already proposing the trade to be accepted.
      */
     private boolean proposedTradeMayBeAccepted = true;
+    /**
+     * Whether the current trading proposal may be canceled by this app instance. May be false when
+     * this app instance is currently trying to accept the trading proposal.
+     */
+    private boolean proposedTradeMayBeCanceled = true;
 
     public void changeProposedCardsFromUI(Set<CardDiff> diffs) {
         if (!this.proposedCardsMayBeChanged)
@@ -55,11 +60,20 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
      * 3. Cancel the trading session of this client instance.
      */
     public void cancelTradingSessionFromUI() {
+        if (!this.proposedTradeMayBeCanceled) {
+            throw new RuntimeException("TradeModeState.cancelTradingSessionFromUI: the trade " +
+                    "session is" + "currently in a state where the proposed trade may not be " +
+                    "canceled.");
+        }
+
         this.proposedCardsMayBeChanged = false;
         this.activity.disableChangeTradeProposal();
 
         this.proposedTradeMayBeAccepted = false;
         this.activity.disableAcceptTrade();
+
+        this.proposedTradeMayBeCanceled = false;
+        this.activity.disableCancelTrade();
 
         this.repository.cancelAcceptTrade(this.clientID);
         cancelTradeMode();
@@ -101,6 +115,9 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
         this.proposedTradeMayBeAccepted = false;
         this.activity.disableAcceptTrade();
 
+        this.proposedTradeMayBeCanceled = false;
+        this.activity.disableCancelTrade();
+
         this.repository.acceptProposedTrade(this.clientID);
     }
 
@@ -135,6 +152,9 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
 
             this.proposedTradeMayBeAccepted = true;
             this.activity.enableAcceptTrade();
+
+            this.proposedTradeMayBeCanceled = true;
+            this.activity.enableCancelTrade();
 
             this.repository.cancelAcceptTrade(this.clientID);
         }
