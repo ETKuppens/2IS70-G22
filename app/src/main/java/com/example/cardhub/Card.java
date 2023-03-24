@@ -1,28 +1,30 @@
 package com.example.cardhub;
 
+import java.io.Serializable;
+
 /**
  * Class that stores data of a card instance.
  */
-public class Card {
+public class Card implements Serializable {
     /**
      * Enum for the rarity of a card.
      */
-    enum Rarity {
+    public enum Rarity {
         COMMON,
         RARE,
         LEGENDARY,
         UNKNOWN
-    };
+    }
 
-    final String NAME;        // The name of this card
-    final String DESCRIPTION; // An optional description of the card
-    final Rarity RARITY;      // The rarity of this card
-    final String IMAGE_URL;       // The image of this card
+    public final String NAME;        // The name of this card
+    public final String DESCRIPTION; // An optional description of the card
+    public final Rarity RARITY;      // The rarity of this card
+    public final String IMAGE_URL;       // The image of this card
 
     /**
      * Instantiate a card with a description
      */
-    Card(String name, String description, Rarity rarity, String imageUrl) {
+    public Card(String name, String description, Rarity rarity, String imageUrl) {
         this.NAME = name;
         this.DESCRIPTION = description;
         this.RARITY = rarity;

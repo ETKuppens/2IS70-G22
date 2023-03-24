@@ -1,4 +1,6 @@
-package com.example.cardhub;
+package com.example.cardhub.inventory;
+
+import com.example.cardhub.Card;
 
 import java.util.List;
 
@@ -9,6 +11,7 @@ public interface InventoryRepositoryReceiver {
     /**
      * The function that will be triggered after
      * {@code this.requestCards()} returns with a response
+     *
      * @param cards the cards in the response
      */
     public void receiveCardsResponse(List<Card> cards);

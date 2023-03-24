@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegistrationActivity">
+
+    <TextView
+        android:id="@+id/textView_signup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Sign Up"
+        android:textSize="48sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editText_registeremail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:ems="10"
+        android:hint="Email"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="@+id/textView_signup"
+        app:layout_constraintStart_toStartOf="@+id/textView_signup"
+        app:layout_constraintTop_toBottomOf="@+id/textView_signup" />
+
+    <EditText
+        android:id="@+id/editText_registerpassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:height="50dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="@+id/spinner_role"
+        app:layout_constraintStart_toStartOf="@+id/spinner_role"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_role" />
+
+    <EditText
+        android:id="@+id/editText_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:height="50dp"
+        android:ems="10"
+        android:hint="Confirm Password"
+        android:inputType="textPassword"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="@+id/editText_registerpassword"
+        app:layout_constraintStart_toStartOf="@+id/editText_registerpassword"
+        app:layout_constraintTop_toBottomOf="@+id/editText_registerpassword" />
+
+    <TextView
+        android:id="@+id/textView_signinreferral"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Already have an account? Click here to sign in!"
+        android:textColor="#2196F3"
+        app:layout_constraintEnd_toEndOf="@+id/button_register"
+        app:layout_constraintStart_toStartOf="@+id/button_register"
+        app:layout_constraintTop_toBottomOf="@+id/button_register" />
+
+    <Button
+        android:id="@+id/button_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Register"
+        app:layout_constraintEnd_toEndOf="@+id/textView_tos"
+        app:layout_constraintStart_toEndOf="@+id/checkBox_tos"
+        app:layout_constraintTop_toBottomOf="@+id/textView_tos" />
+
+    <CheckBox
+        android:id="@+id/checkBox_tos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/textView_tos"
+        app:layout_constraintEnd_toStartOf="@+id/textView_tos"
+        app:layout_constraintTop_toTopOf="@+id/textView_tos" />
+
+    <TextView
+        android:id="@+id/textView_tos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="I have read and agree to \n the Terms and Conditions"
+        app:layout_constraintEnd_toEndOf="@+id/editText_confirm"
+        app:layout_constraintStart_toStartOf="@+id/editText_confirm"
+        app:layout_constraintTop_toBottomOf="@+id/editText_confirm" />
+
+    <Spinner
+        android:contentDescription="Enter your role"
+        android:id="@+id/spinner_role"
+        android:layout_width="210dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/editText_registeremail"
+        app:layout_constraintStart_toStartOf="@+id/editText_registeremail"
+        app:layout_constraintTop_toBottomOf="@+id/editText_registeremail" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
