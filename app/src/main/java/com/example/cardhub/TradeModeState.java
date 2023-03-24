@@ -90,6 +90,11 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
      * Apply the proposed cards to the inventory of this user, and exit this trading session.
      */
     private void acceptTrade() {
+        if (!this.proposedTradeMayBeAccepted) {
+            throw new RuntimeException("TradeModeState.acceptTrade: the trade session is" +
+                    "currently in a state where the proposed trade may not be accepted.");
+        }
+
         this.proposedCardsMayBeChanged = false;
         this.activity.disableChangeTradeProposal();
 
