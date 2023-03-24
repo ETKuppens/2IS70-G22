@@ -106,12 +106,8 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
         Intent intent = new Intent(TradeModeActivity.this, InventoryActivity.class);
         intent.putExtra("origin","TradeModeActivity"); // Show that the inventory activity is
                                                                   // started from a TradeModeActivity.
-
-        //int
-        //startActivityForResult(intent, requestCode);
+        
         cardSelectResultLauncher.launch(intent);
-
-        // state.changeProposedCardsFromUI(diff);
     }
 
     ActivityResultLauncher<Intent> cardSelectResultLauncher = registerForActivityResult(
