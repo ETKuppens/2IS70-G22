@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PairingModeActivity">
+
+    <!--We are using this image
+        view to display our QR code-->
+    <ImageView
+        android:id="@+id/idIVQrcode"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:contentDescription="@string/qr_code" />
+
+    <!--Edit text to enter text
+        for creating a QR code-->
+    <EditText
+        android:id="@+id/idEdt"
+        android:layout_width="297dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/idIVQrcode"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="53dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="61dp"
+        android:autofillHints=""
+        android:hint="@string/enter_your_info"
+        android:inputType="text"
+        android:minHeight="48dp" />
+
+    <!--Button for creating a QR code-->
+    <Button
+        android:id="@+id/idBtnGenerateQR"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_below="@id/idEdt"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="80dp"
+        android:text="@string/generate_qr_code" />
+
+    <Button
+        android:id="@+id/idScanQrCode"
+        android:layout_width="wrap_content"
+        android:layout_height="61dp"
+        android:layout_below="@+id/idBtnGenerateQR"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="109dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginBottom="55dp"
+        android:text="Scan Qr Code" />
+
+    <TextView
+        android:id="@+id/idDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/idBtnGenerateQR"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="153dp"
+        android:layout_marginTop="49dp"
+        android:layout_marginEnd="151dp"
+        android:text="Nothing Scanned" />
+
+</RelativeLayout>

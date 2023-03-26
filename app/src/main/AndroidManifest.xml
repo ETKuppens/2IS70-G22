@@ -12,6 +12,9 @@
         android:theme="@style/Theme.CardHub"
         tools:targetApi="31">
         <activity
+            android:name=".PairingModeActivity"
+            android:exported="false" />
+        <activity
             android:name=".inventory.CardActivity"
             android:exported="false" />
         <activity
