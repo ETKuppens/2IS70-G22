@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.cardhub.user_profile.ProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -39,9 +40,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        startActivity(new Intent(this, ProfileActivity.class));
         db = FirebaseFirestore.getInstance();
 
-//        getUser();
     }
 
     private void addUser() {

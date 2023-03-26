@@ -16,14 +16,20 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         this.state = new ProfileState();
-
+        updateData();
     }
 
     void updateData() {
         ImageView profilePic = findViewById(R.id.profilePicture);
         profilePic = state.getProfilePicture();
 
+        TextView userName = findViewById(R.id.userName);
+        userName.setText(state.getUsername());
+
         TextView cardAmount = findViewById(R.id.cardsCollectedAmount);
-        cardAmount.setText(state.);
+        cardAmount.setText(state.getCardAmount());
+
+        TextView tradeAmount = findViewById(R.id.tradeAmount);
+        tradeAmount.setText(state.getTradeAmount());
     }
 }

@@ -1,4 +1,4 @@
 package com.example.cardhub.user_profile;
 
-public class ProfileRepo {
+public class ProfileRepository {
 }
