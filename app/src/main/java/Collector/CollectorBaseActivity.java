@@ -7,8 +7,8 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.example.cardhub.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public abstract class CollectorBaseActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 

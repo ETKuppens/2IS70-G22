@@ -9,6 +9,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.cardhub.R;
+
 public class LoginDummyNavigationActivity extends AppCompatActivity {
 
     private Button loginButton;
