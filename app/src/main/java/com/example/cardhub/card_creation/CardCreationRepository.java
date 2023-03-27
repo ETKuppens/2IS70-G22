@@ -1,2 +1,4 @@
-package com.example.cardhub.card_creation;public class CardCreationRepository {
+package com.example.cardhub.card_creation;
+
+public class CardCreationRepository {
 }
