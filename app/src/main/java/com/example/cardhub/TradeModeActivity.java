@@ -5,9 +5,13 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -16,8 +20,10 @@ import android.widget.Toast;
 import com.example.cardhub.inventory.InventoryActivity;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 public class TradeModeActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -28,6 +34,15 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
     private Button cardSelectButton;
 
     private TextView otherPlayerReadyText;
+
+    private RecyclerView otherPlayerProposedCardsRecyclerView;
+    private RecyclerView thisPlayerProposedCardsRecyclerView;
+
+    private CardRecyclerViewAdapter otherPlayerRecyclerViewAdapter;
+    private CardRecyclerViewAdapter thisPlayerRecyclerViewAdapter;
+
+    private List<Card> otherPlayerProposedCards = new ArrayList<>();
+    private List<Card> thisPlayerProposedCards = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,13 +61,47 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
         this.disableOtherPlayerReadyMessage();
 
         state = new TradeModeState(this);
+
+        otherPlayerProposedCardsRecyclerView = findViewById(R.id.ProposedCardsOtherPlayer);
+        otherPlayerProposedCardsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        otherPlayerRecyclerViewAdapter = new CardRecyclerViewAdapter(getApplicationContext(), otherPlayerProposedCards);
+        otherPlayerProposedCardsRecyclerView.setAdapter(otherPlayerRecyclerViewAdapter);
+
+        thisPlayerProposedCardsRecyclerView = findViewById(R.id.ProposedCardsThisPlayer);
+        thisPlayerProposedCardsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        thisPlayerRecyclerViewAdapter = new CardRecyclerViewAdapter(getApplicationContext(), thisPlayerProposedCards);
+        thisPlayerProposedCardsRecyclerView.setAdapter(thisPlayerRecyclerViewAdapter);
+
+        Card card1 = new Card("Pot of Greed", "I have no clue what Pot of Greed does", Card.Rarity.LEGENDARY, "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/ea109fb4-8d52-42ef-a765-bca46989ccab/d9y9lb8-b8e4b890-31cd-4124-b32a-6f19c1c59855.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2VhMTA5ZmI0LThkNTItNDJlZi1hNzY1LWJjYTQ2OTg5Y2NhYlwvZDl5OWxiOC1iOGU0Yjg5MC0zMWNkLTQxMjQtYjMyYS02ZjE5YzFjNTk4NTUucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.Zmt26YX3S5esDKtreZcAIHrCFCaiu_Jz0yOw5fItZRc");
+        thisPlayerProposedCards.add(card1);
+        thisPlayerRecyclerViewAdapter.notifyDataSetChanged();
     }
 
     /**
      * Update the UI in activity using the data from the TradingSession instance.
      * TODO: implement this method
      */
-    public void updateUI(TradingSession tradingSession) {}
+    public void updateUI(TradingSession tradingSession) {
+        if (otherPlayerProposedCards == null) {
+            this.otherPlayerProposedCards = new ArrayList<>(tradingSession.otherUserProposedCards);
+            this.thisPlayerProposedCards = new ArrayList<>(tradingSession.thisUserProposedCards);
+        } else {
+            this.otherPlayerProposedCards.clear();
+
+            for (Card card : tradingSession.otherUserProposedCards) {
+                otherPlayerProposedCards.add(card);
+            }
+
+            this.thisPlayerProposedCards.clear();
+
+            for (Card card : tradingSession.thisUserProposedCards) {
+                thisPlayerProposedCards.add(card);
+            }
+        }
+
+        this.otherPlayerRecyclerViewAdapter.notifyDataSetChanged();
+        this.thisPlayerRecyclerViewAdapter.notifyDataSetChanged();
+    }
 
     public void cancelTradeMode() {
         finish();
