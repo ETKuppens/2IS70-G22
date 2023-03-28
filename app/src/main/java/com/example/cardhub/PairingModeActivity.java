@@ -19,11 +19,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -58,11 +61,11 @@ public class PairingModeActivity extends AppCompatActivity {
         tv_lobby = findViewById(R.id.textView_lobby);
         db = FirebaseFirestore.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
+        uid = user.getUid();
 
         // initializing onclick listener for button.
         generateQrBtn.setOnClickListener(v -> {
             // Initialize variables
-            uid = user.getUid();
             lobbyMap = generateLobbyMap(uid);
 
             // Add lobby
@@ -75,7 +78,7 @@ public class PairingModeActivity extends AppCompatActivity {
                             Log.d(TAG, "DocumentSnapshot written with ID: " + lobby);
                             // Generate QR code from given string code
                             generateQRCode(lobby);
-                            tv_lobby.setText(lobby);
+                            Toast.makeText(PairingModeActivity.this, "Generated lobby " + lobby, Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -168,10 +171,47 @@ public class PairingModeActivity extends AppCompatActivity {
                 // if the intentResult is not null we'll set
                 // the content and format of scan message
                 lobby = intentResult.getContents();
-                // TODO: Read data
-                // TODO: Modify data
-                // TODO: Write data
-                tv_lobby.setText(lobby);
+                // TODO: Read data and
+                DocumentReference docRef = db.collection("lobbies").document(lobby);
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                // Read data
+                                lobbyMap = document.getData();
+
+                                // Modify data
+                                lobbyMap.put("playerBName", uid);
+
+                                // Write data
+                                db.collection("lobbies").document(lobby)
+                                        .set(lobbyMap)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+//                                                tv_lobby.setText("bruh");
+                                                Toast.makeText(PairingModeActivity.this, "Logged in on " + lobby, Toast.LENGTH_SHORT).show();
+                                                Log.d("WORRY", "DocumentSnapshot successfully written!");
+                                                // Update text
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w("WoRRY", "Error writing document", e);
+                                            }
+                                        });
+                            } else {
+                                Log.d(TAG, "No such document");
+                                Toast.makeText(PairingModeActivity.this, "Expired Lobby", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Log.d(TAG, "get failed with ", task.getException());
+                        }
+                    }
+                });
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
