@@ -32,10 +32,18 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("TESTEST", "aiwjdiawdjoadw");
         Button btn_login = findViewById(R.id.button_start_login);
+        Button btn_pairing = findViewById(R.id.button_pairing);
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            }
+        });
+
+        btn_pairing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), PairingModeActivity.class));
             }
         });
 
