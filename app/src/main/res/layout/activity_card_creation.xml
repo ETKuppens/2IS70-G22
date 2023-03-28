@@ -2,16 +2,25 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraint1"
+    android:id="@+id/constrain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".card_creation.CardCreationActivity">
 
     <Button
+        android:id="@+id/createCardButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create Card"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/previewCardButton" />
+
+    <Button
         android:id="@+id/selectImageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="200dp"
         android:text="Select Image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,6 +58,7 @@
         android:id="@+id/rarityButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:checkedButton="@id/commonButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
 
@@ -71,5 +81,14 @@
             android:text="Legendary" />
 
     </RadioGroup>
+
+    <Button
+        android:id="@+id/previewCardButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="132dp"
+        android:text="Preview Card"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selectImageButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

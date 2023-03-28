@@ -41,6 +41,7 @@ public class CardActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
+                    Log.d("CARD_ACTIVITY", "jo mama");
                     InputStream is = (InputStream) new URL(card.IMAGE_URL).getContent();
                     Drawable d = Drawable.createFromStream(is, "src name");
                     imageView.setImageDrawable(d);
