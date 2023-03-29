@@ -12,22 +12,17 @@
         android:theme="@style/Theme.CardHub"
         tools:targetApi="31">
         <activity
-            android:name=".TradeModeActivity"
-            android:exported="false"  />
-        <activity
-            android:name=".user_profile.ProfileActivity"
-            android:exported="false" />
-        <activity
-            android:name=".card_creation.CardCreationActivity"
+<<<<<<< HEAD
+            android:name=".PairingModeActivity"
             android:exported="false" />
         <activity
             android:name=".inventory.CardActivity"
             android:exported="false" />
         <activity
-            android:name=".PairingModeActivity"
-            android:exported="false" />
-        <activity
+            android:name=".inventory.InventoryActivity"
+=======
             android:name="com.example.cardhub.MainActivity"
+>>>>>>> feature/Navigation
             android:exported="false" />
         <activity
             android:name="com.example.cardhub.ForgotPasswordActivity"
@@ -39,11 +34,17 @@
             android:name="com.example.cardhub.MapActivity"
             android:exported="false" />
         <activity
+<<<<<<< HEAD
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+=======
             android:name="com.example.cardhub.LoginActivity"
+>>>>>>> feature/Navigation
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

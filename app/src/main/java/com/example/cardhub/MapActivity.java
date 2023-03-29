@@ -19,6 +19,7 @@ public class MapActivity extends AppCompatActivity {
 
         // Instantiate layout components
         Button btn_logout = findViewById(R.id.button_logout);
+        Button btn_pairing = findViewById(R.id.button_pairing);
 
         btn_logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,6 +36,13 @@ public class MapActivity extends AppCompatActivity {
                 // Ensure no returns to login screen
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
+            }
+        });
+
+        btn_pairing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), PairingModeActivity.class));
             }
         });
     }

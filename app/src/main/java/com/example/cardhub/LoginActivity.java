@@ -20,6 +20,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import Collector.CollectorMapActivity;
+
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
@@ -57,7 +59,8 @@ public class LoginActivity extends AppCompatActivity {
                                     Toast.makeText(LoginActivity.this, "Authentication succeeded.",
                                             Toast.LENGTH_SHORT).show();
                                     // Move to next screen
-                                    Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+                                    Intent intent = new Intent(getApplicationContext(), Collector.CollectorMapActivity.class);
+
 
                                     // Ensure no returns to login screen
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -98,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
 
             // Move to next screen
-            Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+            Intent intent = new Intent(getApplicationContext(), CollectorMapActivity.class);
 
             // Ensure no returns to login screen
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

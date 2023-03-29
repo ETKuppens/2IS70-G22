@@ -35,6 +35,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+import Collector.CollectorMapActivity;
+
 public class RegistrationActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
@@ -123,7 +125,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                         Toast.makeText(RegistrationActivity.this, "Registration succeeded.",
                                                 Toast.LENGTH_SHORT).show();
                                         // Move to next screen
-                                        Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+                                        Intent intent = new Intent(getApplicationContext(), CollectorMapActivity.class);
 
                                         // Ensure no returns to registration screen
                                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
