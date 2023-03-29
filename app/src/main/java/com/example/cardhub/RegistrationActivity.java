@@ -129,7 +129,11 @@ public class RegistrationActivity extends AppCompatActivity {
                                         Toast.makeText(RegistrationActivity.this, "Registration succeeded.",
                                                 Toast.LENGTH_SHORT).show();
                                         // Move to next screen
-                                        openStartActivity(user);
+                                        Intent intent = new Intent(getApplicationContext(), CollectorMapActivity.class);
+
+                                        // Ensure no returns to registration screen
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
                                     } else {
                                         // If sign up fails, display a message to the user.
                                         Log.w(TAG, "signUpWithEmail:failure", task.getException());
@@ -152,7 +156,6 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void openStartActivity(FirebaseUser currentUser) {
         db = FirebaseFirestore.getInstance();
