@@ -15,13 +15,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import Collector.CollectorMapActivity;
+import Creator.CreatorCreateActivity;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Firebase Authentication
         mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
 
         // Instantiate layout components
         EditText et_email = findViewById(R.id.editText_email);
@@ -57,8 +67,9 @@ public class LoginActivity extends AppCompatActivity {
                                     Toast.makeText(LoginActivity.this, "Authentication succeeded.",
                                             Toast.LENGTH_SHORT).show();
                                     // Move to next screen
-                                    Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+                                    openStartActivity(currentUser);
 
+                                    Intent intent = new Intent(getApplicationContext(), Collector.CollectorMapActivity.class);
                                     // Ensure no returns to login screen
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(intent);
@@ -93,16 +104,45 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
+        openStartActivity(currentUser);
+    }
+
+    private void openStartActivity(FirebaseUser currentUser) {
+        db = FirebaseFirestore.getInstance();
+        String uid = currentUser.getUid();
+
         if (currentUser != null) {
             Toast.makeText(LoginActivity.this, "Still logged in!",
                     Toast.LENGTH_SHORT).show();
-
-            // Move to next screen
-            Intent intent = new Intent(getApplicationContext(), MapActivity.class);
-
-            // Ensure no returns to login screen
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
+            //
+            DocumentReference docRef = db.collection("users").document(uid);
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            // Read data
+                            String role = (String) document.get("role");
+                            if (role.equals("Card Collector")) {
+                                // Move to next screen
+                                Intent intent = new Intent(getApplicationContext(), CollectorMapActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                            } else if (role.equals("Card Creator")) {
+                                Intent intent = new Intent(getApplicationContext(), CreatorCreateActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                            }
+                        } else {
+                            Log.d(TAG, "No account!");
+                            Toast.makeText(LoginActivity.this, "Not account!", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+                }
+            });
         }
     }
 }
