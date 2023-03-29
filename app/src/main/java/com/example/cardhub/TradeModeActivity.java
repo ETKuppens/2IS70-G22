@@ -4,6 +4,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,11 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.cardhub.inventory.CardActivity;
 import com.example.cardhub.inventory.InventoryActivity;
 import com.google.gson.Gson;
 
@@ -25,7 +28,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-public class TradeModeActivity extends AppCompatActivity implements View.OnClickListener {
+public class TradeModeActivity extends AppCompatActivity implements View.OnClickListener, OnRecyclerViewItemClickListener {
 
     private TradeModeState state;
 
@@ -43,6 +46,8 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
 
     private List<Card> otherPlayerProposedCards = new ArrayList<>();
     private List<Card> thisPlayerProposedCards = new ArrayList<>();
+
+    private Card clickedCard = null; // Card that was clicked to be removed
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +76,7 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
         thisPlayerProposedCardsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         thisPlayerRecyclerViewAdapter = new CardRecyclerViewAdapter(getApplicationContext(), thisPlayerProposedCards);
         thisPlayerProposedCardsRecyclerView.setAdapter(thisPlayerRecyclerViewAdapter);
+        thisPlayerRecyclerViewAdapter.setOnRecyclerViewItemClickListener(this);
     }
 
     /**
@@ -193,6 +199,45 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
             default:
                 break;
         }
+    }
+
+    private ActivityResultLauncher<Intent> proposedCardRemoveResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() != RESULT_OK) {
+                        clickedCard = null;
+                        return;
+                    }
+                    // result.getResultCode() == RESULT_OK
+                    CardDiff decodedCardDiff = new CardDiff(clickedCard, CardDiff.DiffOption.REMOVE);
+
+                    state.changeProposedCardsFromUI(new HashSet<>(Arrays.asList(decodedCardDiff)));
+
+                    clickedCard = null;
+                }
+            }
+    );
+
+    @Override
+    public void OnRecyclerViewItemClick(Card clickedCard) {
+        if (!state.getCardMayBeRemoved()) {
+            return;
+        }
+
+        this.clickedCard = clickedCard;
+
+        Intent intent = new Intent(TradeModeActivity.this, CardActivity.class);
+        intent.putExtra("origin","TradeModeActivity"); // Show that the inventory activity is
+                                                                  // started from a TradeModeActivity.
+        Gson converter = new Gson();
+        String encodedCard = converter.toJson(clickedCard);
+
+        intent.putExtra("card", encodedCard);
+        intent.putExtra("ShouldSupportChoosingACard", true);
+
+        proposedCardRemoveResultLauncher.launch(intent);
     }
 
     @Override

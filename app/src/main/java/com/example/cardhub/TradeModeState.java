@@ -190,4 +190,17 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
         this.proposedCardsMayBeChanged = true;
         this.activity.enableChangeTradeProposal();
     }
+
+    public boolean getCardMayBeRemoved() {
+        if (this.proposedCardsMayBeChanged) {
+            return true;
+        }
+
+        Toast toast = Toast.makeText(activity,
+                "Cannot currently change proposed cards",
+                Toast.LENGTH_LONG);
+        toast.show();
+
+        return false;
+    }
 }

@@ -26,6 +26,8 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
 
     LayoutInflater inflater;
 
+    private OnRecyclerViewItemClickListener listener = null;
+
     public CardRecyclerViewAdapter(Context context, List<Card> representedCards) {
         // Set the list of cards that should be represented by the RecyclerView to the passed list
         // of cards.
@@ -34,6 +36,10 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
         this.context = context;
 
         inflater = LayoutInflater.from(context);
+    }
+
+    public void setOnRecyclerViewItemClickListener(OnRecyclerViewItemClickListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
@@ -54,7 +60,7 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
         return representedCards.size();
     }
 
-    public class CardViewHolder extends RecyclerView.ViewHolder {
+    public class CardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public View cardView;
 
         public CardViewHolder(@NonNull View view) {
@@ -62,6 +68,14 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
 
             // TODO: check if this is correct
             cardView = view;
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (listener != null) {
+                listener.OnRecyclerViewItemClick(representedCards.get(getAdapterPosition()));
+            }
         }
     }
 
