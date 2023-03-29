@@ -9,7 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.cardhub.card_creation.CardCreationActivity;
+import com.example.cardhub.user_profile.ProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,17 +33,16 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("TESTEST", "aiwjdiawdjoadw");
         Button btn_login = findViewById(R.id.button_start_login);
-        Button btn_pairing = findViewById(R.id.button_pairing);
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), CardCreationActivity.class));
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
             }
         });
 
+        startActivity(new Intent(this, ProfileActivity.class));
         db = FirebaseFirestore.getInstance();
 
-//        getUser()
     }
 
     private void addUser() {
