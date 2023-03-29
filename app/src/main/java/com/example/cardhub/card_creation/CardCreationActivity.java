@@ -5,6 +5,7 @@ import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.RadioGroup;
 
 import com.example.cardhub.Card;
 import com.example.cardhub.R;
+import com.example.cardhub.collector_navigation.CollectorBaseActivity;
 import com.example.cardhub.inventory.CardActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -21,9 +23,19 @@ import com.google.android.material.textfield.TextInputEditText;
  * Activity that allows a creator user to create custom cards.
  * @author Rijkman
  */
-public class CardCreationActivity extends AppCompatActivity {
+public class CardCreationActivity extends CollectorBaseActivity {
     //Keeps track of the current state variable
     CardCreationState state;
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.activity_card_creation;
+    }
+
+    @Override
+    public int getBottomNavigationMenuItemId() {
+        return R.drawable.profile;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

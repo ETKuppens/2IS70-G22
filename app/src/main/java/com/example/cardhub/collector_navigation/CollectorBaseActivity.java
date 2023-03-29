@@ -1,4 +1,4 @@
-package Creator;
+package com.example.cardhub.collector_navigation;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,10 +7,15 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.example.cardhub.MapActivity;
+import com.example.cardhub.PairingModeActivity;
 import com.example.cardhub.R;
+import com.example.cardhub.inventory.InventoryActivity;
+import com.example.cardhub.user_profile.ProfileActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
-public abstract class CreatorBaseActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public abstract class CollectorBaseActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
 
     protected BottomNavigationView navigationView;
 
@@ -20,7 +25,7 @@ public abstract class CreatorBaseActivity extends AppCompatActivity implements B
         setContentView(getLayoutId());
 
         navigationView = (BottomNavigationView) findViewById(R.id.navigation);
-        navigationView.setOnNavigationItemSelectedListener(this);
+        navigationView.setOnItemSelectedListener(this);
     }
 
     @Override
@@ -41,11 +46,13 @@ public abstract class CreatorBaseActivity extends AppCompatActivity implements B
         navigationView.postDelayed(() -> {
             int itemId = item.getItemId();
             if (itemId == R.id.action_inventory) {
-                startActivity(new Intent(this, CreatorInventoryActivity.class));
-            } else if (itemId == R.id.action_create) {
-                startActivity(new Intent(this, CreatorCreateActivity.class));
+                startActivity(new Intent(this, InventoryActivity.class));
+            } else if (itemId == R.id.action_map) {
+                startActivity(new Intent(this, MapActivity.class));
+            } else if (itemId == R.id.action_trading) {
+                startActivity(new Intent(this, PairingModeActivity.class));
             } else if (itemId == R.id.action_profile) {
-                startActivity(new Intent(this, CreatorProfileActivity.class));
+                startActivity(new Intent(this, ProfileActivity.class));
             }
             finish();
         }, 300);
@@ -62,7 +69,7 @@ public abstract class CreatorBaseActivity extends AppCompatActivity implements B
         item.setChecked(true);
     }
 
-    abstract int getLayoutId(); // this is to return which layout(activity) needs to display when clicked on tabs.
+    abstract public int getLayoutId(); // this is to return which layout(activity) needs to display when clicked on tabs.
 
-    abstract int getBottomNavigationMenuItemId();//Which menu item selected and change the state of that menu item
+    abstract public int getBottomNavigationMenuItemId();//Which menu item selected and change the state of that menu item
 }

@@ -1,7 +1,5 @@
 package com.example.cardhub.user_profile;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
@@ -9,11 +7,22 @@ import android.widget.ImageView;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.example.cardhub.collector_navigation.CollectorBaseActivity;
 import com.example.cardhub.LoginActivity;
 import com.example.cardhub.R;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends CollectorBaseActivity {
     ProfileState state;
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.activity_profile;
+    }
+
+    @Override
+    public int getBottomNavigationMenuItemId() {
+        return R.id.action_profile;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

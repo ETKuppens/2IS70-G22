@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.cardhub.user_profile.ProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -23,8 +24,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import Collector.CollectorMapActivity;
-import Creator.CreatorCreateActivity;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -120,9 +119,9 @@ public class LoginActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                         if (role.equals("Card Collector")) {
                             // Move to next screen
-                            intent = new Intent(getApplicationContext(), CollectorMapActivity.class);
+                            intent = new Intent(getApplicationContext(), ProfileActivity.class);
                         } else if (role.equals("Card Creator")) {
-                            intent = new Intent(getApplicationContext(), CreatorCreateActivity.class);
+                            intent = new Intent(getApplicationContext(), ProfileActivity.class);
                         }
 
                         // Remove returnal activities from memory

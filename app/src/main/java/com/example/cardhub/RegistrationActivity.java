@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.text.HtmlCompat;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -22,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.cardhub.user_profile.ProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,8 +36,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-import Collector.CollectorMapActivity;
-import Creator.CreatorCreateActivity;
 
 public class RegistrationActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -129,7 +127,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                         Toast.makeText(RegistrationActivity.this, "Registration succeeded.",
                                                 Toast.LENGTH_SHORT).show();
                                         // Move to next screen
-                                        Intent intent = new Intent(getApplicationContext(), CollectorMapActivity.class);
+                                        Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
 
                                         // Ensure no returns to registration screen
                                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -172,9 +170,9 @@ public class RegistrationActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
                         if (role.equals("Card Collector")) {
                             // Move to next screen
-                            intent = new Intent(getApplicationContext(), CollectorMapActivity.class);
+                            intent = new Intent(getApplicationContext(), ProfileActivity.class);
                         } else if (role.equals("Card Creator")) {
-                            intent = new Intent(getApplicationContext(), CreatorCreateActivity.class);
+                            intent = new Intent(getApplicationContext(), ProfileActivity.class);
                         }
 
                         // Remove returnal activities from memory

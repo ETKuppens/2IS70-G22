@@ -50,25 +50,25 @@
         </activity>
 
         <activity
-            android:name="Collector.CollectorInventoryActivity"
+            android:name="com.example.cardhub.CollectorInventoryActivity"
             android:exported="false" />
         <activity
-            android:name="Collector.CollectorMapActivity"
+            android:name="com.example.cardhub.CollectorMapActivity"
             android:exported="false" />
         <activity
-            android:name="Collector.CollectorTradingActivity"
+            android:name="com.example.cardhub.CollectorTradingActivity"
             android:exported="false" />
         <activity
-            android:name="Collector.CollectorProfileActivity"
+            android:name="com.example.cardhub.CollectorProfileActivity"
             android:exported="false" />
         <activity
-            android:name="Creator.CreatorInventoryActivity"
+            android:name="com.example.cardhub.CreatorInventoryActivity"
             android:exported="false" />
         <activity
-            android:name="Creator.CreatorCreateActivity"
+            android:name="com.example.cardhub.CreatorCreateActivity"
             android:exported="false" />
         <activity
-            android:name="Creator.CreatorProfileActivity"
+            android:name="com.example.cardhub.CreatorProfileActivity"
             android:exported="false" />
     </application>
 

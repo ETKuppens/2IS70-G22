@@ -8,9 +8,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.cardhub.collector_navigation.CollectorBaseActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class MapActivity extends AppCompatActivity {
+public class MapActivity extends CollectorBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,5 +46,15 @@ public class MapActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), PairingModeActivity.class));
             }
         });
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.activity_map;
+    }
+
+    @Override
+    public int getBottomNavigationMenuItemId() {
+        return R.id.action_map;
     }
 }

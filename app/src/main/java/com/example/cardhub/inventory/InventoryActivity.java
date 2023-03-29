@@ -17,9 +17,10 @@ import com.example.cardhub.Card;
 import com.example.cardhub.TradingMode.CardDiff;
 import com.example.cardhub.R;
 
+import com.example.cardhub.collector_navigation.CollectorBaseActivity;
 import com.google.gson.Gson;
 
-public class InventoryActivity extends AppCompatActivity {
+public class InventoryActivity extends CollectorBaseActivity {
     InventoryState state;
 
     boolean shouldSupportChoosingACard = false;
@@ -46,6 +47,16 @@ public class InventoryActivity extends AppCompatActivity {
         state = new InventoryState(this);
 
         state.requestCards();
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.activity_inventory;
+    }
+
+    @Override
+    public int getBottomNavigationMenuItemId() {
+        return R.id.action_inventory;
     }
 
     /**

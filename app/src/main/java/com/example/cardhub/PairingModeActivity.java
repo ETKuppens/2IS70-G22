@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.cardhub.collector_navigation.CollectorBaseActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,7 +39,7 @@ import java.util.Map;
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 
-public class PairingModeActivity extends AppCompatActivity {
+public class PairingModeActivity extends CollectorBaseActivity {
     private ImageView qrCodeIV;
     private FirebaseFirestore db;
     private TextView tv_lobby;
@@ -222,5 +223,14 @@ public class PairingModeActivity extends AppCompatActivity {
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+    @Override
+    public int getLayoutId() {
+        return R.layout.activity_map;
+    }
+
+    @Override
+    public int getBottomNavigationMenuItemId() {
+        return R.id.action_map;
     }
 }

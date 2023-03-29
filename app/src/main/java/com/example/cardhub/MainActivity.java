@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        startActivity(new Intent(this, ProfileActivity.class));
+
         db = FirebaseFirestore.getInstance();
 
     }

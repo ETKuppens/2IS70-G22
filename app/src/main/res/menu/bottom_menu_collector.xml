@@ -23,6 +23,5 @@
         android:id="@+id/action_profile"
         android:enabled="true"
         android:icon="@drawable/profile"
-        android:title="@string/profile"
-        app:showAsAction="ifRoom" />
+        android:title="@string/profile" />
 </menu>
