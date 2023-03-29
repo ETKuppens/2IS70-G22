@@ -42,6 +42,7 @@ import Creator.CreatorCreateActivity;
 public class RegistrationActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
+    private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         // Firebase Initialization
         mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
 
         // Instantiate layout components
@@ -101,7 +103,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
                                         // Upload role to users collection
-                                        FirebaseUser user = mAuth.getCurrentUser();
+                                        user = mAuth.getCurrentUser();
                                         String uid = user.getUid();
                                         Map<String, Object> userEntry = new HashMap<>();
                                         userEntry.put("role", role);
@@ -155,39 +157,34 @@ public class RegistrationActivity extends AppCompatActivity {
     private void openStartActivity(FirebaseUser currentUser) {
         db = FirebaseFirestore.getInstance();
         String uid = currentUser.getUid();
-
-        if (currentUser != null) {
-            Toast.makeText(RegistrationActivity.this, "Still logged in!",
-                    Toast.LENGTH_SHORT).show();
-            //
-            DocumentReference docRef = db.collection("users").document(uid);
-            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            // Read data
-                            String role = (String) document.get("role");
-                            if (role.equals("Card Collector")) {
-                                // Move to next screen
-                                Intent intent = new Intent(getApplicationContext(), CollectorMapActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-                            } else if (role.equals("Card Creator")) {
-                                Intent intent = new Intent(getApplicationContext(), CreatorCreateActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-                            }
-                        } else {
-                            Log.d(TAG, "No account!");
-                            Toast.makeText(RegistrationActivity.this, "No account!", Toast.LENGTH_SHORT).show();
+        DocumentReference docRef = db.collection("users").document(uid);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        // Read data
+                        String role = (String) document.get("role");
+                        Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
+                        if (role.equals("Card Collector")) {
+                            // Move to next screen
+                            intent = new Intent(getApplicationContext(), CollectorMapActivity.class);
+                        } else if (role.equals("Card Creator")) {
+                            intent = new Intent(getApplicationContext(), CreatorCreateActivity.class);
                         }
+
+                        // Remove returnal activities from memory
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
                     } else {
-                        Log.d(TAG, "get failed with ", task.getException());
+                        Log.d(TAG, "No account!");
+                        Toast.makeText(RegistrationActivity.this, "No account!", Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
                 }
-            });
-        }
+            }
+        });
     }
 }
