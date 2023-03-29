@@ -95,12 +95,8 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
             }
         }
 
-        this.otherPlayerRecyclerViewAdapter.notifyItemRangeChanged(0, 100);
-        //this.otherPlayerProposedCardsRecyclerView.setAdapter(otherPlayerRecyclerViewAdapter);
-        //this.otherPlayerProposedCardsRecyclerView.invalidate();
-        this.thisPlayerRecyclerViewAdapter.notifyItemRangeChanged(0, 100);
-        //this.thisPlayerProposedCardsRecyclerView.invalidate();
-        //this.thisPlayerProposedCardsRecyclerView.setAdapter(thisPlayerRecyclerViewAdapter);
+        this.otherPlayerRecyclerViewAdapter.notifyDataSetChanged();
+        this.thisPlayerRecyclerViewAdapter.notifyDataSetChanged();
     }
 
     public void cancelTradeMode() {
