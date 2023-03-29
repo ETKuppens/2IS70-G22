@@ -19,11 +19,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import Collector.CollectorMapActivity;
+import Creator.CreatorCreateActivity;
 
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
+    private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Firebase Authentication
         mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
 
         // Instantiate layout components
         EditText et_email = findViewById(R.id.editText_email);
@@ -58,13 +65,9 @@ public class LoginActivity extends AppCompatActivity {
                                     Log.d(TAG, "signInWithEmail:success");
                                     Toast.makeText(LoginActivity.this, "Authentication succeeded.",
                                             Toast.LENGTH_SHORT).show();
+
                                     // Move to next screen
-                                    Intent intent = new Intent(getApplicationContext(), Collector.CollectorMapActivity.class);
-
-
-                                    // Ensure no returns to login screen
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    startActivity(intent);
+                                    openStartActivity(user);
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -95,17 +98,44 @@ public class LoginActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            Toast.makeText(LoginActivity.this, "Still logged in!",
-                    Toast.LENGTH_SHORT).show();
-
-            // Move to next screen
-            Intent intent = new Intent(getApplicationContext(), CollectorMapActivity.class);
-
-            // Ensure no returns to login screen
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
+        user = mAuth.getCurrentUser();
+        if (user != null) {
+            // Open MapsActivity for a Collector or CreatorActivity for a Creator
+            openStartActivity(user);
         }
+    }
+
+    private void openStartActivity(FirebaseUser currentUser) {
+        db = FirebaseFirestore.getInstance();
+        String uid = currentUser.getUid();
+        DocumentReference docRef = db.collection("users").document(uid);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        // Read data
+                        String role = (String) document.get("role");
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        if (role.equals("Card Collector")) {
+                            // Move to next screen
+                            intent = new Intent(getApplicationContext(), CollectorMapActivity.class);
+                        } else if (role.equals("Card Creator")) {
+                            intent = new Intent(getApplicationContext(), CreatorCreateActivity.class);
+                        }
+
+                        // Remove returnal activities from memory
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    } else {
+                        Log.d(TAG, "No account!");
+                        Toast.makeText(LoginActivity.this, "No account!", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
     }
 }
