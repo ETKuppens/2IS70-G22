@@ -63,18 +63,14 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
         state = new TradeModeState(this);
 
         otherPlayerProposedCardsRecyclerView = findViewById(R.id.ProposedCardsOtherPlayer);
-        otherPlayerProposedCardsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        otherPlayerProposedCardsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         otherPlayerRecyclerViewAdapter = new CardRecyclerViewAdapter(getApplicationContext(), otherPlayerProposedCards);
         otherPlayerProposedCardsRecyclerView.setAdapter(otherPlayerRecyclerViewAdapter);
 
         thisPlayerProposedCardsRecyclerView = findViewById(R.id.ProposedCardsThisPlayer);
-        thisPlayerProposedCardsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        thisPlayerProposedCardsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         thisPlayerRecyclerViewAdapter = new CardRecyclerViewAdapter(getApplicationContext(), thisPlayerProposedCards);
         thisPlayerProposedCardsRecyclerView.setAdapter(thisPlayerRecyclerViewAdapter);
-
-        Card card1 = new Card("Pot of Greed", "I have no clue what Pot of Greed does", Card.Rarity.LEGENDARY, "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/ea109fb4-8d52-42ef-a765-bca46989ccab/d9y9lb8-b8e4b890-31cd-4124-b32a-6f19c1c59855.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2VhMTA5ZmI0LThkNTItNDJlZi1hNzY1LWJjYTQ2OTg5Y2NhYlwvZDl5OWxiOC1iOGU0Yjg5MC0zMWNkLTQxMjQtYjMyYS02ZjE5YzFjNTk4NTUucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.Zmt26YX3S5esDKtreZcAIHrCFCaiu_Jz0yOw5fItZRc");
-        thisPlayerProposedCards.add(card1);
-        thisPlayerRecyclerViewAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -99,8 +95,12 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
             }
         }
 
-        this.otherPlayerRecyclerViewAdapter.notifyDataSetChanged();
-        this.thisPlayerRecyclerViewAdapter.notifyDataSetChanged();
+        this.otherPlayerRecyclerViewAdapter.notifyItemRangeChanged(0, 100);
+        //this.otherPlayerProposedCardsRecyclerView.setAdapter(otherPlayerRecyclerViewAdapter);
+        //this.otherPlayerProposedCardsRecyclerView.invalidate();
+        this.thisPlayerRecyclerViewAdapter.notifyItemRangeChanged(0, 100);
+        //this.thisPlayerProposedCardsRecyclerView.invalidate();
+        //this.thisPlayerProposedCardsRecyclerView.setAdapter(thisPlayerRecyclerViewAdapter);
     }
 
     public void cancelTradeMode() {

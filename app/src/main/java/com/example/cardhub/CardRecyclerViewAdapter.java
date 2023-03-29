@@ -55,13 +55,13 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
     }
 
     public class CardViewHolder extends RecyclerView.ViewHolder {
-        public CardView cardView;
+        public View cardView;
 
         public CardViewHolder(@NonNull View view) {
             super(view);
 
             // TODO: check if this is correct
-            cardView = view.findViewById(R.id.this_player_proposed_card);
+            cardView = view;
         }
     }
 

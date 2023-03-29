@@ -63,25 +63,14 @@
         android:layout_height="0dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="50dp"
+        android:isScrollContainer="true"
         android:orientation="horizontal"
+        android:scrollbars="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/CardSelectButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/DottedLineDivider" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/this_player_proposed_card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-    </androidx.recyclerview.widget.RecyclerView>
+        app:layout_constraintTop_toTopOf="@+id/DottedLineDivider" />
 
     <Button
         android:id="@+id/ReadyButton"
