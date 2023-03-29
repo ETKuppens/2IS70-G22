@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.cardhub.PairingModeActivity;
 import com.example.cardhub.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -45,7 +46,7 @@ public abstract class CollectorBaseActivity extends AppCompatActivity implements
             } else if (itemId == R.id.action_map) {
                 startActivity(new Intent(this, CollectorMapActivity.class));
             } else if (itemId == R.id.action_trading) {
-                startActivity(new Intent(this, CollectorTradingActivity.class));
+                startActivity(new Intent(this, PairingModeActivity.class));
             } else if (itemId == R.id.action_profile) {
                 startActivity(new Intent(this, CollectorProfileActivity.class));
             }
