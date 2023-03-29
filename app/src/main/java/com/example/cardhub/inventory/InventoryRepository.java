@@ -1,7 +1,5 @@
 package com.example.cardhub.inventory;
 
-import com.example.cardhub.Card;
-
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +10,8 @@ public interface InventoryRepository {
     /**
      * Get all cards that belong to the user
      */
-    public void requestCards();
+    public void requestAllCards();
+    public void requestUserCards();
 
     public void cardRequestCallback(List<Map<String, Object>> cardsRaw);
 

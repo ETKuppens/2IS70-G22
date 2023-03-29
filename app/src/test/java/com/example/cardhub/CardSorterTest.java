@@ -2,6 +2,9 @@ package com.example.cardhub;
 
 import static org.junit.Assert.*;
 
+import com.example.cardhub.inventory.Card;
+import com.example.cardhub.inventory.CardSorter;
+
 import org.junit.Test;
 
 import java.util.ArrayList;

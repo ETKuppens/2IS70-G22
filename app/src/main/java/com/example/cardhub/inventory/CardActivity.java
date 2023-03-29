@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.cardhub.Card;
 import com.example.cardhub.R;
 
 import java.io.InputStream;

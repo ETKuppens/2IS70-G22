@@ -4,9 +4,9 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.cardhub.Card;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -22,12 +22,14 @@ import java.util.Map;
 public class InventoryData {
     FirebaseFirestore db;
     InventoryRepository repository;
+    FirebaseAuth auth;
 
     /**
      * Get the database instance
      */
     public InventoryData(InventoryRepository repository) {
         db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
         this.repository = repository;
     }
 
@@ -37,10 +39,9 @@ public class InventoryData {
      *
      * @return list of cards
      */
-    public void requestCards() {
+    public void requestAllCards() {
         final List<Map<String, Object>> cards = new ArrayList<>();
         cards.add(new HashMap<>());
-        cards.get(0).put("EMPTY", null);
 
         db.collection("cards").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -51,6 +52,29 @@ public class InventoryData {
                             for (DocumentSnapshot documentSnapshots : task.getResult()) {
                                 cards.add(documentSnapshots.getData());
                             }
+                            repository.cardRequestCallback(cards);
+                            Log.d("CARDREQUEST", "success");
+                        } else {
+                            Log.d("CARDREQUEST", "fail: " + task.getException());
+                        }
+                    }
+                });
+    }
+
+    public void requestUserCards() {
+        final List<Map<String, Object>> cards = new ArrayList<>();
+        cards.add(new HashMap<>());
+
+        db.collection("users/" + auth.getUid() + "/cards").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            cards.clear();
+                            for (DocumentSnapshot documentSnapshots : task.getResult()) {
+                                cards.add(documentSnapshots.getData());
+                            }
+                            Log.d("CARDREQUEST", "card amount: " + cards.size());
                             repository.cardRequestCallback(cards);
                             Log.d("CARDREQUEST", "success");
                         } else {

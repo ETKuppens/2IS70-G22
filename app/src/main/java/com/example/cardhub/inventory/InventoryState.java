@@ -1,7 +1,5 @@
 package com.example.cardhub.inventory;
 
-import com.example.cardhub.Card;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,8 +26,8 @@ public class InventoryState implements InventoryRepositoryReceiver {
     }
 
     @Override
-    public void requestCards() {
-        repository.requestCards();
+    public void requestUserCards() {
+        repository.requestUserCards();
     }
 
     /**

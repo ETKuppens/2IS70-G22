@@ -1,4 +1,4 @@
-package com.example.cardhub;
+package com.example.cardhub.inventory;
 
 import java.io.Serializable;
 

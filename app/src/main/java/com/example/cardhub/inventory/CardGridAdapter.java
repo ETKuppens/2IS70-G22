@@ -2,24 +2,20 @@ package com.example.cardhub.inventory;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
-import com.example.cardhub.Card;
 import com.example.cardhub.R;
 
 import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
-import java.util.ServiceConfigurationError;
 
 public class CardGridAdapter extends BaseAdapter {
     Context context;

@@ -21,7 +21,7 @@ public class InventoryActivity extends AppCompatActivity {
 
         state = new InventoryState(this);
 
-        state.requestCards();
+        state.requestUserCards();
     }
 
     /**
