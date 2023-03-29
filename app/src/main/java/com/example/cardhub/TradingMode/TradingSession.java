@@ -1,4 +1,6 @@
-package com.example.cardhub;
+package com.example.cardhub.TradingMode;
+
+import com.example.cardhub.Card;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -8,8 +10,8 @@ import java.util.Set;
  * Should be updated by both the current UI instance, and the server.
  */
 public class TradingSession {
-    Set<Card> thisUserProposedCards = new HashSet<Card>();  // Set of cards that are proposed by the current application instance.
-    Set<Card> otherUserProposedCards = new HashSet<Card>(); // Set of cards that are proposed by the other application instance.
+    public Set<Card> thisUserProposedCards = new HashSet<Card>();  // Set of cards that are proposed by the current application instance.
+    public Set<Card> otherUserProposedCards = new HashSet<Card>(); // Set of cards that are proposed by the other application instance.
 
     /**
      * Change the current proposed cards for this user.

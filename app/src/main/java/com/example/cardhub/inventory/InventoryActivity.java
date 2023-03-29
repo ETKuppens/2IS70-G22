@@ -14,7 +14,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.example.cardhub.Card;
-import com.example.cardhub.CardDiff;
+import com.example.cardhub.TradingMode.CardDiff;
 import com.example.cardhub.R;
 
 import com.google.gson.Gson;

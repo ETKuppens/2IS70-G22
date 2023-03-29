@@ -1,4 +1,4 @@
-package com.example.cardhub;
+package com.example.cardhub.TradingMode;
 
 import com.example.cardhub.inventory.InventoryRepositoryReceiver;
 

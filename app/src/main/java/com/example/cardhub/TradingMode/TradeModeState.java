@@ -1,6 +1,8 @@
-package com.example.cardhub;
+package com.example.cardhub.TradingMode;
 
 import android.widget.Toast;
+
+import com.example.cardhub.TradeModeActivity;
 
 import java.util.Set;
 
@@ -18,7 +20,7 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
      * Construct a new TradeModeState that is linked to an existing TradeModeActivity.
      * @param activity the TradeModeActivity storing the UI that should be represented by this TradeModeState.
      */
-    TradeModeState(TradeModeActivity activity) {
+    public TradeModeState(TradeModeActivity activity) {
         this.activity = activity;
     }
 

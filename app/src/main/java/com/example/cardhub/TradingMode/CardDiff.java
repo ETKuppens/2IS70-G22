@@ -1,4 +1,6 @@
-package com.example.cardhub;
+package com.example.cardhub.TradingMode;
+
+import com.example.cardhub.Card;
 
 /**
  * ADT that encodes whether a given Card should be added or removed from the trade proposal.
