@@ -30,12 +30,14 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import Collector.CollectorMapActivity;
+import Creator.CreatorCreateActivity;
 
 public class RegistrationActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -125,11 +127,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                         Toast.makeText(RegistrationActivity.this, "Registration succeeded.",
                                                 Toast.LENGTH_SHORT).show();
                                         // Move to next screen
-                                        Intent intent = new Intent(getApplicationContext(), CollectorMapActivity.class);
-
-                                        // Ensure no returns to registration screen
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        startActivity(intent);
+                                        openStartActivity(user);
                                     } else {
                                         // If sign up fails, display a message to the user.
                                         Log.w(TAG, "signUpWithEmail:failure", task.getException());
@@ -151,5 +149,45 @@ public class RegistrationActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
             }
         });
+    }
+
+
+    private void openStartActivity(FirebaseUser currentUser) {
+        db = FirebaseFirestore.getInstance();
+        String uid = currentUser.getUid();
+
+        if (currentUser != null) {
+            Toast.makeText(RegistrationActivity.this, "Still logged in!",
+                    Toast.LENGTH_SHORT).show();
+            //
+            DocumentReference docRef = db.collection("users").document(uid);
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            // Read data
+                            String role = (String) document.get("role");
+                            if (role.equals("Card Collector")) {
+                                // Move to next screen
+                                Intent intent = new Intent(getApplicationContext(), CollectorMapActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                            } else if (role.equals("Card Creator")) {
+                                Intent intent = new Intent(getApplicationContext(), CreatorCreateActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                            }
+                        } else {
+                            Log.d(TAG, "No account!");
+                            Toast.makeText(RegistrationActivity.this, "No account!", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+                }
+            });
+        }
     }
 }
