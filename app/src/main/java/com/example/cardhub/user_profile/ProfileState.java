@@ -16,12 +16,8 @@ public class ProfileState {
     InventoryRepositoryImpl inventoryRepository;
     ProfileRepository profileRepository;
     public ProfileState() {
-        this.currentProfile = new Profile(
-                null,
-                "Hugh Mongous",
-                Collections.emptyList()
-        );
-
+        this.profileRepository = new ProfileRepository(this);
+        this.currentProfile = profileRepository.getProfile();
     }
 
     public ImageView getProfilePicture() {
@@ -38,5 +34,9 @@ public class ProfileState {
 
     public String getTradeAmount() {
         return "5";
+    }
+
+    public void logout() {
+        currentProfile = null;
     }
 }
