@@ -106,6 +106,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void openStartActivity(FirebaseUser currentUser) {
         db = FirebaseFirestore.getInstance();
+        currentUser = mAuth.getCurrentUser();
         String uid = currentUser.getUid();
         DocumentReference docRef = db.collection("users").document(uid);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

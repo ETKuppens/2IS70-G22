@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.example.cardhub.collector_navigation.CollectorBaseActivity;
 import com.example.cardhub.LoginActivity;
 import com.example.cardhub.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class ProfileActivity extends CollectorBaseActivity {
     ProfileState state;
@@ -36,9 +37,9 @@ public class ProfileActivity extends CollectorBaseActivity {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                state.logout();
                 Intent logout = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(logout);
+                FirebaseAuth.getInstance().signOut();
             }
         });
     }

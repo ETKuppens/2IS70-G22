@@ -23,5 +23,9 @@ public class ProfileRepository {
         inv.add(new Card("Gabagonga", "ges", Card.Rarity.COMMON, ""));
         return new Profile(null, "Mike Hawk", inv);
     }
+
+    public void logOut() {
+        data.logOut();
+    }
 }
 
