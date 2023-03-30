@@ -4,13 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context=".SplashActivity">
+
 
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/cardhub_logo_horizontal"
-        tools:layout_editor_absoluteX="47dp"
-        tools:layout_editor_absoluteY="289dp" />
+        android:layout_marginStart="47dp"
+        android:layout_marginTop="289dp"
+        android:layout_marginEnd="47dp"
+        android:layout_marginBottom="333dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/cardhub_logo_horizontal" />
 </androidx.constraintlayout.widget.ConstraintLayout>
