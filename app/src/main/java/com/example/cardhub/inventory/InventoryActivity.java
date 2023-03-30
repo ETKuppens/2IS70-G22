@@ -32,7 +32,7 @@ public class InventoryActivity extends CollectorBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory);
-
+        setupNav();
         this.thisIntent = getIntent();
         Bundle intentBundle = thisIntent.getExtras();
 

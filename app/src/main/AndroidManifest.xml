@@ -27,6 +27,9 @@
             android:name=".inventory.CardActivity"
             android:exported="false" />
         <activity
+            android:name=".inventory.InventoryActivity"
+            android:exported="false" />
+        <activity
             android:name=".PairingModeActivity"
             android:exported="false" />
         <activity
