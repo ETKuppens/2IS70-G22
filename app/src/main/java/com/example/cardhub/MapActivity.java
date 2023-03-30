@@ -18,6 +18,8 @@ public class MapActivity extends CollectorBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
+        setupNav();
+
         // Instantiate layout components
         Button btn_logout = findViewById(R.id.button_logout);
         Button btn_pairing = findViewById(R.id.button_pairing);

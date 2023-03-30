@@ -54,6 +54,7 @@ public class PairingModeActivity extends CollectorBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pairingmode);
 
+        setupNav();
         // initializing all variables.
         qrCodeIV = findViewById(R.id.idIVQrcode);
         Button generateQrBtn = findViewById(R.id.idBtnGenerateQR);
@@ -226,11 +227,11 @@ public class PairingModeActivity extends CollectorBaseActivity {
     }
     @Override
     public int getLayoutId() {
-        return R.layout.activity_map;
+        return R.layout.activity_pairingmode;
     }
 
     @Override
     public int getBottomNavigationMenuItemId() {
-        return R.id.action_map;
+        return R.id.action_trading;
     }
 }
