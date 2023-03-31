@@ -2,8 +2,6 @@ package com.example.cardhub.inventory;
 
 import android.util.Log;
 
-import com.example.cardhub.Card;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +16,13 @@ public class InventoryRepositoryImpl implements InventoryRepository {
     }
 
     @Override
-    public void requestCards() {
-        data.requestCards();
+    public void requestAllCards() {
+        data.requestAllCards();
+    }
+
+    @Override
+    public void requestUserCards() {
+        data.requestUserCards();
     }
 
     @Override

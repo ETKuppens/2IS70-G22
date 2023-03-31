@@ -13,9 +13,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RadioGroup;
 
-import com.example.cardhub.Card;
 import com.example.cardhub.R;
 import com.example.cardhub.collector_navigation.CollectorBaseActivity;
+import com.example.cardhub.inventory.Card;
 import com.example.cardhub.inventory.CardActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
