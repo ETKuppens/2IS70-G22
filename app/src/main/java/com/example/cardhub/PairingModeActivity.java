@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.cardhub.collector_navigation.CollectorBaseActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,7 +39,7 @@ import java.util.Map;
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 
-public class PairingModeActivity extends AppCompatActivity {
+public class PairingModeActivity extends CollectorBaseActivity {
     private ImageView qrCodeIV;
     private FirebaseFirestore db;
     private TextView tv_lobby;
@@ -53,10 +54,12 @@ public class PairingModeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pairingmode);
 
+        setupNav();
         // initializing all variables.
         qrCodeIV = findViewById(R.id.idIVQrcode);
         Button generateQrBtn = findViewById(R.id.idBtnGenerateQR);
         Button scanQrBtn = findViewById(R.id.idScanQrCode);
+        Button button = findViewById(R.id.button);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         tv_lobby = findViewById(R.id.textView_lobby);
         db = FirebaseFirestore.getInstance();
@@ -95,6 +98,9 @@ public class PairingModeActivity extends AppCompatActivity {
             intentIntegrator.setPrompt("Scan a barcode or QR Code");
             intentIntegrator.setOrientationLocked(true);
             intentIntegrator.initiateScan();
+        });
+        button.setOnClickListener(v -> {
+            startActivity(new Intent(this, TradeModeActivity.class));
         });
     }
 
@@ -150,10 +156,10 @@ public class PairingModeActivity extends AppCompatActivity {
         // Add lobby data
         lobbyMap.put("playerAName", uid);
         lobbyMap.put("playerBName", "");
-        lobbyMap.put("playerACards", "...");
-        lobbyMap.put("playerBCards", "...");
-        lobbyMap.put("playerAConfirmation", false);
-        lobbyMap.put("playerBConfirmation", false);
+        //lobbyMap.put("playerACards", "...");
+        //lobbyMap.put("playerBCards", "...");
+        //lobbyMap.put("playerAConfirmation", false);
+        //lobbyMap.put("playerBConfirmation", false);
 
         return lobbyMap;
     }
@@ -185,6 +191,7 @@ public class PairingModeActivity extends AppCompatActivity {
                                 // Modify data
                                 lobbyMap.put("playerBName", uid);
 
+
                                 // Write data
                                 db.collection("lobbies").document(lobby)
                                         .set(lobbyMap)
@@ -194,6 +201,7 @@ public class PairingModeActivity extends AppCompatActivity {
 //                                                tv_lobby.setText("bruh");
                                                 Toast.makeText(PairingModeActivity.this, "Logged in on " + lobby, Toast.LENGTH_SHORT).show();
                                                 Log.d("WORRY", "DocumentSnapshot successfully written!");
+                                                //lobbyMap = document.get("playerAName");
                                                 // Update text
                                             }
                                         })
@@ -216,5 +224,14 @@ public class PairingModeActivity extends AppCompatActivity {
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+    @Override
+    public int getLayoutId() {
+        return R.layout.activity_pairingmode;
+    }
+
+    @Override
+    public int getBottomNavigationMenuItemId() {
+        return R.id.action_trading;
     }
 }

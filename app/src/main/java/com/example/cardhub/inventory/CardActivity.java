@@ -5,18 +5,29 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.cardhub.R;
+import com.google.gson.Gson;
 
 import java.io.InputStream;
 import java.net.URL;
 
-public class CardActivity extends AppCompatActivity {
+public class CardActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private boolean shouldSupportChoosingACard = false;
+
+    private Intent intent; // Intent of this CardActivity
+
+    private Button cancelButton;
+    private Button confirmButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +37,33 @@ public class CardActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        Intent intent = getIntent();
-        Card card = (Card) intent.getSerializableExtra("card");
+        this.cancelButton = findViewById(R.id.button_card_activity_cancel);
+        this.confirmButton = findViewById(R.id.button_card_activity_confirm);
+
+        intent = getIntent();
+
+        if (intent.getBooleanExtra("ShouldSupportChoosingACard", false)) {
+            shouldSupportChoosingACard = true;
+
+            this.cancelButton.setOnClickListener(this);
+            this.confirmButton.setOnClickListener(this);
+
+            this.cancelButton.setEnabled(true);
+            this.confirmButton.setEnabled(true);
+
+            this.cancelButton.setVisibility(View.VISIBLE);
+            this.confirmButton.setVisibility(View.VISIBLE);
+        } else {
+            this.cancelButton.setEnabled(false);
+            this.confirmButton.setEnabled(false);
+
+            this.cancelButton.setVisibility(View.GONE);
+            this.confirmButton.setVisibility(View.GONE);
+        }
+
+        Gson converter = new Gson();
+        String encodedCard = intent.getStringExtra("card");
+        Card card = converter.fromJson(encodedCard, Card.class);
 
         TextView nameView = findViewById(R.id.card_title);
         nameView.setText(card.NAME);
@@ -40,6 +76,7 @@ public class CardActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
+                    Log.d("CARD_ACTIVITY", "jo mama");
                     InputStream is = (InputStream) new URL(card.IMAGE_URL).getContent();
                     Drawable d = Drawable.createFromStream(is, "src name");
                     imageView.setImageDrawable(d);
@@ -60,5 +97,28 @@ public class CardActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (!this.shouldSupportChoosingACard) {
+            return;
+        }
+
+        // Change functionality depending on which button was clicked.
+        switch(view.getId()) {
+            case R.id.button_card_activity_cancel:
+                setResult(RESULT_CANCELED, intent);
+                finish();
+                break;
+
+            case R.id.button_card_activity_confirm:
+                setResult(RESULT_OK, intent);
+                finish();
+                break;
+
+            default:
+                break;
+        }
     }
 }

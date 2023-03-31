@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.text.HtmlCompat;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -22,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.cardhub.user_profile.ProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -30,14 +30,17 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class RegistrationActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
+    private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         // Firebase Initialization
         mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
 
         // Instantiate layout components
@@ -97,7 +101,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
                                         // Upload role to users collection
-                                        FirebaseUser user = mAuth.getCurrentUser();
+                                        user = mAuth.getCurrentUser();
                                         String uid = user.getUid();
                                         Map<String, Object> userEntry = new HashMap<>();
                                         userEntry.put("role", role);
@@ -123,7 +127,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                         Toast.makeText(RegistrationActivity.this, "Registration succeeded.",
                                                 Toast.LENGTH_SHORT).show();
                                         // Move to next screen
-                                        Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+                                        Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
 
                                         // Ensure no returns to registration screen
                                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -147,6 +151,40 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            }
+        });
+    }
+
+    private void openStartActivity(FirebaseUser currentUser) {
+        db = FirebaseFirestore.getInstance();
+        String uid = currentUser.getUid();
+        DocumentReference docRef = db.collection("users").document(uid);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        // Read data
+                        String role = (String) document.get("role");
+                        Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
+                        if (role.equals("Card Collector")) {
+                            // Move to next screen
+                            intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                        } else if (role.equals("Card Creator")) {
+                            intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                        }
+
+                        // Remove returnal activities from memory
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    } else {
+                        Log.d(TAG, "No account!");
+                        Toast.makeText(RegistrationActivity.this, "No account!", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
             }
         });
     }
