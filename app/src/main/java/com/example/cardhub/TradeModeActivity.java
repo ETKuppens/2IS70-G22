@@ -19,6 +19,7 @@ import com.example.cardhub.TradingMode.CardDiff;
 import com.example.cardhub.TradingMode.OnRecyclerViewItemClickListener;
 import com.example.cardhub.TradingMode.TradeModeState;
 import com.example.cardhub.TradingMode.TradingSession;
+import com.example.cardhub.inventory.Card;
 import com.example.cardhub.inventory.CardActivity;
 import com.example.cardhub.inventory.InventoryActivity;
 import com.google.gson.Gson;

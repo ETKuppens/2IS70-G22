@@ -1,6 +1,7 @@
 package com.example.cardhub.user_profile;
 
-import com.example.cardhub.Card;
+
+import com.example.cardhub.inventory.Card;
 
 import java.util.ArrayList;
 import java.util.List;

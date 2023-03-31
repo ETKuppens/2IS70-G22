@@ -2,7 +2,7 @@ package com.example.cardhub.card_creation;
 
 import android.net.Uri;
 
-import com.example.cardhub.Card;
+import com.example.cardhub.inventory.Card;
 
 import java.net.URI;
 

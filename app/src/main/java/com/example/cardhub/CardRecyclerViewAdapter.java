@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cardhub.TradingMode.OnRecyclerViewItemClickListener;
+import com.example.cardhub.inventory.Card;
 
 import java.io.InputStream;
 import java.net.URL;

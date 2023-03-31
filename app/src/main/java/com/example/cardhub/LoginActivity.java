@@ -14,11 +14,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-<<<<<<< HEAD
-import com.example.cardhub.user_profile.ProfileActivity;
-=======
 import com.example.cardhub.inventory.InventoryActivity;
->>>>>>> feature/inventory_missing_cards
+import com.example.cardhub.user_profile.ProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -101,26 +98,10 @@ public class LoginActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-<<<<<<< HEAD
         user = mAuth.getCurrentUser();
         if (user != null) {
             // Open MapsActivity for a Collector or CreatorActivity for a Creator
             openStartActivity(user);
-=======
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            Toast.makeText(LoginActivity.this, "Still logged in!",
-                    Toast.LENGTH_SHORT).show();
-
-            // Move to next screen
-            Intent intent = new Intent(getApplicationContext(), InventoryActivity.class);
-
-            Log.d("LOGIN", "user is logged in");
-
-            // Ensure no returns to login screen
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
->>>>>>> feature/inventory_missing_cards
         }
     }
 

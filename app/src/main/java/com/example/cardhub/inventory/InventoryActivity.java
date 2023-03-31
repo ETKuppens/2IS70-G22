@@ -5,7 +5,6 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,21 +15,17 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import com.example.cardhub.Card;
-import com.example.cardhub.TradingMode.CardDiff;
 import com.example.cardhub.R;
 
-<<<<<<< HEAD
+import com.example.cardhub.TradingMode.CardDiff;
 import com.example.cardhub.collector_navigation.CollectorBaseActivity;
 import com.google.gson.Gson;
 
-public class InventoryActivity extends CollectorBaseActivity {
-=======
 import java.util.ArrayList;
 import java.util.List;
 
-public class InventoryActivity extends AppCompatActivity {
->>>>>>> feature/inventory_missing_cards
+public class InventoryActivity extends CollectorBaseActivity {
+
     InventoryState state;
     CardGridAdapter adapter;
 
@@ -148,7 +143,23 @@ public class InventoryActivity extends AppCompatActivity {
         });
     }
 
-<<<<<<< HEAD
+    public void updateCollectionButton() {
+        Button show_collection = findViewById(R.id.show_collection);
+        if (state.showingInventory) {
+            show_collection.setText("Show Collection");
+            ImageView image  = findViewById(R.id.card_image);
+        } else {
+            //List<Card> missingCards  = state.displayCards;
+            //missingCards.stream().filter((Card card) -> !(state.userCards.stream().anyMatch((Card card2) -> card.NAME == card2.NAME)));
+            //for (int i = 0; i < state.displayCards.size(); i++) {
+            //    if (state.userCards.stream().anyMatch(card -> card.NAME == ))
+            //    if
+            //}
+            //image.setColorFIlter(ContextCompat.getColor(this, R.color.black));
+            show_collection.setText("Show Inventory");
+        }
+    }
+
     ActivityResultLauncher<Intent> cardPreviewResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -169,24 +180,5 @@ public class InventoryActivity extends AppCompatActivity {
                 }
             }
     );
-=======
-    public void updateCollectionButton() {
-        Button show_collection = findViewById(R.id.show_collection);
-        if (state.showingInventory) {
-            show_collection.setText("Show Collection");
-            ImageView image  = findViewById(R.id.card_image);
-        } else {
-            //List<Card> missingCards  = state.displayCards;
-            //missingCards.stream().filter((Card card) -> !(state.userCards.stream().anyMatch((Card card2) -> card.NAME == card2.NAME)));
-            //for (int i = 0; i < state.displayCards.size(); i++) {
-            //    if (state.userCards.stream().anyMatch(card -> card.NAME == ))
-            //    if
-            //}
-            //image.setColorFIlter(ContextCompat.getColor(this, R.color.black));
-            show_collection.setText("Show Inventory");
-        }
-    }
-
->>>>>>> feature/inventory_missing_cards
 
 }
