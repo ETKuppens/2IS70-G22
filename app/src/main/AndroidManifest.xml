@@ -12,6 +12,7 @@
         android:theme="@style/Theme.CardHub"
         tools:targetApi="31">
         <activity
+<<<<<<< HEAD
             android:name=".TradeModeActivity"
             android:exported="false"  />
         <activity
@@ -19,13 +20,19 @@
             android:exported="false" />
         <activity
             android:name=".card_creation.CardCreationActivity"
+=======
+            android:name=".CollectionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PairingModeActivity"
+>>>>>>> feature/inventory_missing_cards
             android:exported="false" />
         <activity
             android:name=".inventory.CardActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".inventory.InventoryActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".PairingModeActivity"
             android:exported="false" />
@@ -36,6 +43,7 @@
             android:name="com.example.cardhub.ForgotPasswordActivity"
             android:exported="false" />
         <activity
+<<<<<<< HEAD
             android:name="com.example.cardhub.RegistrationActivity"
             android:exported="false" />
         <activity
@@ -43,6 +51,9 @@
             android:exported="false" />
         <activity
             android:name="com.example.cardhub.LoginActivity"
+=======
+            android:name=".LoginActivity"
+>>>>>>> feature/inventory_missing_cards
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -50,7 +61,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
 
+=======
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"></activity>
+>>>>>>> feature/inventory_missing_cards
     </application>
 
 </manifest>
