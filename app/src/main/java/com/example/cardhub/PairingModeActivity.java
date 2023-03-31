@@ -82,6 +82,23 @@ public class PairingModeActivity extends CollectorBaseActivity {
                             // Generate QR code from given string code
                             generateQRCode(lobby);
                             Toast.makeText(PairingModeActivity.this, "Generated lobby " + lobby, Toast.LENGTH_SHORT).show();
+                            DocumentReference docRef = db.collection("lobbies").document(lobby);
+                            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot document = task.getResult();
+                                        if (document.exists()) {
+                                            document.get("");
+                                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                        } else {
+                                            Log.d(TAG, "No such document");
+                                        }
+                                    } else {
+                                        Log.d(TAG, "get failed with ", task.getException());
+                                    }
+                                }
+                            });
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -202,6 +219,9 @@ public class PairingModeActivity extends CollectorBaseActivity {
                                                 Toast.makeText(PairingModeActivity.this, "Logged in on " + lobby, Toast.LENGTH_SHORT).show();
                                                 Log.d("WORRY", "DocumentSnapshot successfully written!");
                                                 //lobbyMap = document.get("playerAName");
+                                                Intent i = new Intent(PairingModeActivity.this, TradeModeActivity.class);
+                                                i.putExtra("lobbyid", lobby);
+                                                startActivity(i);
                                                 // Update text
                                             }
                                         })
