@@ -43,7 +43,7 @@ public class InventoryData {
         final List<Map<String, Object>> cards = new ArrayList<>();
         cards.add(new HashMap<>());
 
-        db.collection("cards").get()
+        db.collection("cards/").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -53,9 +53,9 @@ public class InventoryData {
                                 cards.add(documentSnapshots.getData());
                             }
                             repository.cardRequestCallback(cards);
-                            Log.d("CARDREQUEST", "success");
+                            Log.d("CARDREQUESTALL", "success");
                         } else {
-                            Log.d("CARDREQUEST", "fail: " + task.getException());
+                            Log.d("CARDREQUESTALL", "fail: " + task.getException());
                         }
                     }
                 });

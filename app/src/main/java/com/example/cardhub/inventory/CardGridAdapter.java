@@ -29,6 +29,12 @@ public class CardGridAdapter extends BaseAdapter {
         inflater = LayoutInflater.from(context);
     }
 
+    public void updateData(List<Card> newCards) {
+        cards.clear();
+        cards.addAll(newCards);
+        this.notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         return cards.size();

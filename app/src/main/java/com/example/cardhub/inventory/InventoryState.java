@@ -5,9 +5,12 @@ import java.util.List;
 
 public class InventoryState implements InventoryRepositoryReceiver {
 
-    List<Card> cards = new ArrayList<>();
+    List<Card> displayCards = new ArrayList<>();
+    List<Card> userCards = new ArrayList<>();
     InventoryActivity activity;
     InventoryRepository repository;
+
+    public boolean showingInventory = true;
 
     /**
      * Creates an Inventory state for the InventoryActivity
@@ -21,8 +24,27 @@ public class InventoryState implements InventoryRepositoryReceiver {
 
     @Override
     public void receiveCardsResponse(List<Card> cards) {
-        this.cards = cards;
+        this.displayCards = cards;
+        if (showingInventory) {
+            this.userCards = cards;
+        }
         activity.updateGrid();
+    }
+
+    public void sortCards(CardSorter.SortAttribute attribute) {
+        CardSorter.Sort(this.displayCards, attribute, CardSorter.SortOrder.DEFAULT);
+        activity.updateGrid();
+    }
+
+    public void toggleCollection() {
+        if (showingInventory) {
+            repository.requestAllCards();
+            showingInventory = false;
+        } else {
+            repository.requestUserCards();
+            showingInventory = true;
+        }
+        activity.updateCollectionButton();
     }
 
     @Override
@@ -35,8 +57,8 @@ public class InventoryState implements InventoryRepositoryReceiver {
      *
      * @return all the cards
      */
-    public List<Card> getCards() {
-        return cards;
+    public List<Card> getDisplayCards() {
+        return displayCards;
     }
 
     /**
@@ -46,6 +68,6 @@ public class InventoryState implements InventoryRepositoryReceiver {
      * @return the specific card
      */
     public Card getCard(int i) {
-        return cards.get(i);
+        return displayCards.get(i);
     }
 }

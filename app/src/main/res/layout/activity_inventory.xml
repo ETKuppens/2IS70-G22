@@ -6,19 +6,49 @@
     android:layout_height="match_parent"
     tools:context=".inventory.InventoryActivity">
 
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="20dp"
+        app:justifyContent="space_evenly"
+        app:layout_constraintBottom_toTopOf="@+id/card_grid"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/sort_by_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="sort by name" />
+
+        <Button
+            android:id="@+id/sort_by_rarity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="sort by rarity" />
+
+        <Button
+            android:id="@+id/show_collection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="show collection" />
+    </com.google.android.flexbox.FlexboxLayout>
+
 
     <GridView
         android:id="@+id/card_grid"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="630dp"
         android:layout_gravity="center|center_horizontal"
         android:background="#FFFFFF"
         android:horizontalSpacing="10dp"
         android:numColumns="3"
         android:stretchMode="columnWidth"
         android:verticalSpacing="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/fragment_container"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <FrameLayout
         android:id="@+id/fragment_container"
