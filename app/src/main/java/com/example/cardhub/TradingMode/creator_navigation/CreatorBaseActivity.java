@@ -1,4 +1,4 @@
-package com.example.cardhub.creator_navigation;
+package com.example.cardhub.TradingMode.creator_navigation;
 
 import android.content.Intent;
 import android.os.Bundle;
