@@ -8,9 +8,9 @@
         android:title="@string/inventory"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_map"
+        android:id="@+id/action_map_s"
         android:enabled="true"
-        android:icon="@drawable/map"
+        android:icon="@drawable/map_i"
         android:title="@string/map"
         app:showAsAction="ifRoom" />
     <item

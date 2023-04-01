@@ -59,7 +59,7 @@ public class ProfileActivity extends CollectorBaseActivity {
         int itemId = item.getItemId();
         if (itemId == R.id.action_inventory) {
             startActivity(new Intent(this, InventoryActivity.class));
-        } else if (itemId == R.id.action_map) {
+        } else if (itemId == R.id.action_map_s) {
             startActivity(new Intent(this, MapActivity.class));
         } else if (itemId == R.id.action_trading) {
             startActivity(new Intent(this, PairingModeActivity.class));
