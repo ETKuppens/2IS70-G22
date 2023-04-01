@@ -118,7 +118,7 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         }
 
         // Retrieve the content view that renders the map.
-        setContentView(R.layout.activity_collector_map);
+        setContentView(R.layout.activity_map);
 
         // Construct a PlacesClient
         final String MAPS_API_KEY = "AIzaSyBmW_0GdlMuVDQXl8gtRio6fGfwal-NexQ";
