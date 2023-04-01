@@ -33,16 +33,16 @@
             android:name="com.example.cardhub.MainActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.cardhub.ForgotPasswordActivity"
+            android:name="com.example.cardhub.authentification.ForgotPasswordActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.cardhub.RegistrationActivity"
+            android:name="com.example.cardhub.authentification.RegistrationActivity"
             android:exported="false" />
         <activity
             android:name="com.example.cardhub.MapActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.cardhub.LoginActivity"
+            android:name="com.example.cardhub.authentification.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

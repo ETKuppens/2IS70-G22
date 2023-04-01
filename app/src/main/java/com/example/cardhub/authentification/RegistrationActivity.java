@@ -1,4 +1,4 @@
-package com.example.cardhub;
+package com.example.cardhub.authentification;
 
 import static android.content.ContentValues.TAG;
 
@@ -21,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.cardhub.R;
 import com.example.cardhub.user_profile.ProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
