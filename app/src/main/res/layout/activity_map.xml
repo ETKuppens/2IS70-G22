@@ -23,12 +23,16 @@
             app:uiZoomGestures="true"
             tools:context="com.example.cardhub.MapActivity" />
 
-<!--        <include-->
-<!--            layout="@menu/item_bottom_navigation_collector"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="bottom"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent" />-->
+
+        <include
+            layout="@menu/item_bottom_navigation_collector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:minHeight="70dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </FrameLayout>
 
