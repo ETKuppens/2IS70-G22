@@ -27,18 +27,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class LoginActivity extends AppCompatActivity {
-    private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
-    private FirebaseUser user;
+
+    LoginState state;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Firebase Authentication
-        mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
+        state = new LoginState(this);
 
         // Instantiate layout components
         EditText et_email = findViewById(R.id.editText_email);
@@ -56,26 +53,7 @@ public class LoginActivity extends AppCompatActivity {
                 String email = et_email.getText().toString();
                 String password = et_password.getText().toString();
 
-                mAuth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    Log.d(TAG, "signInWithEmail:success");
-                                    Toast.makeText(LoginActivity.this, "Authentication succeeded.",
-                                            Toast.LENGTH_SHORT).show();
-
-                                    // Move to next screen
-                                    openStartActivity(user);
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                    Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
+                state.signIn(email, password);
             }
         });
 
@@ -98,45 +76,28 @@ public class LoginActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-        user = mAuth.getCurrentUser();
+
+        state.getCurrentUser();
+    }
+
+    public void getCurrentUser(FirebaseUser user) {
         if (user != null) {
             // Open MapsActivity for a Collector or CreatorActivity for a Creator
-            openStartActivity(user);
+            state.getUserRole(user);
         }
     }
 
-    private void openStartActivity(FirebaseUser currentUser) {
-        db = FirebaseFirestore.getInstance();
-        currentUser = mAuth.getCurrentUser();
-        String uid = currentUser.getUid();
-        DocumentReference docRef = db.collection("users").document(uid);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        // Read data
-                        String role = (String) document.get("role");
-                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                        if (role.equals("Card Collector")) {
-                            // Move to next screen
-                            intent = new Intent(getApplicationContext(), ProfileActivity.class);
-                        } else if (role.equals("Card Creator")) {
-                            intent = new Intent(getApplicationContext(), ProfileActivity.class);
-                        }
 
-                        // Remove returnal activities from memory
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                    } else {
-                        Log.d(TAG, "No account!");
-                        Toast.makeText(LoginActivity.this, "No account!", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
-            }
-        });
+
+    public void makeToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    public void signInSuccess() {
+        makeToast( "Login successful");
+    }
+
+    public void signInFail() {
+        makeToast( "Login Fail");
     }
 }
