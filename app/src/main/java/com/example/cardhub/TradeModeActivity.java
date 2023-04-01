@@ -49,6 +49,7 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
     private List<Card> thisPlayerProposedCards = new ArrayList<>();
 
     private Card clickedCard = null; // Card that was clicked to be removed
+    private String lid; // Lobby id
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +67,9 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
         otherPlayerReadyText = findViewById(R.id.PlayerReadyToTradeTextView);
         this.disableOtherPlayerReadyMessage();
 
-        state = new TradeModeState(this);
+        lid = getLobbyID();
+
+        state = new TradeModeState(this, lid);
 
         otherPlayerProposedCardsRecyclerView = findViewById(R.id.ProposedCardsOtherPlayer);
         otherPlayerProposedCardsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -79,6 +82,11 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
         thisPlayerProposedCardsRecyclerView.setAdapter(thisPlayerRecyclerViewAdapter);
         thisPlayerRecyclerViewAdapter.setOnRecyclerViewItemClickListener(this);
     }
+
+    /**
+     * Returns the lobby id that was passed when starting this activity.
+     */
+    private String getLobbyID() { return getIntent().getStringExtra("lobbyid"); }
 
     /**
      * Update the UI in activity using the data from the TradingSession instance.
