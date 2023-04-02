@@ -15,6 +15,7 @@ import com.example.cardhub.R;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CardGridAdapter extends BaseAdapter {
@@ -30,8 +31,11 @@ public class CardGridAdapter extends BaseAdapter {
     }
 
     public void updateData(List<Card> newCards) {
-        cards.clear();
-        cards.addAll(newCards);
+        if (newCards != cards) {
+            cards.clear();
+            cards.addAll(newCards);
+        }
+
         this.notifyDataSetChanged();
     }
 

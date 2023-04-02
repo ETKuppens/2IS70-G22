@@ -117,7 +117,7 @@ public class InventoryActivity extends CollectorBaseActivity {
      * Update the inventory grid
      */
     public void updateGrid() {
-        GridView cardGridView = findViewById(R.id.card_grid);
+        CardGridView cardGridView = findViewById(R.id.card_grid);
         adapter.updateData(state.displayCards);
         adapter.notifyDataSetChanged();
 
@@ -147,15 +147,7 @@ public class InventoryActivity extends CollectorBaseActivity {
         Button show_collection = findViewById(R.id.show_collection);
         if (state.showingInventory) {
             show_collection.setText("Show Collection");
-            ImageView image  = findViewById(R.id.card_image);
         } else {
-            //List<Card> missingCards  = state.displayCards;
-            //missingCards.stream().filter((Card card) -> !(state.userCards.stream().anyMatch((Card card2) -> card.NAME == card2.NAME)));
-            //for (int i = 0; i < state.displayCards.size(); i++) {
-            //    if (state.userCards.stream().anyMatch(card -> card.NAME == ))
-            //    if
-            //}
-            //image.setColorFIlter(ContextCompat.getColor(this, R.color.black));
             show_collection.setText("Show Inventory");
         }
     }
