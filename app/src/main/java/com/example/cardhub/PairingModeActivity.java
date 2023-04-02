@@ -28,7 +28,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -82,6 +84,23 @@ public class PairingModeActivity extends CollectorBaseActivity {
                             // Generate QR code from given string code
                             generateQRCode(lobby);
                             Toast.makeText(PairingModeActivity.this, "Generated lobby " + lobby, Toast.LENGTH_SHORT).show();
+                            final DocumentReference docRef = db.collection("lobbies").document(lobby);
+                            docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                                @Override
+                                public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                                    @Nullable FirebaseFirestoreException e) {
+                                    if (e != null) {
+                                        Log.w(TAG, "Listen failed.", e);
+                                        return;
+                                    }
+
+                                    if (!snapshot.getData().get("playerBName").equals("")) {
+                                        Intent intent = new Intent(getApplicationContext(), TradeModeActivity.class);
+                                        intent.putExtra("lobbyid", lobby);
+                                        startActivity(intent);
+                                    }
+                                }
+                            });
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -156,10 +175,6 @@ public class PairingModeActivity extends CollectorBaseActivity {
         // Add lobby data
         lobbyMap.put("playerAName", uid);
         lobbyMap.put("playerBName", "");
-        //lobbyMap.put("playerACards", "...");
-        //lobbyMap.put("playerBCards", "...");
-        //lobbyMap.put("playerAConfirmation", false);
-        //lobbyMap.put("playerBConfirmation", false);
 
         return lobbyMap;
     }
@@ -198,11 +213,11 @@ public class PairingModeActivity extends CollectorBaseActivity {
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
-//                                                tv_lobby.setText("bruh");
                                                 Toast.makeText(PairingModeActivity.this, "Logged in on " + lobby, Toast.LENGTH_SHORT).show();
                                                 Log.d("WORRY", "DocumentSnapshot successfully written!");
-                                                //lobbyMap = document.get("playerAName");
-                                                // Update text
+                                                Intent intent = new Intent(getApplicationContext(), TradeModeActivity.class);
+                                                intent.putExtra("lobbyid", lobby);
+                                                startActivity(intent);
                                             }
                                         })
                                         .addOnFailureListener(new OnFailureListener() {
