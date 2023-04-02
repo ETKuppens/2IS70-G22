@@ -1,4 +1,4 @@
-package com.example.cardhub.map;
+package com.example.cardhub;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,12 +11,15 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -25,6 +28,7 @@ import com.example.cardhub.PairingModeActivity;
 import com.example.cardhub.R;
 import com.example.cardhub.collector_navigation.CollectorBaseActivity;
 import com.example.cardhub.inventory.InventoryActivity;
+import com.example.cardhub.map.CardPack;
 import com.example.cardhub.user_profile.ProfileActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -84,6 +88,8 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
 
 
     // Map part
+    LatLng onMarkerClickLatLng = null;
+
     public List<LatLng> geoMarkersLocations = new ArrayList<LatLng>();
 
     private static final String TAG = MapActivity.class.getSimpleName();
@@ -216,6 +222,7 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         getDeviceLocation();
 
         addPointsOnTheMap();
+
     }
 
     public void addPointsOnTheMap() {
@@ -245,10 +252,13 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
     @Override
     public boolean onMarkerClick(final Marker marker) {
 
+        onMarkerClickLatLng = marker.getPosition();
+
         hideCardBannerIfActive();
 
         getLayoutInflater().inflate(R.layout.card_banner, findViewById(R.id.root), true);
         cardBanner = findViewById(R.id.card_banner);
+
 
         ImageView imageView = cardBanner.findViewById(R.id.card_image);
         TextView titleView = cardBanner.findViewById(R.id.card_title);
@@ -273,6 +283,14 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
 
         titleView.setText(state.packs.get((Integer)marker.getTag()).name);
         descriptionView.setText(state.packs.get((Integer)marker.getTag()).description);
+
+        Button collectCardButton = findViewById(R.id.buttonCollectCard);
+        collectCardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                buttonCollectCardClicked();
+            }
+        });
 
         // Return false to indicate that we have not consumed the event and that we wish
         // for the default behavior to occur (which is for the camera to move such that the
@@ -510,9 +528,46 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         }
     }
 
+    protected void buttonCollectCardClicked() {
+        // Get user location (update lastKnownLocation)
+        getDeviceLocation();
+        // Get marker location
+        LatLng MarkerLatLng = onMarkerClickLatLng;
+        // Make sure that the distance is <30m. Distance is calculated in meters
+        Double distance =
+                distanceBetween(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude(),
+                        MarkerLatLng.latitude, MarkerLatLng.longitude);
+        Toast.makeText(getApplicationContext(),Double.toString(distance),Toast.LENGTH_SHORT).show();
+        // Init card collection
+        if (distance <= 30) {
+
+        } else {
+            String errMessage = String.format("%.2f", distance);
+            Toast.makeText(getApplicationContext(), "You cannot collect the car. Distance " +
+                    errMessage + " is >30m.",Toast.LENGTH_SHORT).show();
+        }
+        // remove card from the map
+    }
+
+    public static final double AVERAGE_RADIUS_OF_EARTH_KM = 6371;
+
+    public static double distanceBetween(double startLat, double startLng, double endLat, double endLng) {
+        double latDistance = Math.toRadians(endLat - startLat);
+        double lngDistance = Math.toRadians(endLng - startLng);
+
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(startLat)) * Math.cos(Math.toRadians(endLat))
+                * Math.sin(lngDistance / 2) * Math.sin(lngDistance / 2);
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return AVERAGE_RADIUS_OF_EARTH_KM * c * 1000;
+    }
+
     public void cardsResponse(List<CardPack> packs) {
         // might cause an error if the map is not ready
         // add pinpoints on the map
         //addPointsOnTheMap(packs);
     }
-}
+
+    }
