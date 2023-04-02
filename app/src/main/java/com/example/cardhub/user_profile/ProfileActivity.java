@@ -1,7 +1,6 @@
 package com.example.cardhub.user_profile;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -14,11 +13,9 @@ import androidx.annotation.NonNull;
 import com.example.cardhub.MapActivity;
 import com.example.cardhub.PairingModeActivity;
 import com.example.cardhub.collector_navigation.CollectorBaseActivity;
-import com.example.cardhub.LoginActivity;
+import com.example.cardhub.authentification.LoginActivity;
 import com.example.cardhub.R;
 import com.example.cardhub.inventory.InventoryActivity;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class ProfileActivity extends CollectorBaseActivity {
