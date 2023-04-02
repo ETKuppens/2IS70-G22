@@ -1,4 +1,4 @@
-package com.example.cardhub;
+package com.example.cardhub.map;
 
 import android.content.DialogInterface;
 import android.content.Intent;
