@@ -73,8 +73,8 @@ public class CardGridAdapter extends BaseAdapter {
                 color = ContextCompat.getColor(context, R.color.rarity_rare);
                 break;
 
-            case UNKNOWN:
-                color = ContextCompat.getColor(context, R.color.rarity_unknown);
+            case ULTRA_RARE:
+                color = ContextCompat.getColor(context, R.color.rarity_ultra_rare);
                 break;
         }
         cardBackground.setBackgroundColor(color);

@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.example.cardhub.MapActivity;
+import com.example.cardhub.map.MapActivity;
 import com.example.cardhub.PairingModeActivity;
 import com.example.cardhub.collector_navigation.CollectorBaseActivity;
 import com.example.cardhub.authentification.LoginActivity;

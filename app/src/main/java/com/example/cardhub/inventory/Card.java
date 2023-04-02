@@ -13,7 +13,7 @@ public class Card implements Serializable {
         COMMON,
         RARE,
         LEGENDARY,
-        UNKNOWN
+        ULTRA_RARE
     }
 
     public final String NAME;        // The name of this card

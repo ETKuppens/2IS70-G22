@@ -50,7 +50,7 @@
             android:name="com.example.cardhub.authentification.RegistrationActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.cardhub.MapActivity"
+            android:name="com.example.cardhub.map.MapActivity"
             android:exported="false" />
         <activity
             android:name="com.example.cardhub.authentification.LoginActivity"
