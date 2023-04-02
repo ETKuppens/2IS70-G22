@@ -25,10 +25,10 @@
 >>>>>>> feature/Navigation
             android:exported="false" />
         <activity
-            android:name="com.example.cardhub.ForgotPasswordActivity"
+            android:name="com.example.cardhub.authentification.ForgotPasswordActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.cardhub.RegistrationActivity"
+            android:name="com.example.cardhub.authentification.RegistrationActivity"
             android:exported="false" />
         <activity
             android:name="com.example.cardhub.MapActivity"
@@ -40,7 +40,7 @@
         <activity
             android:name=".MainActivity"
 =======
-            android:name="com.example.cardhub.LoginActivity"
+            android:name="com.example.cardhub.authentification.LoginActivity"
 >>>>>>> feature/Navigation
             android:exported="true">
             <intent-filter>
