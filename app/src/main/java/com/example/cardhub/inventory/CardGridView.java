@@ -64,11 +64,11 @@ public class CardGridView extends GridView {
     void refreshVisibleViews() {
         if (mAdapter != null) {
             for (int i = getFirstVisiblePosition(); i <= getLastVisiblePosition(); i ++) {
-                final int dataPosition = i;// - getChildCount();
+                final int dataPosition = i - getFirstVisiblePosition();// - getChildCount();
                 final int childPosition = i - getFirstVisiblePosition();
+
                 if (dataPosition >= 0 && dataPosition < mAdapter.getCount()
                         && getChildAt(childPosition) != null) {
-                    Log.v(TAG, "Refreshing view (data=" + dataPosition + ",child=" + childPosition + ")");
                     mAdapter.getView(dataPosition, getChildAt(childPosition), this);
                 }
             }

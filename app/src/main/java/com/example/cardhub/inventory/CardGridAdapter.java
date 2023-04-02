@@ -15,6 +15,7 @@ import com.example.cardhub.R;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class CardGridAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return null;
+        return cards.get(i);
     }
 
     @Override

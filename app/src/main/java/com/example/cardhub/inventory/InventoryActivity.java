@@ -119,8 +119,6 @@ public class InventoryActivity extends CollectorBaseActivity {
     public void updateGrid() {
         CardGridView cardGridView = findViewById(R.id.card_grid);
         adapter.updateData(state.displayCards);
-        adapter.notifyDataSetChanged();
-
 
         Log.d("GRID_UPDATE", "cards length: " + state.displayCards.size());
 
