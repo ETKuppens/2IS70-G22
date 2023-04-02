@@ -25,7 +25,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-
 public class LoginActivity extends AppCompatActivity {
 
     LoginState state;
@@ -70,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), ForgotPasswordActivity.class));
             }
         });
+
     }
 
     @Override
@@ -86,8 +86,6 @@ public class LoginActivity extends AppCompatActivity {
             state.getUserRole(user);
         }
     }
-
-
 
     public void makeToast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();

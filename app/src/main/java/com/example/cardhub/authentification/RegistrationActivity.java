@@ -39,19 +39,16 @@ import java.util.Map;
 
 
 public class RegistrationActivity extends AppCompatActivity {
-    private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
-    private FirebaseUser user;
+
+    RegistrationState state;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        // Firebase Initialization
-        mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
-        db = FirebaseFirestore.getInstance();
+        state = new RegistrationState(this);
+
 
         // Instantiate layout components
         EditText et_registeremail = findViewById(R.id.editText_registeremail);
@@ -95,55 +92,9 @@ public class RegistrationActivity extends AppCompatActivity {
                 String role = spr_role.getSelectedItem().toString();
 
                 if (password.equals(confirm)) {
-                    // Create account
-                    mAuth.createUserWithEmailAndPassword(email, password)
-                            .addOnCompleteListener(RegistrationActivity.this, new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (task.isSuccessful()) {
-                                        // Upload role to users collection
-                                        user = mAuth.getCurrentUser();
-                                        String uid = user.getUid();
-                                        Map<String, Object> userEntry = new HashMap<>();
-                                        userEntry.put("role", role);
-
-                                        // Add a new document with a generated ID
-                                        db.collection("users").document(uid)
-                                                .set(userEntry)
-                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                    @Override
-                                                    public void onSuccess(Void aVoid) {
-                                                        Log.d("FIRESTORE", "DocumentSnapshot successfully written!");
-                                                    }
-                                                })
-                                                .addOnFailureListener(new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull Exception e) {
-                                                        Log.w("FIRESTORE", "Error writing document", e);
-                                                    }
-                                                });
-
-                                        // Sign in success, update UI with the signed-in user's information
-                                        Log.d(TAG, "signUpWithEmail:success");
-                                        Toast.makeText(RegistrationActivity.this, "Registration succeeded.",
-                                                Toast.LENGTH_SHORT).show();
-                                        // Move to next screen
-                                        Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
-
-                                        // Ensure no returns to registration screen
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        startActivity(intent);
-                                    } else {
-                                        // If sign up fails, display a message to the user.
-                                        Log.w(TAG, "signUpWithEmail:failure", task.getException());
-                                        Toast.makeText(RegistrationActivity.this, "Registration failed, try again later!",
-                                                Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
+                    state.register(email, password, confirm, role);
                 } else {
-                    Toast.makeText(RegistrationActivity.this, "Registration failed, the passwords differ!",
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegistrationActivity.this, "Passwords don't match.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -156,37 +107,47 @@ public class RegistrationActivity extends AppCompatActivity {
         });
     }
 
-    private void openStartActivity(FirebaseUser currentUser) {
-        db = FirebaseFirestore.getInstance();
-        String uid = currentUser.getUid();
-        DocumentReference docRef = db.collection("users").document(uid);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        // Read data
-                        String role = (String) document.get("role");
-                        Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
-                        if (role.equals("Card Collector")) {
-                            // Move to next screen
-                            intent = new Intent(getApplicationContext(), ProfileActivity.class);
-                        } else if (role.equals("Card Creator")) {
-                            intent = new Intent(getApplicationContext(), ProfileActivity.class);
-                        }
+    //private void openStartActivity(FirebaseUser currentUser) {
+    //    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+    //        @Override
+    //        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+    //            if (task.isSuccessful()) {
+    //                DocumentSnapshot document = task.getResult();
+    //                if (document.exists()) {
+    //                    // Read data
+    //                    String role = (String) document.get("role");
+    //                    Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
+    //                    if (role.equals("Card Collector")) {
+    //                        // Move to next screen
+    //                        intent = new Intent(getApplicationContext(), ProfileActivity.class);
+    //                    }
+    //                    else if (role.equals("Card Creator")) {
+    //                        intent = new Intent(getApplicationContext(), ProfileActivity.class);
+    //                    }
 
-                        // Remove returnal activities from memory
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                    } else {
-                        Log.d(TAG, "No account!");
-                        Toast.makeText(RegistrationActivity.this, "No account!", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
-            }
-        });
+    //                    // Remove returnal activities from memory
+    //                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+    //                    startActivity(intent);
+    //                } else {
+    //                    Log.d(TAG, "No account!");
+    //                    Toast.makeText(RegistrationActivity.this, "No account!", Toast.LENGTH_SHORT).show();
+    //                }
+    //            } else {
+    //                Log.d(TAG, "get failed with ", task.getException());
+    //            }
+    //        }
+    //    });
+    //}
+
+    public void openStartActivity() {
+        Toast.makeText(this, "Registration succeeded.",
+                Toast.LENGTH_SHORT).show();
+        // Move to next screen
+        Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+
+        // Ensure no returns to registration screen
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
+
 }
