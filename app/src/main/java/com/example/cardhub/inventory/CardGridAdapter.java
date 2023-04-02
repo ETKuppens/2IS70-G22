@@ -58,7 +58,7 @@ public class CardGridAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         if (view == null) {
-            view = inflater.inflate(R.layout.card_grid_item, null);
+            view = inflater.inflate(R.layout.card_grid_item, viewGroup, false);
         }
 
         Card thisCard = cards.get(i);
