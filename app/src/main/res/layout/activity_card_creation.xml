@@ -80,6 +80,12 @@
             android:layout_height="wrap_content"
             android:text="Legendary" />
 
+        <RadioButton
+            android:id="@+id/ultraRareButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ultra Rare" />
+
     </RadioGroup>
 
     <Button

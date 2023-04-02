@@ -120,8 +120,8 @@ public class CardCreationActivity extends CollectorBaseActivity {
             case R.id.legendaryButton: {
                 state.setRarity(Card.Rarity.LEGENDARY);
             }
-            default: {
-                state.setRarity(Card.Rarity.UNKNOWN);
+            case R.id.ultraRareButton: {
+                state.setRarity(Card.Rarity.ULTRA_RARE);
             }
         }
 

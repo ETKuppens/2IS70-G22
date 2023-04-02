@@ -2,13 +2,12 @@ package com.example.cardhub.collector_navigation;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.cardhub.MapActivity;
+import com.example.cardhub.map.MapActivity;
 import com.example.cardhub.PairingModeActivity;
 import com.example.cardhub.R;
 import com.example.cardhub.inventory.InventoryActivity;
