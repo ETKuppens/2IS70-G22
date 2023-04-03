@@ -10,7 +10,7 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
     private int clientID = 0;
 
     private TradeModeActivity activity;
-    private TradingSessionRepository repository = new TradingSessionRepositoryImpl();
+    private TradingSessionRepository repository;
 
     // TradingSession instance that keeps track which user proposes which cards in the current
     // trading session.
@@ -18,10 +18,13 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
 
     /**
      * Construct a new TradeModeState that is linked to an existing TradeModeActivity.
+     *
      * @param activity the TradeModeActivity storing the UI that should be represented by this TradeModeState.
+     * @param lid lobby id of the trade.
      */
-    public TradeModeState(TradeModeActivity activity) {
+    public TradeModeState(TradeModeActivity activity, String lid) {
         this.activity = activity;
+        this.repository = new TradingSessionRepositoryImpl(lid);
     }
 
     // List of flags that are used to check when certain functionality can be called.
