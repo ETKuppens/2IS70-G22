@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.cardhub.user_profile.CreatorProfileActivity;
 import com.example.cardhub.user_profile.ProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -61,7 +62,7 @@ public class LoginState implements AuthentificationReciever {
             // Move to next screen
             intent = new Intent(activity.getApplicationContext(), ProfileActivity.class);
         } else if (role.equals("Card Creator")) {
-            intent = new Intent(activity.getApplicationContext(), ProfileActivity.class);
+            intent = new Intent(activity.getApplicationContext(), CreatorProfileActivity.class);
         }
 
         // Remove returnal activities from memory

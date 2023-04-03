@@ -7,13 +7,16 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.cardhub.PairingModeActivity;
 import com.example.cardhub.R;
 import com.example.cardhub.card_creation.CardCreationActivity;
-import com.example.cardhub.inventory.InventoryActivity;
+import com.example.cardhub.inventory.CreatorInventoryActivity;
+import com.example.cardhub.user_profile.CreatorProfileActivity;
 import com.example.cardhub.user_profile.ProfileActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
-public abstract class CreatorBaseActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public abstract class CreatorBaseActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
 
     protected BottomNavigationView navigationView;
 
@@ -22,10 +25,25 @@ public abstract class CreatorBaseActivity extends AppCompatActivity implements B
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
 
-        navigationView = (BottomNavigationView) findViewById(R.id.navigation);
-        navigationView.setOnNavigationItemSelectedListener(this);
     }
 
+    protected void setupNav() {
+        navigationView = (BottomNavigationView) findViewById(R.id.navigation);
+        navigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemId = item.getItemId();
+                if (itemId == R.id.action_inventory) {
+                    startActivity(new Intent(getApplicationContext(), CreatorInventoryActivity.class));
+                } else if (itemId == R.id.action_profile) {
+                    startActivity(new Intent(getApplicationContext(), CreatorProfileActivity.class));
+                } else if (itemId == R.id.action_create) {
+                    startActivity(new Intent(getApplicationContext(), CardCreationActivity.class));
+                }
+                return true;
+            }
+        });
+    }
     @Override
     protected void onStart() {
         super.onStart();
@@ -41,17 +59,6 @@ public abstract class CreatorBaseActivity extends AppCompatActivity implements B
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        navigationView.postDelayed(() -> {
-            int itemId = item.getItemId();
-            if (itemId == R.id.action_inventory) {
-                startActivity(new Intent(this, InventoryActivity.class));
-            } else if (itemId == R.id.action_create) {
-                startActivity(new Intent(this, CardCreationActivity.class));
-            } else if (itemId == R.id.action_profile) {
-                startActivity(new Intent(this, ProfileActivity.class));
-            }
-            finish();
-        }, 300);
         return true;
     }
 
@@ -65,7 +72,7 @@ public abstract class CreatorBaseActivity extends AppCompatActivity implements B
         item.setChecked(true);
     }
 
-    abstract int getLayoutId();
+    abstract public int getLayoutId();
 
-    abstract int getBottomNavigationMenuItemId();//Which menu item selected and change the state of that menu item
+    abstract public int getBottomNavigationMenuItemId();//Which menu item selected and change the state of that menu item
 }

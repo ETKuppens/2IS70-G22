@@ -1,9 +1,10 @@
-package com.example.cardhub;
+package com.example.cardhub.map;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,8 +23,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.cardhub.BuildConfig;
+import com.example.cardhub.PairingModeActivity;
+import com.example.cardhub.R;
 import com.example.cardhub.collector_navigation.CollectorBaseActivity;
 import com.example.cardhub.inventory.InventoryActivity;
+import com.example.cardhub.map.CardPack;
 import com.example.cardhub.user_profile.ProfileActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -46,9 +51,12 @@ import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
 import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class MapActivity extends CollectorBaseActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
@@ -117,18 +125,17 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
     private LatLng[] likelyPlaceLatLngs;
 
     private View cardBanner;
-    private List<CardLite> cards = new ArrayList<>();
+
+    MapState state;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupNav();
 
-        cards.add(new CardLite(new LatLng(51.449331, 5.487503), "Test School",
-                "This is an example description for Sonic", R.drawable.sonic));
+        state = new MapState(this);
 
-        cards.add(new CardLite(new LatLng(51.452699, 5.500404), "Test Lake",
-                "This is an example description for Shadow", R.drawable.shadow));
+        state.requestPacks();
 
         // Retrieve location and camera position from saved instance state.
         if (savedInstanceState != null) {
@@ -213,20 +220,21 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
 
         // Get the current location of the device and set the position of the map.
         getDeviceLocation();
-        // add pinpoints on the map
+
         addPointsOnTheMap();
 
     }
 
     public void addPointsOnTheMap() {
-        for (int i = 0; i < cards.size(); i++) {
+        List<CardPack> cardPacks = state.packs;
+        for (int i = 0; i < cardPacks.size(); i++) {
             map.addMarker(new MarkerOptions()
-                    .position(cards.get(i).position)).setTag(i);
+                    .position(cardPacks.get(i).position)).setTag(i);
             // Circle the area around geotag
             Integer geotagRingFill = Color.argb(100, 0, 0, 100);
             Integer geotagRingStroke = Color.argb(100, 200, 0, 0);
             CircleOptions circleOptions = new CircleOptions()
-                    .center(cards.get(i).position)
+                    .center(cardPacks.get(i).position)
                     .radius(30) // in meters
                     .strokeWidth(2)
                     .strokeColor(geotagRingStroke)
@@ -256,9 +264,25 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         TextView titleView = cardBanner.findViewById(R.id.card_title);
         TextView descriptionView = cardBanner.findViewById(R.id.card_description);
 
-        imageView.setImageResource(cards.get((Integer)marker.getTag()).image);
-        titleView.setText(cards.get((Integer)marker.getTag()).title);
-        titleView.setText(cards.get((Integer)marker.getTag()).description);
+        CardPack pack = state.packs.get((Integer)marker.getTag());
+
+        switch (pack.rarity) {
+            case COMMON:
+                imageView.setImageResource(R.drawable.common_pack);
+                break;
+            case RARE:
+                imageView.setImageResource(R.drawable.rare_pack);
+                break;
+            case LEGENDARY:
+                imageView.setImageResource(R.drawable.legendary_pack);
+                break;
+            case ULTRA_RARE:
+                imageView.setImageResource(R.drawable.ultra_rare_pack);
+                break;
+        }
+
+        titleView.setText(state.packs.get((Integer)marker.getTag()).name);
+        descriptionView.setText(state.packs.get((Integer)marker.getTag()).description);
 
         Button collectCardButton = findViewById(R.id.buttonCollectCard);
         collectCardButton.setOnClickListener(new View.OnClickListener() {
@@ -540,4 +564,10 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         return AVERAGE_RADIUS_OF_EARTH_KM * c * 1000;
     }
 
-}
+    public void cardsResponse(List<CardPack> packs) {
+        // might cause an error if the map is not ready
+        // add pinpoints on the map
+        //addPointsOnTheMap(packs);
+    }
+
+    }
