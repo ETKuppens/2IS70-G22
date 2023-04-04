@@ -17,7 +17,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.SetOptions;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -176,8 +178,10 @@ public class TradingSessionData {
      *                 TradingSession.
      */
     void changeProposedCards(String clientID, Set<CardDiff> diffs) {
+        List<CardDiff> diffs2 = new ArrayList<>();
+        diffs2.addAll(diffs);
         Map<String, Object> data = new HashMap<>();
-        data.put("cardDiffs_" + clientID, diffs);
+        data.put("cardDiffs_" + clientID, diffs2);
 
         docRef.set(data, SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
