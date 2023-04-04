@@ -29,6 +29,7 @@ public class TradingSessionData {
     private DocumentReference docRef;
     private String lid;
     private String clientid;
+    private String currentPlayer;
     private String otherPlayer;
 
     public TradingSessionData(TradingSessionRepository repository, String lid, String clientid) {
@@ -78,9 +79,11 @@ public class TradingSessionData {
 
                         // Find other player clientid
                         if (playerAName.equals(clientid)) {
-                            otherPlayer = playerBName;
-                        } else {
-                            otherPlayer = playerAName;
+                            currentPlayer = "playerA";
+                            otherPlayer = "playerB";
+                        } else if (playerBName.equals(clientid)) {
+                            currentPlayer = "playerB";
+                            otherPlayer = "playerA";
                         }
 
                         startCardDiffListener();
@@ -126,7 +129,7 @@ public class TradingSessionData {
      */
     void acceptProposedTrade(String clientID) {
         Map<String, Object> data = new HashMap<>();
-        data.put("acceptance" + "_" + clientID, true);
+        data.put("acceptance_" + currentPlayer, true);
 
         docRef.set(data, SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -152,7 +155,7 @@ public class TradingSessionData {
      */
     void cancelAcceptTrade(String clientID) {
         Map<String, Object> data = new HashMap<>();
-        data.put("acceptance" + "_" + clientID, false);
+        data.put("acceptance_" + currentPlayer, false);
 
         docRef.set(data, SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -181,20 +184,20 @@ public class TradingSessionData {
         List<CardDiff> diffs2 = new ArrayList<>();
         diffs2.addAll(diffs);
         Map<String, Object> data = new HashMap<>();
-        data.put("cardDiffs_" + clientID, diffs2);
+        data.put("cardDiffs_" + currentPlayer, diffs2);
 
         docRef.set(data, SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d("cardDiffs_" + clientID, "Updated succesfully!");
+                        Log.d("cardDiffs_" + currentPlayer, "Updated succesfully!");
                         repository.changeProposedCardsConfirm(clientID);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w("cardDiffs_" + clientID, "An error was encountered while updating!", e);
+                        Log.w("cardDiffs_" + currentPlayer, "An error was encountered while updating!", e);
                     }
                 });
     }
