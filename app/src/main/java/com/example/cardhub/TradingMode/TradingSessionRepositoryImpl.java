@@ -57,7 +57,7 @@ public class TradingSessionRepositoryImpl implements TradingSessionRepository {
                 new Card(
                         (String) card.get("NAME"),
                         (String) card.get("DESCRIPTION"),
-                        Card.Rarity.values()[(int)((long) card.get("RARITY"))],
+                        Card.Rarity.valueOf((String) card.get("RARITY")),
                         (String) card.get("IMAGE_URL")
                 ),
                 CardDiff.DiffOption.valueOf((String)dif.get("diff"))
