@@ -48,6 +48,7 @@ public class InventoryState implements InventoryRepositoryReceiver {
         showingInventory = !showingInventory;
 
         activity.updateCollectionButton();
+        activity.scrollBackToTop();
     }
 
     @Override

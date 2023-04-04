@@ -7,6 +7,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -114,6 +115,14 @@ public class InventoryActivity extends CollectorBaseActivity {
     public void updateGrid() {
         CardGridView cardGridView = findViewById(R.id.card_grid);
         adapter.updateData(state.displayCards);
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                adapter.notifyDataSetChanged();
+            }
+
+        });
 
         Log.d("GRID_UPDATE", "cards length: " + state.displayCards.size());
 
@@ -166,4 +175,8 @@ public class InventoryActivity extends CollectorBaseActivity {
             }
     );
 
+    public void scrollBackToTop() {
+        CardGridView cardGridView = findViewById(R.id.card_grid);
+        cardGridView.scrollTo(1, 1);
+    }
 }

@@ -36,8 +36,6 @@ public class CardGridAdapter extends BaseAdapter {
             cards.clear();
             cards.addAll(newCards);
         }
-
-        this.notifyDataSetChanged();
     }
 
     @Override
