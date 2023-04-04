@@ -74,6 +74,7 @@ public class PairingModeActivity extends CollectorBaseActivity {
             db.collection("lobbies")
                     .add(lobbyMap)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        boolean active = true;
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
                             lobby = documentReference.getId();
@@ -91,11 +92,13 @@ public class PairingModeActivity extends CollectorBaseActivity {
                                         return;
                                     }
 
-                                    if (snapshot != null && snapshot.exists() && !snapshot.getData().get("playerBName").equals("")) {
+                                    if (snapshot != null && snapshot.exists() && !snapshot.getData().get("playerBName").equals("")&&active) {
+                                        //TODO: Deregister listener, instead of using active boolean
                                         Intent intent = new Intent(getApplicationContext(), TradeModeActivity.class);
                                         intent.putExtra("lobbyid", lobby);
                                         intent.putExtra("clientid", uid);
                                         startActivity(intent);
+                                        active =false;
                                     }
                                 }
                             });
