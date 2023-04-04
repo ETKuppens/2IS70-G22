@@ -24,7 +24,7 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
      */
     public TradeModeState(TradeModeActivity activity, String lid) {
         this.activity = activity;
-        this.repository = new TradingSessionRepositoryImpl(lid);
+        this.repository = new TradingSessionRepositoryImpl(this, lid);
     }
 
     // List of flags that are used to check when certain functionality can be called.
