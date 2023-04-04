@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.cardhub.TradingMode.OnRecyclerViewItemClickListener;
 import com.example.cardhub.inventory.Card;
 
@@ -109,20 +110,7 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
 
 
         ImageView cardImage = view.findViewById(R.id.card_image);
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    InputStream is = (InputStream) new URL(thisCard.IMAGE_URL).getContent();
-                    Drawable d = Drawable.createFromStream(is, "src name");
-                    cardImage.setImageDrawable(d);
-                } catch (Exception e) {
-                    Log.d("CARDGRID", e.toString());
-                }
-            }
-        });
-
-        thread.start();
+        Glide.with(context).load(thisCard.IMAGE_URL).into(cardImage);
 
         return view;
     }
