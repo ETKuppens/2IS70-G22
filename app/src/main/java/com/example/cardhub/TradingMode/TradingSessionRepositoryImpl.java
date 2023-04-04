@@ -55,10 +55,10 @@ public class TradingSessionRepositoryImpl implements TradingSessionRepository {
             Map<String, Object> card = (Map<String, Object>) dif.get("card");
             CardDiff newDif = new CardDiff(
                 new Card(
-                        (String) card.get("name"),
-                        (String) card.get("description"),
-                        Card.Rarity.values()[(int)((long) card.get("rarity"))],
-                        (String) card.get("imageurl")
+                        (String) card.get("NAME"),
+                        (String) card.get("DESCRIPTION"),
+                        Card.Rarity.values()[(int)((long) card.get("RARITY"))],
+                        (String) card.get("IMAGE_URL")
                 ),
                 CardDiff.DiffOption.valueOf((String)dif.get("diff"))
                 );
