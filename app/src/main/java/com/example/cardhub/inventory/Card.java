@@ -20,24 +20,27 @@ public class Card implements Serializable {
     public final String DESCRIPTION; // An optional description of the card
     public final Rarity RARITY;      // The rarity of this card
     public final String IMAGE_URL;       // The image of this card
+    public final String CARD_ID;    // The id of the card
 
     /**
      * Instantiate a card with a description
      */
-    public Card(String name, String description, Rarity rarity, String imageUrl) {
+    public Card(String name, String description, Rarity rarity, String imageUrl, String cardID) {
         this.NAME = name;
         this.DESCRIPTION = description;
         this.RARITY = rarity;
         this.IMAGE_URL = imageUrl;
+        this.CARD_ID = cardID;
     }
 
     /**
      * Instantiate a card without a description
      */
-    Card(String name, Rarity rarity, String imageUrl) {
+    Card(String name, Rarity rarity, String imageUrl, String cardID) {
         this.NAME = name;
         this.DESCRIPTION = "";
         this.RARITY = rarity;
         this.IMAGE_URL = imageUrl;
+        this.CARD_ID = cardID;
     }
 }

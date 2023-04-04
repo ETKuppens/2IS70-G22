@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.cardhub.inventory.Card;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -62,6 +63,7 @@ public class TradingSessionData {
 
                     if (otherCardDiffs != null) {
                         repository.receiveUpdate(otherCardDiffs);
+
                     } else {
                         Log.d("CARDDIFFS", "onEvent: CardDiffs is null");
                     }
@@ -131,10 +133,12 @@ public class TradingSessionData {
      *
      * @param clientID the ID of the application instance that will be used by the server to
      *                 identify which side of the trading session has requested to accept the proposed trade.
+     * @param cards
      */
-    void acceptProposedTrade(String clientID) {
+    void acceptProposedTrade(String clientID, Set<Card> cards) {
         Map<String, Object> data = new HashMap<>();
         data.put("acceptance_" + currentPlayer, true);
+        data.put("cards_" + currentPlayer, cards);
 
         docRef.set(data, SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -161,6 +165,7 @@ public class TradingSessionData {
     void cancelAcceptTrade(String clientID) {
         Map<String, Object> data = new HashMap<>();
         data.put("acceptance_" + currentPlayer, false);
+        data.put("cards_" + currentPlayer, null);
 
         docRef.set(data, SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

@@ -50,7 +50,10 @@ public class InventoryData {
                         if (task.isSuccessful()) {
                             cards.clear();
                             for (DocumentSnapshot documentSnapshots : task.getResult()) {
-                                cards.add(documentSnapshots.getData());
+                                Map<String, Object> snapshot = documentSnapshots.getData();
+
+                                snapshot.put("cardid", documentSnapshots.getId());
+                                cards.add(snapshot);
                             }
                             repository.cardRequestCallback(cards);
                             Log.d("CARDREQUESTALL", "success");
@@ -72,7 +75,10 @@ public class InventoryData {
                         if (task.isSuccessful()) {
                             cards.clear();
                             for (DocumentSnapshot documentSnapshots : task.getResult()) {
-                                cards.add(documentSnapshots.getData());
+                                Map<String, Object> snapshot = documentSnapshots.getData();
+
+                                snapshot.put("cardid", documentSnapshots.getId());
+                                cards.add(snapshot);
                             }
                             Log.d("CARDREQUEST", "card amount: " + cards.size());
                             repository.cardRequestCallback(cards);
