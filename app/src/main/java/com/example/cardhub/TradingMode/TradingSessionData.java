@@ -62,6 +62,8 @@ public class TradingSessionData {
 
                     if (otherCardDiffs != null) {
                         repository.receiveUpdate(otherCardDiffs);
+                    } else {
+                        Log.d("CARDDIFFS", "onEvent: CardDiffs is null");
                     }
                 }
             }
