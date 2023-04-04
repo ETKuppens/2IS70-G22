@@ -83,11 +83,11 @@ public class CardCreationActivity extends CreatorBaseActivity {
         //Button that allows a creator to add the current card to the card pool
         Button cardCreateButton = (Button) findViewById(R.id.createCardButton);
         cardCreateButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 //Add this card to the database
                 if (!checkCardValidity()) {
+                    Log.d("CARD_CREATION", "card invalid");
                     return;
                 }
 
