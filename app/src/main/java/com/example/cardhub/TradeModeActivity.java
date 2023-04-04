@@ -50,6 +50,7 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
 
     private Card clickedCard = null; // Card that was clicked to be removed
     private String lid; // Lobby id
+    private String clientid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +69,9 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
         this.disableOtherPlayerReadyMessage();
 
         lid = getLobbyID();
+        clientid = getClientID();
 
-        state = new TradeModeState(this, lid);
+        state = new TradeModeState(this, lid, clientid);
 
         otherPlayerProposedCardsRecyclerView = findViewById(R.id.ProposedCardsOtherPlayer);
         otherPlayerProposedCardsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -81,6 +83,10 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
         thisPlayerRecyclerViewAdapter = new CardRecyclerViewAdapter(getApplicationContext(), thisPlayerProposedCards);
         thisPlayerProposedCardsRecyclerView.setAdapter(thisPlayerRecyclerViewAdapter);
         thisPlayerRecyclerViewAdapter.setOnRecyclerViewItemClickListener(this);
+    }
+
+    private String getClientID() {
+        return getIntent().getStringExtra("clientid");
     }
 
     /**

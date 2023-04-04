@@ -1,20 +1,5 @@
 package com.example.cardhub.TradingMode;
 
-import static android.content.ContentValues.TAG;
-
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-
-import com.example.cardhub.inventory.InventoryRepositoryReceiver;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.Set;
 
 /**
@@ -24,38 +9,38 @@ public class TradingSessionRepositoryImpl implements TradingSessionRepository {
     TradingSessionData data;
     TradingSessionRepositoryReceiver receiver;
 
-    public TradingSessionRepositoryImpl (TradingSessionRepositoryReceiver receiver, String lid) {
-        data = new TradingSessionData(this, lid);
+    public TradingSessionRepositoryImpl (TradingSessionRepositoryReceiver receiver, String lid, String clientid) {
+        data = new TradingSessionData(this, lid, clientid);
         this.receiver = receiver;
     }
 
     @Override
-    public void cancelTradingSession(int clientID){
+    public void cancelTradingSession(String clientID){
         data.cancelTradingSession(clientID);
     }
 
     @Override
-    public void cancelTradingSessionConfirm(int clientID) {
+    public void cancelTradingSessionConfirm(String clientID) {
 
     }
 
     @Override
-    public void acceptProposedTrade(int clientID) {
+    public void acceptProposedTrade(String clientID) {
         data.acceptProposedTrade(clientID);
     }
 
     @Override
-    public void cancelAcceptTrade(int clientID) {
+    public void cancelAcceptTrade(String clientID) {
         data.cancelAcceptTrade(clientID);
     }
 
     @Override
-    public void changeProposedCards(int clientID, Set<CardDiff> diffs) {
+    public void changeProposedCards(String clientID, Set<CardDiff> diffs) {
         data.changeProposedCards(clientID, diffs);
     }
 
     @Override
-    public void changeProposedCardsConfirm(int clientID) {
-
+    public void changeProposedCardsConfirm(String clientID) {
+        receiver.changeProposedCardsResponse();
     }
 }

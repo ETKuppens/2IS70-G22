@@ -2,14 +2,14 @@ package com.example.cardhub.TradingMode;
 
 import static android.content.ContentValues.TAG;
 
-import android.content.Intent;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.cardhub.TradeModeActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -23,11 +23,69 @@ public class TradingSessionData {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private DocumentReference docRef;
     private String lid;
+    private String clientid;
+    private String otherPlayer;
 
-    public TradingSessionData(TradingSessionRepository repository, String lid) {
+    public TradingSessionData(TradingSessionRepository repository, String lid, String clientid) {
         this.repository = repository;
         this.lid = lid;
+        this.clientid = clientid;
         this.docRef = db.collection("lobbies").document(lid);
+
+        getInfo();
+    }
+
+    public void startCardDiffListener() {
+        // Run card diff listener
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e);
+                    return;
+                }
+
+                // Server changes only so hasPendingWrites should be false
+                if (snapshot != null && snapshot.exists() && !snapshot.getMetadata().hasPendingWrites()) {
+                    Log.d(TAG, "Current data: " + snapshot.getData());
+
+                    Object otherCardDiffs = snapshot.get("cardDiffs_" + otherPlayer);
+
+                    // Call card change function
+                }
+            }
+        });
+    }
+
+    public void getInfo() {
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+
+                        String playerAName = document.getString("playerAName");
+                        String playerBName = document.getString("playerBName");
+
+                        // Find other player clientid
+                        if (playerAName.equals(clientid)) {
+                            otherPlayer = playerBName;
+                        } else {
+                            otherPlayer = playerAName;
+                        }
+
+                        startCardDiffListener();
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
     }
 
     /**
@@ -36,7 +94,7 @@ public class TradingSessionData {
      * @param clientID the ID of the application instance that will be used by the server to
      *                 identify which side of the trading session has requested the trading session to be cancelled.
      */
-    void cancelTradingSession(int clientID) {
+    void cancelTradingSession(String clientID) {
         docRef.delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -60,7 +118,7 @@ public class TradingSessionData {
      * @param clientID the ID of the application instance that will be used by the server to
      *                 identify which side of the trading session has requested to accept the proposed trade.
      */
-    void acceptProposedTrade(int clientID) {
+    void acceptProposedTrade(String clientID) {
         docRef.update("acceptance" + "_" + clientID, true)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -83,7 +141,7 @@ public class TradingSessionData {
      * @param clientID the ID of the application instance that will be used by the server to
      *                 identify which side of the trading session has requested to cancel the trade accept request.
      */
-    void cancelAcceptTrade(int clientID) {
+    void cancelAcceptTrade(String clientID) {
         docRef.update("acceptance" + "_" + clientID, false)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -107,7 +165,7 @@ public class TradingSessionData {
      * @param diffs    a set of CardDiffs that should be applied to the other clients' instance of
      *                 TradingSession.
      */
-    void changeProposedCards(int clientID, Set<CardDiff> diffs) {
+    void changeProposedCards(String clientID, Set<CardDiff> diffs) {
         docRef.update("cardDiffs_" + clientID, diffs)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
