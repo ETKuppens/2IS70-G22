@@ -90,8 +90,8 @@ public class CardSorter {
         boolean isStrictlySmaller = false;
 
         switch (leftRarity) {
-            case UNKNOWN:
-                isStrictlySmaller = !rightRarity.equals(Card.Rarity.UNKNOWN);
+            case ULTRA_RARE:
+                isStrictlySmaller = !rightRarity.equals(Card.Rarity.ULTRA_RARE);
                 break;
 
             case COMMON:

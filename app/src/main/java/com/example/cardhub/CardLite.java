@@ -14,4 +14,6 @@ public class CardLite {
     public String title;
     public String description;
     public int image;
+
+
 }

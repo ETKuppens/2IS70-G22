@@ -21,7 +21,12 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}" />
-
+        <activity
+            android:name=".user_profile.CreatorProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".inventory.CreatorInventoryActivity"
+            android:exported="false" />
         <activity
             android:name=".TradeModeActivity"
             android:exported="false"  />
@@ -44,16 +49,16 @@
             android:name="com.example.cardhub.MainActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.cardhub.ForgotPasswordActivity"
+            android:name="com.example.cardhub.authentification.ForgotPasswordActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.cardhub.RegistrationActivity"
+            android:name="com.example.cardhub.authentification.RegistrationActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.cardhub.MapActivity"
+            android:name="com.example.cardhub.map.MapActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.cardhub.LoginActivity"
+            android:name="com.example.cardhub.authentification.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
