@@ -60,7 +60,9 @@ public class TradingSessionData {
 
                     // Call card change function
 
-                    repository.receiveUpdate(otherCardDiffs);
+                    if (otherCardDiffs != null) {
+                        repository.receiveUpdate(otherCardDiffs);
+                    }
                 }
             }
         });
