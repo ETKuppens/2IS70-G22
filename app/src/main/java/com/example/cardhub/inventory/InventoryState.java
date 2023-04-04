@@ -24,9 +24,12 @@ public class InventoryState implements InventoryRepositoryReceiver {
 
     @Override
     public void receiveCardsResponse(List<Card> cards) {
-        this.displayCards = cards;
+        this.displayCards.clear();
+        this.displayCards.addAll(cards);
+
         if (showingInventory) {
-            this.userCards = cards;
+            this.userCards.clear();
+            this.userCards.addAll(cards);
         }
         activity.updateGrid();
     }
@@ -39,12 +42,13 @@ public class InventoryState implements InventoryRepositoryReceiver {
     public void toggleCollection() {
         if (showingInventory) {
             repository.requestAllCards();
-            showingInventory = false;
         } else {
             repository.requestUserCards();
-            showingInventory = true;
         }
+        showingInventory = !showingInventory;
+
         activity.updateCollectionButton();
+        activity.scrollBackToTop();
     }
 
     @Override
