@@ -1,5 +1,7 @@
 package com.example.cardhub.TradingMode;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -61,4 +63,6 @@ public interface TradingSessionRepository {
      * identify which side of the trading session has just changed their TradingSession data.
      */
     void changeProposedCardsConfirm(String clientID);
+
+    public void receiveUpdate(List<Map<String, Object>> diffs);
 }
