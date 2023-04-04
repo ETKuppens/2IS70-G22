@@ -1,27 +1,25 @@
 package com.example.cardhub.inventory;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 
 import com.example.cardhub.R;
-
 import com.example.cardhub.TradingMode.CardDiff;
-import com.example.cardhub.collector_navigation.CollectorBaseActivity;
+import com.example.cardhub.creator_navigation.CreatorBaseActivity;
 import com.google.gson.Gson;
 
-public class InventoryActivity extends CollectorBaseActivity {
-
+public class CreatorInventoryActivity extends CreatorBaseActivity {
     InventoryState state;
     CardGridAdapter adapter;
 
@@ -33,50 +31,50 @@ public class InventoryActivity extends CollectorBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_inventory);
+        setContentView(R.layout.activity_creator_inventory);
         setupNav();
-        this.thisIntent = getIntent();
-        Bundle intentBundle = thisIntent.getExtras();
-
-        if (intentBundle != null) {
-            String intentOrigin = intentBundle.getString("origin");
-
-            if (intentOrigin != null && intentOrigin.equals("TradeModeActivity")) {
-                this.shouldSupportChoosingACard = true;
-            }
-        }
-
-        state = new InventoryState(this);
-
-        state.requestUserCards();
-
-        adapter = new CardGridAdapter(this, state.displayCards);
-        GridView cardGridView = findViewById(R.id.card_grid);
-        cardGridView.setAdapter(adapter);
-
-        Button name_sort = findViewById(R.id.sort_by_name);
-        name_sort.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                state.sortCards(CardSorter.SortAttribute.NAME);
-            }
-        });
-
-        Button rarity_sort = findViewById(R.id.sort_by_rarity);
-        rarity_sort.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                state.sortCards(CardSorter.SortAttribute.RARITY);
-            }
-        });
-
-        Button show_collection = findViewById(R.id.show_collection);
-        show_collection.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                state.toggleCollection();
-            }
-        });
+//        this.thisIntent = getIntent();
+//        Bundle intentBundle = thisIntent.getExtras();
+//
+//        if (intentBundle != null) {
+//            String intentOrigin = intentBundle.getString("origin");
+//
+//            if (intentOrigin != null && intentOrigin.equals("TradeModeActivity")) {
+//                this.shouldSupportChoosingACard = true;
+//            }
+//        }
+//
+//        state = new InventoryState(this);
+//
+//        state.requestUserCards();
+//
+//        adapter = new CardGridAdapter(this, state.displayCards);
+//        GridView cardGridView = findViewById(R.id.card_grid);
+//        cardGridView.setAdapter(adapter);
+//
+//        Button name_sort = findViewById(R.id.sort_by_name);
+//        name_sort.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                state.sortCards(CardSorter.SortAttribute.NAME);
+//            }
+//        });
+//
+//        Button rarity_sort = findViewById(R.id.sort_by_rarity);
+//        rarity_sort.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                state.sortCards(CardSorter.SortAttribute.RARITY);
+//            }
+//        });
+//
+//        Button show_collection = findViewById(R.id.show_collection);
+//        show_collection.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                state.toggleCollection();
+//            }
+//        });
     }
 
     @Override
@@ -113,10 +111,10 @@ public class InventoryActivity extends CollectorBaseActivity {
      * Update the inventory grid
      */
     public void updateGrid() {
-        CardGridView cardGridView = findViewById(R.id.card_grid);
+        GridView cardGridView = findViewById(R.id.card_grid);
         adapter.updateData(state.displayCards);
         adapter.notifyDataSetChanged();
-        cardGridView.invalidateViews();
+
 
         Log.d("GRID_UPDATE", "cards length: " + state.displayCards.size());
 
@@ -143,7 +141,15 @@ public class InventoryActivity extends CollectorBaseActivity {
         Button show_collection = findViewById(R.id.show_collection);
         if (state.showingInventory) {
             show_collection.setText("Show Collection");
+            ImageView image  = findViewById(R.id.card_image);
         } else {
+            //List<Card> missingCards  = state.displayCards;
+            //missingCards.stream().filter((Card card) -> !(state.userCards.stream().anyMatch((Card card2) -> card.NAME == card2.NAME)));
+            //for (int i = 0; i < state.displayCards.size(); i++) {
+            //    if (state.userCards.stream().anyMatch(card -> card.NAME == ))
+            //    if
+            //}
+            //image.setColorFIlter(ContextCompat.getColor(this, R.color.black));
             show_collection.setText("Show Inventory");
         }
     }
@@ -169,8 +175,4 @@ public class InventoryActivity extends CollectorBaseActivity {
             }
     );
 
-    public void scrollBackToTop() {
-        CardGridView cardGridView = findViewById(R.id.card_grid);
-        cardGridView.scrollTo(1, 1);
-    }
 }
