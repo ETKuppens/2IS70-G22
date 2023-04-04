@@ -15,7 +15,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.SetOptions;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 public class TradingSessionData {
@@ -53,6 +56,7 @@ public class TradingSessionData {
                     Object otherCardDiffs = snapshot.get("cardDiffs_" + otherPlayer);
 
                     // Call card change function
+
                 }
             }
         });
@@ -119,7 +123,10 @@ public class TradingSessionData {
      *                 identify which side of the trading session has requested to accept the proposed trade.
      */
     void acceptProposedTrade(String clientID) {
-        docRef.update("acceptance" + "_" + clientID, true)
+        Map<String, Object> data = new HashMap<>();
+        data.put("acceptance" + "_" + clientID, true);
+
+        docRef.set(data, SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -142,7 +149,10 @@ public class TradingSessionData {
      *                 identify which side of the trading session has requested to cancel the trade accept request.
      */
     void cancelAcceptTrade(String clientID) {
-        docRef.update("acceptance" + "_" + clientID, false)
+        Map<String, Object> data = new HashMap<>();
+        data.put("acceptance" + "_" + clientID, false);
+
+        docRef.set(data, SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -166,7 +176,10 @@ public class TradingSessionData {
      *                 TradingSession.
      */
     void changeProposedCards(String clientID, Set<CardDiff> diffs) {
-        docRef.update("cardDiffs_" + clientID, diffs)
+        Map<String, Object> data = new HashMap<>();
+        data.put("cardDiffs_" + clientID, diffs);
+
+        docRef.set(data, SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
