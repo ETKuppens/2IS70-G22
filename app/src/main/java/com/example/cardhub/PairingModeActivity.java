@@ -212,6 +212,7 @@ public class PairingModeActivity extends CollectorBaseActivity {
                                                 Log.d("WORRY", "DocumentSnapshot successfully written!");
                                                 Intent intent = new Intent(getApplicationContext(), TradeModeActivity.class);
                                                 intent.putExtra("lobbyid", lobby);
+                                                intent.putExtra("clientid", uid);
                                                 startActivity(intent);
                                             }
                                         })

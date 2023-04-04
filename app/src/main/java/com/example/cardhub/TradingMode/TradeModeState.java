@@ -1,5 +1,6 @@
 package com.example.cardhub.TradingMode;
 
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.cardhub.TradeModeActivity;
