@@ -11,10 +11,13 @@ import android.widget.ImageView;
 
 import androidx.core.content.ContextCompat;
 
+import com.bumptech.glide.Glide;
 import com.example.cardhub.R;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CardGridAdapter extends BaseAdapter {
@@ -30,9 +33,10 @@ public class CardGridAdapter extends BaseAdapter {
     }
 
     public void updateData(List<Card> newCards) {
-        cards.clear();
-        cards.addAll(newCards);
-        this.notifyDataSetChanged();
+        if (newCards != cards) {
+            cards.clear();
+            cards.addAll(newCards);
+        }
     }
 
     @Override
@@ -42,18 +46,18 @@ public class CardGridAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return null;
+        return cards.get(i);
     }
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return i;
     }
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         if (view == null) {
-            view = inflater.inflate(R.layout.card_grid_item, null);
+            view = inflater.inflate(R.layout.card_grid_item, viewGroup, false);
         }
 
         Card thisCard = cards.get(i);
@@ -73,28 +77,14 @@ public class CardGridAdapter extends BaseAdapter {
                 color = ContextCompat.getColor(context, R.color.rarity_rare);
                 break;
 
-            case UNKNOWN:
-                color = ContextCompat.getColor(context, R.color.rarity_unknown);
+            case ULTRA_RARE:
+                color = ContextCompat.getColor(context, R.color.rarity_ultra_rare);
                 break;
         }
         cardBackground.setBackgroundColor(color);
 
-
         ImageView cardImage = view.findViewById(R.id.card_image);
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    InputStream is = (InputStream) new URL(thisCard.IMAGE_URL).getContent();
-                    Drawable d = Drawable.createFromStream(is, "src name");
-                    cardImage.setImageDrawable(d);
-                } catch (Exception e) {
-                    Log.d("CARDGRID", e.toString());
-                }
-            }
-        });
-
-        thread.start();
+        Glide.with(context).load(thisCard.IMAGE_URL).into(cardImage);
 
         return view;
     }

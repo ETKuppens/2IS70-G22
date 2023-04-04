@@ -15,6 +15,7 @@ import android.widget.RadioGroup;
 
 import com.example.cardhub.R;
 import com.example.cardhub.collector_navigation.CollectorBaseActivity;
+import com.example.cardhub.creator_navigation.CreatorBaseActivity;
 import com.example.cardhub.inventory.Card;
 import com.example.cardhub.inventory.CardActivity;
 import com.google.android.material.textfield.TextInputEditText;
@@ -23,7 +24,7 @@ import com.google.android.material.textfield.TextInputEditText;
  * Activity that allows a creator user to create custom cards.
  * @author Rijkman
  */
-public class CardCreationActivity extends CollectorBaseActivity {
+public class CardCreationActivity extends CreatorBaseActivity {
     //Keeps track of the current state variable
     CardCreationState state;
 
@@ -34,13 +35,14 @@ public class CardCreationActivity extends CollectorBaseActivity {
 
     @Override
     public int getBottomNavigationMenuItemId() {
-        return R.drawable.profile;
+        return R.id.action_create;
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_creation);
 
+        setupNav();
         state = new CardCreationState();
 
         //Object to prompt the user to pick an image
@@ -120,8 +122,8 @@ public class CardCreationActivity extends CollectorBaseActivity {
             case R.id.legendaryButton: {
                 state.setRarity(Card.Rarity.LEGENDARY);
             }
-            default: {
-                state.setRarity(Card.Rarity.UNKNOWN);
+            case R.id.ultraRareButton: {
+                state.setRarity(Card.Rarity.ULTRA_RARE);
             }
         }
 

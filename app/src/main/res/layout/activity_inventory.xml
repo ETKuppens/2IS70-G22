@@ -36,7 +36,7 @@
     </com.google.android.flexbox.FlexboxLayout>
 
 
-    <GridView
+    <com.example.cardhub.inventory.CardGridView
         android:id="@+id/card_grid"
         android:layout_width="match_parent"
         android:layout_height="630dp"
@@ -48,7 +48,9 @@
         android:verticalSpacing="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/fragment_container"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" >
+
+    </com.example.cardhub.inventory.CardGridView>
 
     <FrameLayout
         android:id="@+id/fragment_container"
