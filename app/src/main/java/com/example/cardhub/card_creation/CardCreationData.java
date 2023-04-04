@@ -15,10 +15,11 @@ import java.util.HashMap;
 
 public class CardCreationData {
     FirebaseFirestore db;
-    FirebaseAuth
+    FirebaseAuth auth;
 
     CardCreationData() {
         this.db = FirebaseFirestore.getInstance();
+        this.auth = FirebaseAuth.getInstance();
     }
 
     public void publishCard(Card c) {
@@ -32,9 +33,18 @@ public class CardCreationData {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
                 if (task.isSuccessful()) {
-                    db.collection("")
+                    db.collection("users/" + auth.getUid() + "/cards/").add(cardObj).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentReference> task) {
+                            if (task.isSuccessful()) {
+                                Log.d("CARD_CREATION", "card added to creator inventory.");
+                            } else {
+                                Log.d("CARD_CREATION", "failed to add card to creator inventory: " + task.getException());
+                            }
+                        }
+                    });
                 } else {
-                    Log.d("CARD_CREATION", "failed to add card to card pool");
+                    Log.d("CARD_CREATION", "failed to add card to card pool: " + task.getException());
                 }
             }
         });
