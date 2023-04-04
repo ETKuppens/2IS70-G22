@@ -91,7 +91,7 @@ public class PairingModeActivity extends CollectorBaseActivity {
                                         return;
                                     }
 
-                                    if (!snapshot.getData().get("playerBName").equals("")) {
+                                    if (snapshot != null && snapshot.exists() && !snapshot.getData().get("playerBName").equals("")) {
                                         Intent intent = new Intent(getApplicationContext(), TradeModeActivity.class);
                                         intent.putExtra("lobbyid", lobby);
                                         intent.putExtra("clientid", uid);
