@@ -56,10 +56,11 @@ public class TradingSessionData {
                 if (snapshot != null && snapshot.exists() && !snapshot.getMetadata().hasPendingWrites()) {
                     Log.d(TAG, "Current data: " + snapshot.getData());
 
-                    Object otherCardDiffs = snapshot.get("cardDiffs_" + otherPlayer);
+                    List<Map<String, Object>> otherCardDiffs = (List<Map<String, Object>>) snapshot.get("cardDiffs_" + otherPlayer);
 
                     // Call card change function
 
+                    repository.receiveUpdate(otherCardDiffs);
                 }
             }
         });

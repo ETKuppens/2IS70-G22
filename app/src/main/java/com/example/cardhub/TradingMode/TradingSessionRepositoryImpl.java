@@ -1,5 +1,7 @@
 package com.example.cardhub.TradingMode;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -42,5 +44,10 @@ public class TradingSessionRepositoryImpl implements TradingSessionRepository {
     @Override
     public void changeProposedCardsConfirm(String clientID) {
         receiver.changeProposedCardsResponse();
+    }
+
+    @Override
+    public void receiveUpdate(List<Map<String, Object>> diffs) {
+//        diffs.stream().map()
     }
 }
