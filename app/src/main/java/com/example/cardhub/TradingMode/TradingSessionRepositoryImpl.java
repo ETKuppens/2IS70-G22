@@ -1,8 +1,11 @@
 package com.example.cardhub.TradingMode;
 
+import com.example.cardhub.inventory.Card;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Class implementing the TradingSessionRepository interface
@@ -48,6 +51,20 @@ public class TradingSessionRepositoryImpl implements TradingSessionRepository {
 
     @Override
     public void receiveUpdate(List<Map<String, Object>> diffs) {
-//        diffs.stream().map()
+        Set<CardDiff> diffs_list = diffs.stream().map((dif) -> {
+            Map<String, Object> card = (Map<String, Object>) dif.get("card");
+            CardDiff newDif = new CardDiff(
+                new Card(
+                        (String) card.get("name"),
+                        (String) card.get("description"),
+                        Card.Rarity.values()[(int)(long) card.get("name")],
+                        (String) card.get("imageurl")
+                ),
+                CardDiff.DiffOption.valueOf((String)dif.get("diff"))
+                );
+            return newDif;
+        }).collect(Collectors.toSet());
+
+        receiver.changeProposedCards(diffs_list);
     }
 }
