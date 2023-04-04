@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,7 +18,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -27,8 +25,8 @@ import com.example.cardhub.BuildConfig;
 import com.example.cardhub.PairingModeActivity;
 import com.example.cardhub.R;
 import com.example.cardhub.collector_navigation.CollectorBaseActivity;
+import com.example.cardhub.inventory.Card;
 import com.example.cardhub.inventory.InventoryActivity;
-import com.example.cardhub.map.CardPack;
 import com.example.cardhub.user_profile.ProfileActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -51,12 +49,9 @@ import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
 import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public class MapActivity extends CollectorBaseActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
@@ -288,7 +283,7 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         collectCardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                buttonCollectCardClicked();
+                buttonCollectCardPackClicked(pack.rarity);
             }
         });
 
@@ -528,7 +523,7 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         }
     }
 
-    protected void buttonCollectCardClicked() {
+    protected void buttonCollectCardPackClicked(Card.Rarity rarity) {
         // Get user location (update lastKnownLocation)
         getDeviceLocation();
         // Get marker location
@@ -540,13 +535,12 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         Toast.makeText(getApplicationContext(),Double.toString(distance),Toast.LENGTH_SHORT).show();
         // Init card collection
         if (distance <= 30) {
-
+            state.acquireRandomCard(rarity);
         } else {
             String errMessage = String.format("%.2f", distance);
-            Toast.makeText(getApplicationContext(), "You cannot collect the car. Distance " +
+            Toast.makeText(getApplicationContext(), "You cannot collect the card. Distance " +
                     errMessage + " is >30m.",Toast.LENGTH_SHORT).show();
         }
-        // remove card from the map
     }
 
     public static final double AVERAGE_RADIUS_OF_EARTH_KM = 6371;
