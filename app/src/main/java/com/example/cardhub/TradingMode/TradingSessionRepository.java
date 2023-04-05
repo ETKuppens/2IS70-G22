@@ -1,5 +1,7 @@
 package com.example.cardhub.TradingMode;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -13,7 +15,7 @@ public interface TradingSessionRepository {
      * @param clientID the ID of the application instance that will be used by the server to
      * identify which side of the trading session has requested the trading session to be cancelled.
      */
-    void cancelTradingSession(int clientID);
+    void cancelTradingSession(String clientID);
 
     /**
      * Send a confirmation message to the server that the client has cancelled the trading session
@@ -22,7 +24,7 @@ public interface TradingSessionRepository {
      * @param clientID the ID of the application instance that will be used by the server to
      * identify which side of the trading session has cancelled their trading session correctly.
      */
-    void cancelTradingSessionConfirm(int clientID);
+    void cancelTradingSessionConfirm(String clientID);
 
 
     /**
@@ -31,7 +33,7 @@ public interface TradingSessionRepository {
      * @param clientID the ID of the application instance that will be used by the server to
      * identify which side of the trading session has requested to accept the proposed trade.
      */
-    void acceptProposedTrade(int clientID);
+    void acceptProposedTrade(String clientID);
 
     /**
      * Send a confirmation message to the server that the current trade acceptance has been
@@ -40,7 +42,7 @@ public interface TradingSessionRepository {
      * @param clientID the ID of the application instance that will be used by the server to
      * identify which side of the trading session has requested to cancel the trade accept request.
      */
-    void cancelAcceptTrade(int clientID);
+    void cancelAcceptTrade(String clientID);
 
 
     /**
@@ -51,7 +53,7 @@ public interface TradingSessionRepository {
      * @param diffs a set of CardDiffs that should be applied to the other clients' instance of
      * TradingSession.
      */
-    void changeProposedCards(int clientID, Set<CardDiff> diffs);
+    void changeProposedCards(String clientID, Set<CardDiff> diffs);
 
     /**
      * Send a confirmation message to the server that the client has changed the proposed cards
@@ -60,5 +62,7 @@ public interface TradingSessionRepository {
      * @param clientID the ID of the application instance that will be used by the server to
      * identify which side of the trading session has just changed their TradingSession data.
      */
-    void changeProposedCardsConfirm(int clientID);
+    void changeProposedCardsConfirm(String clientID);
+
+    public void receiveUpdate(List<Map<String, Object>> diffs);
 }
