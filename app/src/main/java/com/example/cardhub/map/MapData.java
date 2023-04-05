@@ -70,6 +70,13 @@ public class MapData {
                         @Override
                         public void onComplete(@NonNull Task<DocumentReference> task) {
                             if (task.isSuccessful()) {
+                                Card decodedCard = new Card(
+                                        (String) acquiredCard.get("name"),
+                                        (String) acquiredCard.get("description"),
+                                        Card.Rarity.values()[(int) ((long) acquiredCard.get("rarity"))],
+                                        (String) acquiredCard.get("imageurl"));
+
+                                receiver.acquireRandomCardCallback(decodedCard);
                                 Log.d("ACQUISITION", "added card successfully");
                             } else {
                                 Log.d("ACQUISITION", "failed to add card: " + task.getException());

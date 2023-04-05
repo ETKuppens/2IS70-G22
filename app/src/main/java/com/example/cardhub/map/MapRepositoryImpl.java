@@ -45,4 +45,9 @@ public class MapRepositoryImpl implements MapRepository {
     public void acquireRandomCard(Card.Rarity rarity) {
         data.acquireRandomCard(rarity);
     }
+
+    @Override
+    public void acquireRandomCardCallback(Card acquiredCard) {
+        state.acquireRandomCardCallback(acquiredCard);
+    }
 }

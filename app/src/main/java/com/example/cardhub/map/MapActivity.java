@@ -602,7 +602,7 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         cardpackPreviewWindow = null;
     }
 
-    private void showCardpackPreviewWindow(List<Card> cardPackCards) {
+    public void showCardpackPreviewWindow(List<Card> cardPackCards) {
         if (cardpackPreviewWindow != null || cardPackCards == null) {
             return;
         }
