@@ -288,65 +288,31 @@ public class TradingSessionData {
                                             String playerAName = (String)task.getResult().get("playerAName");
                                             String playerBName = (String)task.getResult().get("playerBName");
 
-                                            List<String> offeredNamesA = playerAOfferedCards.stream()
-                                                    .map(card -> (String) card.get("name")).collect(Collectors.toList());
-                                            offeredNamesA.add("DO_NOT_USE_THIS_NAME");
-                                            db.collection("users/" + playerAName + "/cards")
-                                                .whereIn("name", offeredNamesA)
-                                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                        if (task.isSuccessful()) {
-                                                            WriteBatch batch = db.batch();
-                                                            for (DocumentSnapshot s : task.getResult()) {
-                                                                batch.delete(s.getReference());
-                                                            }
-
-                                                            List<String> offeredNamesB = playerBOfferedCards.stream()
-                                                                    .map(card -> (String) card.get("name")).collect(Collectors.toList());
-                                                            offeredNamesB.add("DO_NOT_USE_THIS_NAME");
-                                                            db.collection("users/" + playerBName + "/cards")
-                                                                .whereIn("name", offeredNamesB)
-                                                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                                    @Override
-                                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                                        if (task.isSuccessful()) {
-                                                                            for (DocumentSnapshot s : task.getResult()) {
-                                                                                batch.delete(s.getReference());
-                                                                            }
-
-                                                                            DocumentReference docRefInvA = db.collection("users/" + playerAName + "/cards").document();
-                                                                            for (Map<String, Object> card : playerBOfferedCards) {
-                                                                                batch.set(docRefInvA, card);
-                                                                            }
-
-                                                                            DocumentReference docRefInvB = db.collection("users/" + playerBName + "/cards").document();
-                                                                            for (Map<String, Object> card : playerAOfferedCards) {
-                                                                                batch.set(docRefInvB, card);
-                                                                            }
-
-                                                                            batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                                @Override
-                                                                                public void onComplete(@NonNull Task<Void> task) {
-                                                                                    if (task.isSuccessful()) {
-                                                                                        docRef.update("finished", true);
-                                                                                        listenerRegistration.remove();
-                                                                                        Log.d("TRADING", "trade complete");
-                                                                                        repository.finishTrade();
-                                                                                    } else {
-                                                                                        Log.d("TRADING", "trade failed" + task.getException());
-                                                                                    }
-                                                                                }
-                                                                            });
-                                                                        }
+                                            WriteBatch batch = db.batch();
+                                            if (playerAOfferedCards.size() > 0) {
+                                                List<String> offeredNamesA = playerAOfferedCards.stream()
+                                                        .map(card -> (String) card.get("name")).collect(Collectors.toList());
+                                                offeredNamesA.add("DO_NOT_USE_THIS_NAME");
+                                                db.collection("users/" + playerAName + "/cards")
+                                                        .whereIn("name", offeredNamesA)
+                                                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    for (DocumentSnapshot s : task.getResult()) {
+                                                                        batch.delete(s.getReference());
                                                                     }
-                                                                });
-                                                        }
-                                                    }
-                                                });
 
-                                        } else {
-                                            Log.e("TRADING_ERROR", "failed: " + task.getException());
+                                                                    deletePlayerBOffers(playerAOfferedCards, playerBOfferedCards, playerBName, playerAName, batch);
+                                                                }
+                                                            }
+                                                        });
+                                            } else {
+                                                deletePlayerBOffers(playerAOfferedCards, playerBOfferedCards, playerBName, playerAName, batch);
+                                            }
+
+                                            } else {
+                                                Log.e("TRADING_ERROR", "failed: " + task.getException());
                                         }
                                     }
                                 });
@@ -357,6 +323,57 @@ public class TradingSessionData {
                     });
                 } else {
                     Log.e("TRADING_ERROR", "failed: " + task.getException());
+                }
+            }
+        });
+    }
+
+    void deletePlayerBOffers(List<Map<String,Object>> playerAOfferedCards, List<Map<String,Object>> playerBOfferedCards, String playerBName, String playerAName, WriteBatch batch) {
+        if (playerBOfferedCards.size() > 0) {
+            List<String> offeredNamesB = playerBOfferedCards.stream()
+                    .map(card -> (String) card.get("name")).collect(Collectors.toList());
+            offeredNamesB.add("DO_NOT_USE_THIS_NAME");
+            db.collection("users/" + playerBName + "/cards")
+                    .whereIn("name", offeredNamesB)
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (DocumentSnapshot s : task.getResult()) {
+                                    batch.delete(s.getReference());
+                                }
+
+                                exchangeCards(playerAOfferedCards, playerBOfferedCards, playerBName, playerAName, batch);
+                            }
+                        }
+                    });
+        } else {
+            exchangeCards(playerAOfferedCards, playerBOfferedCards, playerBName, playerAName, batch);
+        }
+    }
+
+    void exchangeCards (List<Map<String,Object>> playerAOfferedCards, List<Map<String,Object>> playerBOfferedCards, String playerBName, String playerAName, WriteBatch batch) {
+
+        DocumentReference docRefInvA = db.collection("users/" + playerAName + "/cards").document();
+        for (Map<String, Object> card : playerBOfferedCards) {
+            batch.set(docRefInvA, card);
+        }
+
+        DocumentReference docRefInvB = db.collection("users/" + playerBName + "/cards").document();
+        for (Map<String, Object> card : playerAOfferedCards) {
+            batch.set(docRefInvB, card);
+        }
+
+        batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    docRef.update("finished", true);
+                    listenerRegistration.remove();
+                    Log.d("TRADING", "trade complete");
+                    repository.finishTrade();
+                } else {
+                    Log.d("TRADING", "trade failed" + task.getException());
                 }
             }
         });
