@@ -130,7 +130,9 @@ public class TradingSessionData {
 
                 if (snapshot != null && snapshot.exists()) {
                     Map<String, Object> result = snapshot.getData();
-                    if (result == null) return;
+                    if (result == null &&
+                            result.get("acceptance_playerA") == null &&
+                            result.get("acceptance_playerB") == null) return;
                     boolean playerA = (boolean)result.get("acceptance_playerA");
                     boolean playerB = (boolean)result.get("acceptance_playerB");
                     if (playerA && playerB) {
