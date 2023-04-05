@@ -23,6 +23,8 @@ public class Card implements Serializable {
     public final Rarity RARITY;      // The rarity of this card
     public final String IMAGE_URL;       // The image of this card
 
+    public boolean acquired = true;
+
     /**
      * Instantiate a card with a description
      */

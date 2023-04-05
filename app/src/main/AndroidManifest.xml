@@ -29,8 +29,8 @@
             android:exported="false" />
         <activity
             android:name=".TradeModeActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+            android:configChanges="orientation|screenSize|screenLayout"
+            android:exported="false"  />
         <activity
             android:name=".user_profile.ProfileActivity"
             android:exported="false" />

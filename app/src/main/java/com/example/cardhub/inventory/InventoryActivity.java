@@ -1,21 +1,19 @@
 package com.example.cardhub.inventory;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 
-import com.example.cardhub.R;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 
+import com.example.cardhub.R;
 import com.example.cardhub.TradingMode.CardDiff;
 import com.example.cardhub.collector_navigation.CollectorBaseActivity;
 import com.google.gson.Gson;
@@ -51,7 +49,8 @@ public class InventoryActivity extends CollectorBaseActivity {
         state.requestUserCards();
 
         adapter = new CardGridAdapter(this, state.displayCards);
-        GridView cardGridView = findViewById(R.id.card_grid);
+        CardGridView cardGridView = findViewById(R.id.card_grid);
+        cardGridView.setExpanded(true);
         cardGridView.setAdapter(adapter);
 
         Button name_sort = findViewById(R.id.sort_by_name);
@@ -132,7 +131,11 @@ public class InventoryActivity extends CollectorBaseActivity {
                 String encodedCard = converter.toJson(cardToEncode);
 
                 displayCardIntent.putExtra("card", encodedCard);
-                displayCardIntent.putExtra("ShouldSupportChoosingACard", shouldSupportChoosingACard);
+                if (!cardToEncode.acquired) {
+                    displayCardIntent.putExtra("ShouldSupportChoosingACard", false);
+                } else {
+                    displayCardIntent.putExtra("ShouldSupportChoosingACard", shouldSupportChoosingACard);
+                }
 
                 cardPreviewResultLauncher.launch(displayCardIntent);
             }

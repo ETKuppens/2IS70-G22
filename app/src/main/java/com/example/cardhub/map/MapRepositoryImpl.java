@@ -1,6 +1,5 @@
 package com.example.cardhub.map;
 
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import com.example.cardhub.inventory.Card;
@@ -39,5 +38,15 @@ public class MapRepositoryImpl implements MapRepository {
                 (String) pack.get("image"))).collect(Collectors.toList());
 
         state.setPacks(packs);
+    }
+
+    @Override
+    public void acquireRandomCard(Card.Rarity rarity) {
+        data.acquireRandomCard(rarity);
+    }
+
+    @Override
+    public void acquireRandomCardCallback(Card acquiredCard) {
+        state.acquireRandomCardCallback(acquiredCard);
     }
 }

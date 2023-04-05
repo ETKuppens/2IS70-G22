@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/dark_gray_1"
     tools:context=".inventory.CreatorInventoryActivity">
 
     <com.google.android.flexbox.FlexboxLayout
@@ -20,19 +21,22 @@
             android:id="@+id/sort_by_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="sort by name" />
+            android:text="sort by name"
+            android:textColor="@color/white"/>
 
         <Button
             android:id="@+id/sort_by_rarity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="sort by rarity" />
+            android:text="sort by rarity"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/show_collection"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="show collection" />
+            android:text="show collection"
+            android:textColor="@color/white"/>
     </com.google.android.flexbox.FlexboxLayout>
 
     <include

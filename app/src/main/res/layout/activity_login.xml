@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/dark_gray_1"
     tools:context=".authentification.LoginActivity">
 
     <TextView
@@ -12,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:text="Sign In"
+        android:textColor="@color/white"
         android:textSize="48sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,6 +27,7 @@
         android:ems="10"
         android:hint="Email"
         android:inputType="textPersonName"
+        android:textColor="@color/white"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="@+id/textView_signin"
         app:layout_constraintStart_toStartOf="@+id/textView_signin"
@@ -38,6 +41,7 @@
         android:height="50dp"
         android:ems="10"
         android:hint="Password"
+        android:textColor="@color/white"
         android:inputType="textPassword"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="@+id/editText_email"
@@ -72,6 +76,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Login"
+        android:background="@drawable/custom_button"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/textView_forgot"
         app:layout_constraintStart_toStartOf="@+id/textView_forgot"
         app:layout_constraintTop_toBottomOf="@+id/textView_forgot" />
