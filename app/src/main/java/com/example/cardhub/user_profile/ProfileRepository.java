@@ -22,7 +22,7 @@ public class ProfileRepository {
         inv.add(new Card("Gabagonga", "ges", Card.Rarity.COMMON, ""));
         inv.add(new Card("Gabagonga", "ges", Card.Rarity.COMMON, ""));
         inv.add(new Card("Gabagonga", "ges", Card.Rarity.COMMON, ""));
-        return new Profile(null, "Mike Hawk", inv);
+        return new Profile(null, "Gabriel Louis", inv);
     }
 
     public void logOut() {

@@ -8,24 +8,29 @@
     android:background="@color/dark_gray_1"
     tools:context=".card_creation.CardCreationActivity">
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/createCardButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Create Card"
+        android:background="@drawable/custom_button"
+        android:drawableLeft="@drawable/profile"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/previewCardButton" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/selectImageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="180dp"
+        android:background="@drawable/custom_button"
+        android:drawableLeft="@drawable/profile"
         android:text="Select Image"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rarityButtons" />
 
@@ -95,7 +100,9 @@
 
     </RadioGroup>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
+        android:background="@drawable/custom_button"
+        android:drawableLeft="@drawable/profile"
         android:id="@+id/previewCardButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

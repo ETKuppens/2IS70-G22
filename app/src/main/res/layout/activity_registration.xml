@@ -75,6 +75,7 @@
         app:layout_constraintTop_toBottomOf="@+id/button_register" />
 
     <Button
+        android:background="@drawable/custom_button"
         android:id="@+id/button_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -83,8 +84,7 @@
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/textView_tos"
         app:layout_constraintStart_toEndOf="@+id/checkBox_tos"
-        app:layout_constraintTop_toBottomOf="@+id/textView_tos" />
-
+        app:layout_constraintTop_toBottomOf="@+id/textView_tos"/>
     <CheckBox
         android:id="@+id/checkBox_tos"
         android:layout_width="wrap_content"
