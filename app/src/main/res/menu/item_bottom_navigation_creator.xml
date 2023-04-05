@@ -4,5 +4,5 @@
     android:id="@+id/navigation"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:attr/windowBackground"
+    android:background="@color/navigation_gray"
     app:menu="@menu/bottom_menu_creator" />

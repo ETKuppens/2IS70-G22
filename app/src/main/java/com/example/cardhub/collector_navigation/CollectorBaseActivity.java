@@ -30,21 +30,23 @@ public abstract class CollectorBaseActivity extends AppCompatActivity implements
         navigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemId = item.getItemId();
-                if (itemId == R.id.action_inventory) {
-                    startActivity(new Intent(getApplicationContext(), InventoryActivity.class));
-                } else if (itemId == R.id.action_map) {
-                    startActivity(new Intent(getApplicationContext(), MapActivity.class));
-                } else if (itemId == R.id.action_trading) {
-                    startActivity(new Intent(getApplicationContext(), PairingModeActivity.class));
-                } else if (itemId == R.id.action_profile) {
-                    startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-                }
+                navigationView.postDelayed(() -> {
+                    int itemId = item.getItemId();
+                    if (itemId == R.id.action_inventory) {
+                        startActivity(new Intent(getApplicationContext(), InventoryActivity.class));
+                    } else if (itemId == R.id.action_map) {
+                        startActivity(new Intent(getApplicationContext(), MapActivity.class));
+                    } else if (itemId == R.id.action_trading) {
+                        startActivity(new Intent(getApplicationContext(), PairingModeActivity.class));
+                    } else if (itemId == R.id.action_profile) {
+                        startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                    }
+                    finish();
+                }, 300);
                 return true;
             }
         });
     }
-
     @Override
     protected void onStart() {
         super.onStart();

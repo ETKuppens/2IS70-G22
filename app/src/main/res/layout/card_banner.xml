@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_banner"
+    android:background="@color/dark_gray_1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -50,6 +51,7 @@
                     android:layout_height="wrap_content"
                     android:padding="5dp"
                     android:text="Title of the card"
+                    android:textColor="@color/white"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -60,6 +62,7 @@
                     android:layout_marginTop="10dp"
                     android:padding="5dp"
                     android:text="Some textual describtion of the cards. Display some info."
+                    android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/card_title"
@@ -72,6 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="COLLECT CARD"
+                android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/cardView"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
