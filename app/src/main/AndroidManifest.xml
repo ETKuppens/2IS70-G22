@@ -23,11 +23,9 @@
             android:value="${MAPS_API_KEY}" />
         <activity
             android:name=".user_profile.CreatorProfileActivity"
-            android:configChanges="orientation|screenSize|screenLayout"
             android:exported="false" />
         <activity
             android:name=".inventory.CreatorInventoryActivity"
-            android:configChanges="orientation|screenSize|screenLayout"
             android:exported="false" />
         <activity
             android:name=".TradeModeActivity"
@@ -35,43 +33,33 @@
             android:exported="false"  />
         <activity
             android:name=".user_profile.ProfileActivity"
-            android:configChanges="orientation|screenSize|screenLayout"
             android:exported="false" />
         <activity
             android:name=".card_creation.CardCreationActivity"
-            android:configChanges="orientation|screenSize|screenLayout"
             android:exported="false" />
         <activity
             android:name=".inventory.CardActivity"
-            android:configChanges="orientation|screenSize|screenLayout"
             android:exported="false" />
         <activity
             android:name=".inventory.InventoryActivity"
-            android:configChanges="orientation|screenSize|screenLayout"
             android:exported="false" />
         <activity
             android:name=".PairingModeActivity"
-            android:configChanges="orientation|screenSize|screenLayout"
             android:exported="false" />
         <activity
             android:name="com.example.cardhub.MainActivity"
-            android:configChanges="orientation|screenSize|screenLayout"
             android:exported="false" />
         <activity
             android:name="com.example.cardhub.authentification.ForgotPasswordActivity"
-            android:configChanges="orientation|screenSize|screenLayout"
             android:exported="false" />
         <activity
             android:name="com.example.cardhub.authentification.RegistrationActivity"
-            android:configChanges="orientation|screenSize|screenLayout"
             android:exported="false" />
         <activity
             android:name="com.example.cardhub.map.MapActivity"
-            android:configChanges="orientation|screenSize|screenLayout"
             android:exported="false" />
         <activity
             android:name="com.example.cardhub.authentification.LoginActivity"
-            android:configChanges="orientation|screenSize|screenLayout"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

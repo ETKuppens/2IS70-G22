@@ -6,22 +6,29 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.common.api.Batch;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.WriteBatch;
+import com.google.firebase.firestore.core.View;
+import com.google.gson.internal.ObjectConstructor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class TradingSessionData {
     TradingSessionRepository repository;
@@ -43,27 +50,32 @@ public class TradingSessionData {
 
     public void startCardDiffListener() {
         // Run card diff listener
-        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        docRef.collection("cardDiffs_" + otherPlayer).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
-            public void onEvent(@Nullable DocumentSnapshot snapshot,
+            public void onEvent(@Nullable QuerySnapshot value,
                                 @Nullable FirebaseFirestoreException e) {
                 if (e != null) {
                     Log.w(TAG, "Listen failed.", e);
                     return;
                 }
 
-                // Server changes only so hasPendingWrites should be false
-                if (snapshot != null && snapshot.exists() && !snapshot.getMetadata().hasPendingWrites()) {
-                    Log.d(TAG, "Current data: " + snapshot.getData());
+                Log.d("ANYTHING", String.valueOf(value.size()));
 
-                    List<Map<String, Object>> otherCardDiffs = (List<Map<String, Object>>) snapshot.get("cardDiffs_" + otherPlayer);
+                if (value != null && value.size() > 0)  {
+                    Log.d(TAG, "Current data: " + value.getDocuments());
 
-                    // Call card change function
+                    List<Map<String, Object>> diffList = new ArrayList<>();
 
-                    if (otherCardDiffs != null) {
-                        repository.receiveUpdate(otherCardDiffs);
-                    } else {
-                        Log.d("CARDDIFFS", "onEvent: CardDiffs is null");
+                    for (DocumentChange dc: value.getDocumentChanges()) {
+                        if (dc.getType() == DocumentChange.Type.ADDED) {
+                            diffList.add(dc.getDocument().getData());
+                        }
+                    }
+
+                    Log.d("CARD", String.valueOf(diffList.get(0)));
+
+                    if (diffList != null && diffList.size() > 0) {
+                        repository.receiveUpdate(diffList);
                     }
                 }
             }
@@ -186,24 +198,80 @@ public class TradingSessionData {
      *                 TradingSession.
      */
     void changeProposedCards(String clientID, Set<CardDiff> diffs) {
-        List<CardDiff> diffs2 = new ArrayList<>();
-        diffs2.addAll(diffs);
-        Map<String, Object> data = new HashMap<>();
-        data.put("cardDiffs_" + currentPlayer, diffs2);
+        List<Map<String, Object>> data = diffs.stream().map(diff  -> diff.serialize()).collect(Collectors.toList());
 
-        docRef.set(data, SetOptions.merge())
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("cardDiffs_" + currentPlayer, "Updated succesfully!");
-                        repository.changeProposedCardsConfirm(clientID);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("cardDiffs_" + currentPlayer, "An error was encountered while updating!", e);
-                    }
-                });
+//        Log.d(TAG, "DocumentSnapshot written with ID: " + db.collection("lobbies").document(lid).document.getId());
+        WriteBatch batch = db.batch();
+
+        for (Map<String, Object> diff : data) {
+            DocumentReference id = docRef.collection("cardDiffs_" + currentPlayer).document();
+            batch.set(id, diff);
+        }
+
+        batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.d("BATCH", "success");
+                    repository.changeProposedCardsConfirm(clientID);
+                } else {
+                    Log.d("BATCH", "fail");
+                }
+            }
+        });
+
+//        docRef.collection("cardDiffs_" + currentPlayer)
+//                .add(data)
+//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                    @Override
+//                    public void onSuccess(DocumentReference documentReference) {
+//
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.w(TAG, "Error adding document", e);
+//                    }
+//                });
+
+//        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    DocumentSnapshot document = task.getResult();
+//                    if (document.exists()) {
+//                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+//
+//                        HashMap<>
+//                        document.get("cardDiffs_"  + currentPlayer);
+//
+//                        List<CardDiff> diffs2 = new ArrayList<>();
+//                        diffs2.addAll(diffs);
+//                        Map<String, Object> data = new HashMap<>();
+//                        data.put("cardDiffs_" + currentPlayer, diffs2);
+//
+//                        docRef.set(data, SetOptions.merge())
+//                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                    @Override
+//                                    public void onSuccess(Void aVoid) {
+//                                        Log.d("cardDiffs_" + currentPlayer, "Updated succesfully!");
+//                                        repository.changeProposedCardsConfirm(clientID);
+//                                    }
+//                                })
+//                                .addOnFailureListener(new OnFailureListener() {
+//                                    @Override
+//                                    public void onFailure(@NonNull Exception e) {
+//                                        Log.w("cardDiffs_" + currentPlayer, "An error was encountered while updating!", e);
+//                                    }
+//                                });
+//                    } else {
+//                        Log.d(TAG, "No such document");
+//                    }
+//                } else {
+//                    Log.d(TAG, "get failed with ", task.getException());
+//                }
+//            }
+//        });
     }
 }
