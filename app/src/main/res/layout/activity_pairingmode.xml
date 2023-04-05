@@ -70,7 +70,7 @@
         android:fontFamily="sans-serif-medium"
         android:text="Card Trading"
         android:textAllCaps="false"
-        android:textColor="#6200ED"
+        android:textColor="#FF5722"
         android:textSize="28sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
