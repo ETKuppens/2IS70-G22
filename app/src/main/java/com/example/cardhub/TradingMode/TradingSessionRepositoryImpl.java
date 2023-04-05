@@ -1,65 +1,70 @@
 package com.example.cardhub.TradingMode;
 
-import static android.content.ContentValues.TAG;
+import com.example.cardhub.inventory.Card;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-
-import com.example.cardhub.inventory.InventoryRepositoryReceiver;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Class implementing the TradingSessionRepository interface
  */
 public class TradingSessionRepositoryImpl implements TradingSessionRepository {
-    InventoryRepositoryReceiver receiver;
+    TradingSessionData data;
+    TradingSessionRepositoryReceiver receiver;
 
-    // Firebase variables
-    private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
-    private String lid;
-
-    public TradingSessionRepositoryImpl(String lid) {
-        this.lid = lid;
+    public TradingSessionRepositoryImpl (TradingSessionRepositoryReceiver receiver, String lid, String clientid) {
+        data = new TradingSessionData(this, lid, clientid);
+        this.receiver = receiver;
     }
 
     @Override
-    public void cancelTradingSession(int clientID){
-        db = FirebaseFirestore.getInstance();
-        // Problem: How do we get the lobby id? Can we pass this instead since we can receive the uid from the FirebaseAuth instance.
+    public void cancelTradingSession(String clientID){
+        data.cancelTradingSession(clientID);
     }
 
     @Override
-    public void cancelTradingSessionConfirm(int clientID) {
+    public void cancelTradingSessionConfirm(String clientID) {
 
     }
 
     @Override
-    public void acceptProposedTrade(int clientID) {
-
+    public void acceptProposedTrade(String clientID) {
+        data.acceptProposedTrade(clientID);
     }
 
     @Override
-    public void cancelAcceptTrade(int clientID) {
-
+    public void cancelAcceptTrade(String clientID) {
+        data.cancelAcceptTrade(clientID);
     }
 
     @Override
-    public void changeProposedCards(int clientID, Set<CardDiff> diffs) {
-
+    public void changeProposedCards(String clientID, Set<CardDiff> diffs) {
+        data.changeProposedCards(clientID, diffs);
     }
 
     @Override
-    public void changeProposedCardsConfirm(int clientID) {
+    public void changeProposedCardsConfirm(String clientID) {
+        receiver.changeProposedCardsResponse();
+    }
 
+    @Override
+    public void receiveUpdate(List<Map<String, Object>> diffs) {
+        Set<CardDiff> diffs_list = diffs.stream().map((dif) -> {
+            Map<String, Object> card = (Map<String, Object>) dif.get("card");
+            CardDiff newDif = new CardDiff(
+                new Card(
+                        (String) card.get("NAME"),
+                        (String) card.get("DESCRIPTION"),
+                        Card.Rarity.valueOf((String) card.get("RARITY")),
+                        (String) card.get("IMAGE_URL")
+                ),
+                CardDiff.DiffOption.valueOf((String)dif.get("diff"))
+                );
+            return newDif;
+        }).collect(Collectors.toSet());
+
+        receiver.changeProposedCards(diffs_list);
     }
 }

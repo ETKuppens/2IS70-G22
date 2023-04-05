@@ -1,5 +1,6 @@
 package com.example.cardhub.TradingMode;
 
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.cardhub.TradeModeActivity;
@@ -7,7 +8,7 @@ import com.example.cardhub.TradeModeActivity;
 import java.util.Set;
 
 public class TradeModeState implements TradingSessionRepositoryReceiver {
-    private int clientID = 0;
+    private String clientid;
 
     private TradeModeActivity activity;
     private TradingSessionRepository repository;
@@ -20,11 +21,13 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
      * Construct a new TradeModeState that is linked to an existing TradeModeActivity.
      *
      * @param activity the TradeModeActivity storing the UI that should be represented by this TradeModeState.
-     * @param lid lobby id of the trade.
+     * @param lid      lobby id of the trade.
+     * @param clientid
      */
-    public TradeModeState(TradeModeActivity activity, String lid) {
+    public TradeModeState(TradeModeActivity activity, String lid, String clientid) {
         this.activity = activity;
-        this.repository = new TradingSessionRepositoryImpl(lid);
+        this.clientid = clientid;
+        this.repository = new TradingSessionRepositoryImpl(this, lid, clientid);
     }
 
     // List of flags that are used to check when certain functionality can be called.
@@ -59,7 +62,7 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
         this.tradingSession.AddCardDiffsForThisUser(diffs);
         updateUI();
 
-        this.repository.changeProposedCards(this.clientID, diffs);
+        this.repository.changeProposedCards(this.clientid, diffs);
     }
 
     /**
@@ -85,7 +88,7 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
         this.proposedTradeMayBeCanceled = false;
         this.activity.disableCancelTrade();
 
-        this.repository.cancelAcceptTrade(this.clientID);
+        this.repository.cancelAcceptTrade(this.clientid);
         cancelTradeMode();
     }
 
@@ -136,7 +139,7 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
         this.proposedTradeMayBeCanceled = false;
         this.activity.disableCancelTrade();
 
-        this.repository.acceptProposedTrade(this.clientID);
+        this.repository.acceptProposedTrade(this.clientid);
     }
 
 
@@ -148,7 +151,7 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
         this.proposedTradeMayBeAccepted = false;
         this.activity.disableAcceptTrade();
 
-        this.repository.cancelTradingSessionConfirm(this.clientID);
+        this.repository.cancelTradingSessionConfirm(this.clientid);
         cancelTradeMode();
     }
 
@@ -174,7 +177,7 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
             this.proposedTradeMayBeCanceled = true;
             this.activity.enableCancelTrade();
 
-            this.repository.cancelAcceptTrade(this.clientID);
+            this.repository.cancelAcceptTrade(this.clientid);
         }
     }
 
@@ -187,7 +190,7 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
     public void changeProposedCards(Set<CardDiff> diffs) {
         this.tradingSession.AddCardDiffsForOtherUser(diffs);
         updateUI();
-        this.repository.changeProposedCardsConfirm(this.clientID);
+        this.repository.changeProposedCardsConfirm(this.clientid);
     }
 
     @Override

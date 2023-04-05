@@ -1,13 +1,8 @@
 package com.example.cardhub.user_profile;
 
-import android.graphics.Picture;
 import android.widget.ImageView;
 
-import com.example.cardhub.R;
-import com.example.cardhub.inventory.InventoryRepository;
 import com.example.cardhub.inventory.InventoryRepositoryImpl;
-
-import java.util.Collections;
 
 public class ProfileState {
     Profile currentProfile;

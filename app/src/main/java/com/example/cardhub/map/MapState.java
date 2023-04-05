@@ -2,6 +2,7 @@ package com.example.cardhub.map;
 
 import com.example.cardhub.inventory.Card;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class MapState implements MapRepositoryReceiver {
@@ -27,5 +28,9 @@ public class MapState implements MapRepositoryReceiver {
 
     public void acquireRandomCard(Card.Rarity rarity) {
         repository.acquireRandomCard(rarity);
+    }
+
+    public void acquireRandomCardCallback(Card acquiredCard) {
+        activity.showCardpackPreviewWindow(Arrays.asList(acquiredCard));
     }
 }

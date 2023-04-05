@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/dark_gray_1"
     tools:context=".TradeModeActivity">
 
     <View
@@ -42,6 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
         android:text="Player is ready to trade!"
+        android:textColor="@color/white"
         android:textSize="25sp"
         app:layout_constraintBottom_toTopOf="@+id/DottedLineDivider"
         app:layout_constraintEnd_toEndOf="parent"
@@ -80,6 +82,7 @@
         android:layout_marginEnd="7dp"
         android:backgroundTint="@color/green_700"
         android:text="Ready"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/HorizontalButtonsGuideline"
         app:layout_constraintEnd_toStartOf="@+id/VerticalHelpLineMiddleOfScreen"
         app:layout_constraintStart_toStartOf="parent" />
@@ -92,6 +95,7 @@
         android:layout_marginEnd="20dp"
         android:backgroundTint="@color/red_700"
         android:text="Cancel"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/HorizontalButtonsGuideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/VerticalHelpLineMiddleOfScreen" />
@@ -112,6 +116,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="Select Cards"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/ReadyButton"
         app:layout_constraintStart_toEndOf="@+id/VerticalHelplineLeftOfReadyButton" />
 

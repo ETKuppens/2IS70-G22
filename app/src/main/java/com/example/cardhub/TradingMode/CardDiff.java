@@ -2,10 +2,12 @@ package com.example.cardhub.TradingMode;
 
 import com.example.cardhub.inventory.Card;
 
+import java.io.Serializable;
+
 /**
  * ADT that encodes whether a given Card should be added or removed from the trade proposal.
  */
-public class CardDiff {
+public class CardDiff implements Serializable {
     public enum DiffOption {
         ADD,
         REMOVE

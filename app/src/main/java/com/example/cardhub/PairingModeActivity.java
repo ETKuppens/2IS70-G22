@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cardhub.collector_navigation.CollectorBaseActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,7 +32,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-
 
 import java.util.HashMap;
 import java.util.Map;
@@ -74,6 +72,7 @@ public class PairingModeActivity extends CollectorBaseActivity {
             db.collection("lobbies")
                     .add(lobbyMap)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        boolean active = true;
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
                             lobby = documentReference.getId();
@@ -91,10 +90,13 @@ public class PairingModeActivity extends CollectorBaseActivity {
                                         return;
                                     }
 
-                                    if (!snapshot.getData().get("playerBName").equals("")) {
+                                    if (snapshot != null && snapshot.exists() && !snapshot.getData().get("playerBName").equals("")&&active) {
+                                        //TODO: Deregister listener, instead of using active boolean
                                         Intent intent = new Intent(getApplicationContext(), TradeModeActivity.class);
                                         intent.putExtra("lobbyid", lobby);
+                                        intent.putExtra("clientid", uid);
                                         startActivity(intent);
+                                        active =false;
                                     }
                                 }
                             });
@@ -211,6 +213,7 @@ public class PairingModeActivity extends CollectorBaseActivity {
                                                 Log.d("WORRY", "DocumentSnapshot successfully written!");
                                                 Intent intent = new Intent(getApplicationContext(), TradeModeActivity.class);
                                                 intent.putExtra("lobbyid", lobby);
+                                                intent.putExtra("clientid", uid);
                                                 startActivity(intent);
                                             }
                                         })
