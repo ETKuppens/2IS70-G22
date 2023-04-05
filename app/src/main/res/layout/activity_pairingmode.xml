@@ -10,6 +10,19 @@
     <!--We are using this image
         view to display our QR code-->
 
+    <ScrollView
+        android:id="@+id/us_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="70dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/us"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
     <ImageView
         android:id="@+id/idIVQrcode"
         android:layout_width="300dp"
@@ -55,12 +68,6 @@
         for creating a QR code-->
 
     <!--Button for creating a QR code-->
-    <include
-        layout="@menu/item_bottom_navigation_collector"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        app:layout_constraintBottom_toBottomOf="parent" />
 
     <TextView
         android:id="@+id/textView3"
@@ -75,5 +82,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <include
+        layout="@menu/item_bottom_navigation_collector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:minHeight="70dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
