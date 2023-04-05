@@ -35,7 +35,7 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_card);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        //actionBar.setDisplayHomeAsUpEnabled(true);
 
         this.cancelButton = findViewById(R.id.button_card_activity_cancel);
         this.confirmButton = findViewById(R.id.button_card_activity_confirm);
