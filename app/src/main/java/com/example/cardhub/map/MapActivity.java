@@ -4,9 +4,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -27,8 +26,8 @@ import com.example.cardhub.BuildConfig;
 import com.example.cardhub.PairingModeActivity;
 import com.example.cardhub.R;
 import com.example.cardhub.collector_navigation.CollectorBaseActivity;
+import com.example.cardhub.inventory.Card;
 import com.example.cardhub.inventory.InventoryActivity;
-import com.example.cardhub.map.CardPack;
 import com.example.cardhub.user_profile.ProfileActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -51,12 +50,9 @@ import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
 import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public class MapActivity extends CollectorBaseActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
@@ -107,7 +103,7 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
     private final LatLng defaultLocation = new LatLng(51.447782, 5.485958);
     private static final int DEFAULT_ZOOM = 15;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-    private boolean locationPermissionGranted;
+    private boolean locationPermissionGranted = false;
 
     // The geographical location where the device is currently located. That is, the last-known
     // location retrieved by the Fused Location Provider.
@@ -220,12 +216,13 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
 
         // Get the current location of the device and set the position of the map.
         getDeviceLocation();
-
-        addPointsOnTheMap();
-
     }
 
     public void addPointsOnTheMap() {
+        if (!locationPermissionGranted) {
+            return;
+        }
+
         List<CardPack> cardPacks = state.packs;
         for (int i = 0; i < cardPacks.size(); i++) {
             map.addMarker(new MarkerOptions()
@@ -288,7 +285,7 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         collectCardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                buttonCollectCardClicked();
+                buttonCollectCardPackClicked(pack.rarity);
             }
         });
 
@@ -350,6 +347,7 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+            locationPermissionGranted = false;
         }
     }
 
@@ -504,7 +502,6 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
                 map.setMyLocationEnabled(false);
                 map.getUiSettings().setMyLocationButtonEnabled(false);
                 lastKnownLocation = null;
-                getLocationPermission();
             }
         } catch (SecurityException e)  {
             Log.e("Exception: %s", e.getMessage());
@@ -528,7 +525,7 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         }
     }
 
-    protected void buttonCollectCardClicked() {
+    protected void buttonCollectCardPackClicked(Card.Rarity rarity) {
         // Get user location (update lastKnownLocation)
         getDeviceLocation();
         // Get marker location
@@ -540,13 +537,12 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         Toast.makeText(getApplicationContext(),Double.toString(distance),Toast.LENGTH_SHORT).show();
         // Init card collection
         if (distance <= 30) {
-
+            state.acquireRandomCard(rarity);
         } else {
             String errMessage = String.format("%.2f", distance);
-            Toast.makeText(getApplicationContext(), "You cannot collect the car. Distance " +
+            Toast.makeText(getApplicationContext(), "You cannot collect the card. Distance " +
                     errMessage + " is >30m.",Toast.LENGTH_SHORT).show();
         }
-        // remove card from the map
     }
 
     public static final double AVERAGE_RADIUS_OF_EARTH_KM = 6371;
@@ -565,9 +561,25 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
     }
 
     public void cardsResponse(List<CardPack> packs) {
-        // might cause an error if the map is not ready
-        // add pinpoints on the map
-        //addPointsOnTheMap(packs);
+        Thread waitForMapToBeReadyThread = new Thread (() -> {
+            while (map == null) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    // might cause an error if the map is not ready
+                    // add pinpoints on the map
+                    addPointsOnTheMap();
+                }
+            });
+        });
+        waitForMapToBeReadyThread.start();
     }
 
     }

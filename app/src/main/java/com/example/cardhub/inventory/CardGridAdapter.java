@@ -1,6 +1,7 @@
 package com.example.cardhub.inventory;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -84,6 +85,9 @@ public class CardGridAdapter extends BaseAdapter {
         cardBackground.setBackgroundColor(color);
 
         ImageView cardImage = view.findViewById(R.id.card_image);
+        if (!thisCard.acquired)  {
+            cardImage.setColorFilter(Color.rgb(123, 123, 123), android.graphics.PorterDuff.Mode.MULTIPLY);
+        }
         Glide.with(context).load(thisCard.IMAGE_URL).into(cardImage);
 
         return view;
