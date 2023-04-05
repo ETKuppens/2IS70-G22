@@ -19,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.WriteBatch;
+import com.google.gson.internal.ObjectConstructor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,43 +48,31 @@ public class TradingSessionData {
 
     public void startCardDiffListener() {
         // Run card diff listener
-        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        docRef.collection("cardDiffs_" + otherPlayer).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
-            public void onEvent(@Nullable DocumentSnapshot snapshot,
+            public void onEvent(@Nullable QuerySnapshot value,
                                 @Nullable FirebaseFirestoreException e) {
                 if (e != null) {
                     Log.w(TAG, "Listen failed.", e);
                     return;
                 }
 
-                // Server changes only so hasPendingWrites should be false
-                if (snapshot != null && snapshot.exists() && !snapshot.getMetadata().hasPendingWrites()) {
-                    Log.d(TAG, "Current data: " + snapshot.getData());
+                Log.d("ANYTHING", String.valueOf(value.size()));
 
-                    docRef.collection("cardDiffs_" + otherPlayer).get()
-                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        List<Map<String, Object>> cardDiffs = new ArrayList<>();
-                                        for (DocumentSnapshot documentSnapshots : task.getResult()) {
-                                            cardDiffs.add(documentSnapshots.getData());
-                                        }
-                                        repository.receiveUpdate(cardDiffs);
-                                    } else {
-                                        Log.d("CARDDIFFS", "onEvent: CardDiffs is null");
-                                    }
-                                }
-                            });
+                if (value != null && value.size() > 0)  {
+                    Log.d(TAG, "Current data: " + value.getDocuments());
 
+                    List<Map<String, Object>> diffList = new ArrayList<>();
 
-                    List<Map<String, Object>> otherCardDiffs = (List<Map<String, Object>>) snapshot.get("cardDiffs_" + otherPlayer);
+                    for (DocumentSnapshot diff: value.getDocuments()) {
+                        diffList.add(diff.getData());
+                        Log.d("DOCUMENTSNAPSHOT", "onEvent: " + diff.getData());
+                    }
 
-                    // Call card change function
-                    if (otherCardDiffs != null) {
-                        repository.receiveUpdate(otherCardDiffs);
-                    } else {
-                        Log.d("CARDDIFFS", "onEvent: CardDiffs is null");
+                    Log.d("CARD", String.valueOf(diffList.get(0)));
+
+                    if (diffList != null && diffList.size() > 0) {
+                        repository.receiveUpdate(diffList);
                     }
                 }
             }

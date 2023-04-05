@@ -50,4 +50,5 @@ public class CardDiff implements Serializable {
 
         return data;
     }
+
 }
