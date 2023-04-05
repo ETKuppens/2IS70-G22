@@ -76,6 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Login"
+        android:background="@drawable/custom_button"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/textView_forgot"
         app:layout_constraintStart_toStartOf="@+id/textView_forgot"
