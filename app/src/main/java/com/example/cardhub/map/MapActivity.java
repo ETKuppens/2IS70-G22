@@ -8,12 +8,16 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,8 +25,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cardhub.BuildConfig;
+import com.example.cardhub.CardRecyclerViewAdapter;
 import com.example.cardhub.PairingModeActivity;
 import com.example.cardhub.R;
 import com.example.cardhub.collector_navigation.CollectorBaseActivity;
@@ -121,6 +127,8 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
     private LatLng[] likelyPlaceLatLngs;
 
     private View cardBanner;
+
+    PopupWindow cardpackPreviewWindow = null;
 
     MapState state;
 
@@ -582,4 +590,46 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         waitForMapToBeReadyThread.start();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        destroyCardpackPreviewWindow();
     }
+
+    private void destroyCardpackPreviewWindow() {
+        cardpackPreviewWindow.dismiss();
+        cardpackPreviewWindow = null;
+    }
+
+    private void showCardpackPreviewWindow(List<Card> cardPackCards) {
+        if (cardpackPreviewWindow != null || cardPackCards == null) {
+            return;
+        }
+
+        LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
+        View cardpackPreviewView = inflater.inflate(R.layout.cardpack_preview, null);
+
+        cardpackPreviewWindow = new PopupWindow(cardpackPreviewView,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+
+        ImageButton cardpackPreviewCloseButton = (ImageButton)cardpackPreviewView
+                .findViewById(R.id.cardpack_preview_close_button);
+
+        cardpackPreviewCloseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                destroyCardpackPreviewWindow();
+            }
+        });
+
+        RecyclerView cardpackRecyclerView = (RecyclerView)cardpackPreviewView
+                .findViewById(R.id.cardpack_preview_cards_recyclerview);
+        CardRecyclerViewAdapter adapter = new CardRecyclerViewAdapter(getApplicationContext(),
+                cardPackCards);
+        cardpackRecyclerView.setAdapter(adapter);
+
+        cardpackPreviewWindow.showAtLocation(findViewById(R.id.map), Gravity.CENTER, 0, 0);
+    }
+}

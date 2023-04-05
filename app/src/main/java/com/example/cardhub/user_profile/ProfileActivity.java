@@ -35,8 +35,6 @@ import java.util.List;
 public class ProfileActivity extends CollectorBaseActivity {
     ProfileState state;
 
-    PopupWindow cardpackPreviewWindow = null;
-
     @Override
     public int getLayoutId() {
         return R.layout.activity_profile;
@@ -64,43 +62,6 @@ public class ProfileActivity extends CollectorBaseActivity {
                 Intent logout = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(logout);
                 FirebaseAuth.getInstance().signOut();
-            }
-        });
-
-        Button cardpackPreviewTestButton = (Button)findViewById(R.id.test_cardpack_preview_button);
-        cardpackPreviewTestButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (cardpackPreviewWindow != null) {
-                    return;
-                }
-
-                List<Card> cardList = new ArrayList<Card>();
-
-                LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
-                View cardpackPreviewView = inflater.inflate(R.layout.cardpack_preview, null);
-
-                cardpackPreviewWindow = new PopupWindow(cardpackPreviewView,
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
-
-                ImageButton cardpackPreviewCloseButton = cardpackPreviewView
-                        .findViewById(R.id.cardpack_preview_close_button);
-
-                cardpackPreviewCloseButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        destroyCardpackPreviewWindow();
-                    }
-                });
-
-                RecyclerView cardpackRecyclerView = cardpackPreviewView
-                        .findViewById(R.id.cardpack_preview_cards_recyclerview);
-                CardRecyclerViewAdapter adapter = new CardRecyclerViewAdapter(getApplicationContext(),
-                                                                              cardList);
-                cardpackRecyclerView.setAdapter(adapter);
-
-                cardpackPreviewWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
             }
         });
     }
@@ -131,17 +92,5 @@ public class ProfileActivity extends CollectorBaseActivity {
 
         TextView tradeAmount = findViewById(R.id.tradeAmount);
         tradeAmount.setText(state.getTradeAmount());
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        destroyCardpackPreviewWindow();
-    }
-
-    private void destroyCardpackPreviewWindow() {
-        cardpackPreviewWindow.dismiss();
-        cardpackPreviewWindow = null;
     }
 }
