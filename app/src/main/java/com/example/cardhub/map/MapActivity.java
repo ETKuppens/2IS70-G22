@@ -294,6 +294,7 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         collectCardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                destroyCardpackPreviewWindow();
                 buttonCollectCardPackClicked(pack.rarity);
             }
         });
@@ -599,8 +600,10 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
     }
 
     private void destroyCardpackPreviewWindow() {
-        cardpackPreviewWindow.dismiss();
-        cardpackPreviewWindow = null;
+        if (cardpackPreviewWindow != null) {
+            cardpackPreviewWindow.dismiss();
+            cardpackPreviewWindow = null;
+        }
     }
 
     public void showCardpackPreviewWindow(List<Card> cardPackCards) {
@@ -613,7 +616,7 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
 
         cardpackPreviewWindow = new PopupWindow(cardpackPreviewView,
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
+                ViewGroup.LayoutParams.WRAP_CONTENT);
 
         ImageButton cardpackPreviewCloseButton = (ImageButton)cardpackPreviewView
                 .findViewById(R.id.cardpack_preview_close_button);
@@ -627,9 +630,10 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
 
         RecyclerView cardpackRecyclerView = (RecyclerView)cardpackPreviewView
                 .findViewById(R.id.cardpack_preview_cards_recyclerview);
-        cardpackRecyclerView.setLayoutManager(new LinearLayoutManager(this,
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this,
                 LinearLayoutManager.HORIZONTAL,
-                false));
+                false);
+        cardpackRecyclerView.setLayoutManager(layoutManager);
         CardRecyclerViewAdapter adapter = new CardRecyclerViewAdapter(cardpackRecyclerView.getContext(),
                 cardPackCards);
         cardpackRecyclerView.setAdapter(adapter);
