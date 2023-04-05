@@ -111,7 +111,8 @@ public class CreatorInventoryActivity extends CreatorBaseActivity {
      * Update the inventory grid
      */
     public void updateGrid() {
-        GridView cardGridView = findViewById(R.id.card_grid);
+        CardGridView cardGridView = findViewById(R.id.card_grid);
+        cardGridView.setExpanded(true);
         adapter.updateData(state.displayCards);
         adapter.notifyDataSetChanged();
 

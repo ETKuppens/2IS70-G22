@@ -3,6 +3,7 @@ package com.example.cardhub.inventory;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 
@@ -10,6 +11,8 @@ import android.widget.ListAdapter;
  * GridView that handles updating the dataset correctly
  */
 public class CardGridView extends GridView {
+
+    boolean expanded = false;
 
     private static final String TAG = CardGridView.class.getName();
 
@@ -71,5 +74,36 @@ public class CardGridView extends GridView {
                 }
             }
         }
+    }
+
+    public boolean isExpanded()
+    {
+        return expanded;
+    }
+
+    @Override
+    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
+    {
+        // HACK! TAKE THAT ANDROID!
+        if (isExpanded())
+        {
+            // Calculate entire height by providing a very large height hint.
+            // View.MEASURED_SIZE_MASK represents the largest height possible.
+            int expandSpec = MeasureSpec.makeMeasureSpec(MEASURED_SIZE_MASK,
+                    MeasureSpec.AT_MOST);
+            super.onMeasure(widthMeasureSpec, expandSpec);
+
+            ViewGroup.LayoutParams params = getLayoutParams();
+            params.height = getMeasuredHeight();
+        }
+        else
+        {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        }
+    }
+
+    public void setExpanded(boolean expanded)
+    {
+        this.expanded = expanded;
     }
 }

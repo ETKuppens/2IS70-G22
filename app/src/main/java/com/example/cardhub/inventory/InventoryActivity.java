@@ -49,7 +49,8 @@ public class InventoryActivity extends CollectorBaseActivity {
         state.requestUserCards();
 
         adapter = new CardGridAdapter(this, state.displayCards);
-        GridView cardGridView = findViewById(R.id.card_grid);
+        CardGridView cardGridView = findViewById(R.id.card_grid);
+        cardGridView.setExpanded(true);
         cardGridView.setAdapter(adapter);
 
         Button name_sort = findViewById(R.id.sort_by_name);
