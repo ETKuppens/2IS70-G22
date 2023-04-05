@@ -18,6 +18,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.WriteBatch;
@@ -39,7 +40,7 @@ public class TradingSessionData {
     private String clientid;
     private String currentPlayer;
     private String otherPlayer;
-    private boolean readyToTrade = false;
+    private ListenerRegistration listenerRegistration;
 
     public TradingSessionData(TradingSessionRepository repository, String lid, String clientid) {
         this.repository = repository;
@@ -106,9 +107,7 @@ public class TradingSessionData {
                         }
 
                         startCardDiffListener();
-                        if (currentPlayer.equals("playerB")) {
-                            startReadyListener();
-                        }
+                        startReadyListener();
                     } else {
                         Log.d(TAG, "No such document");
                     }
@@ -120,7 +119,7 @@ public class TradingSessionData {
     }
 
     private void startReadyListener() {
-        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        listenerRegistration = docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException error) {
                 if (error != null) {
@@ -130,22 +129,24 @@ public class TradingSessionData {
 
                 if (snapshot != null && snapshot.exists()) {
                     Map<String, Object> result = snapshot.getData();
-                    if (result == null ||
-                            result.get("acceptance_playerA") == null ||
-                            result.get("acceptance_playerB") == null) return;
-                    boolean playerA = (boolean)result.get("acceptance_playerA");
-                    boolean playerB = (boolean)result.get("acceptance_playerB");
-                    if (result.get("finished") != null && (boolean)result.get("finished")) {
+                    if (result == null) return;
+                    if (currentPlayer.equals("playerA")) {
+                        if (
+                                result.get("acceptance_playerA") == null ||
+                                result.get("acceptance_playerB") == null) return;
+                        boolean playerA = (boolean)result.get("acceptance_playerA");
+                        boolean playerB = (boolean)result.get("acceptance_playerB");
+                        if (playerA && playerB) {
+                            Log.d("TRADING_SESSION", "both players ready");
+                            repository.startTradeTimer();
+                        } else {
+                        }
+                    } else if(result.get("finished") != null && (boolean)result.get("finished"))  {
                         docRef.delete();
                         repository.finishTrade();
                     }
-                    if (playerA && playerB) {
-                        Log.d("TRADING_SESSION", "both players ready");
-                        repository.startTradeTimer();
-                    } else {
-                    }
                 } else {
-                    //Log.d(TAG, source + " data: null");
+
                 }
 
             }
@@ -313,6 +314,7 @@ public class TradingSessionData {
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if (task.isSuccessful()) {
                                                         docRef.update("finished", true);
+                                                        listenerRegistration.remove();
                                                         Log.d("TRADING", "trade complete");
                                                         repository.finishTrade();
                                                     } else {
