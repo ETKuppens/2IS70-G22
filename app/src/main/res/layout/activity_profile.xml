@@ -2,49 +2,106 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/us"
+    android:id="@+id/us_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".user_profile.ProfileActivity">
 
-    <TextView
-        android:id="@+id/tradeAmount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:text="0"
-        app:layout_constraintStart_toEndOf="@+id/trades"
-        app:layout_constraintTop_toTopOf="@+id/trades" />
-
-    <Button
-        android:id="@+id/logoutButton"
+    <ScrollView
+        android:id="@+id/us_scroll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Log Out"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardsCollected" />
+        android:layout_height="match_parent"
+        android:layout_marginBottom="70dp">
 
-    <TextView
-        android:id="@+id/cardsCollectedAmount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="9dp"
-        android:text="0"
-        app:layout_constraintStart_toEndOf="@+id/cardsCollected"
-        app:layout_constraintTop_toTopOf="@+id/cardsCollected" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/us"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/trades"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="96dp"
-        android:text="Trades Made:"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        app:layout_constraintBottom_toTopOf="@+id/cardsCollected"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userName" />
+
+        <ImageView
+                android:id="@+id/profilePicture"
+                android:layout_width="300dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="100dp"
+                app:layout_constraintBottom_toTopOf="@+id/userName"
+                app:layout_constraintEnd_toEndOf="@id/us"
+                app:layout_constraintStart_toStartOf="@+id/us"
+                app:layout_constraintTop_toTopOf="@+id/us"
+                app:srcCompat="@drawable/placeholder"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/userName"
+                android:layout_width="200dp"
+                android:layout_height="71dp"
+                android:fontFamily="sans-serif-light"
+                android:text="User Name"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display3"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="@+id/us"
+                app:layout_constraintStart_toStartOf="@+id/us"
+                app:layout_constraintBottom_toTopOf="@+id/trades"
+                app:layout_constraintTop_toBottomOf="@+id/profilePicture" />
+
+            <TextView
+                android:id="@+id/trades"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="96dp"
+                android:text="Trades Made:"
+                app:layout_constraintEnd_toEndOf="@+id/us"
+                app:layout_constraintStart_toStartOf="@+id/us"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                app:layout_constraintTop_toBottomOf="@+id/userName" />
+
+
+            <TextView
+                android:id="@+id/tradeAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="0"
+                app:layout_constraintStart_toEndOf="@+id/trades"
+                app:layout_constraintTop_toTopOf="@+id/trades" />
+
+            <TextView
+                android:id="@+id/cardsCollected"
+                android:layout_width="108dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="20dp"
+                android:text="Cards Collected:"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                app:layout_constraintEnd_toEndOf="@+id/us"
+                app:layout_constraintStart_toStartOf="@+id/us"
+                app:layout_constraintTop_toBottomOf="@+id/trades" />
+
+            <TextView
+                android:id="@+id/cardsCollectedAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="9dp"
+                android:text="0"
+                app:layout_constraintStart_toEndOf="@+id/cardsCollected"
+                app:layout_constraintTop_toTopOf="@+id/cardsCollected" />
+
+
+            <Button
+                android:id="@+id/logoutButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Log Out"
+                app:layout_constraintEnd_toEndOf="@+id/us"
+                app:layout_constraintStart_toStartOf="@+id/us"
+                app:layout_constraintTop_toBottomOf="@+id/cardsCollected" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 
     <include
         layout="@menu/item_bottom_navigation_collector"
@@ -55,42 +112,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/cardsCollected"
-        android:layout_width="108dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:text="Cards Collected:"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/trades" />
-
-    <ImageView
-        android:id="@+id/profilePicture"
-        android:layout_width="300dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="100dp"
-        app:layout_constraintBottom_toTopOf="@+id/userName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/placeholder"
-        tools:srcCompat="@tools:sample/avatars" />
-
-    <TextView
-        android:id="@+id/userName"
-        android:layout_width="400dp"
-        android:layout_height="71dp"
-        android:fontFamily="sans-serif-light"
-        android:text="User Name"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display3"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/trades"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profilePicture" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
