@@ -13,12 +13,10 @@ import java.util.stream.Collectors;
 public class TradingSessionRepositoryImpl implements TradingSessionRepository {
     TradingSessionData data;
     TradingSessionRepositoryReceiver receiver;
-    TradingSession tradingSession;
 
-    public TradingSessionRepositoryImpl (TradingSessionRepositoryReceiver receiver, String lid, String clientid, TradingSession tradingSession) {
+    public TradingSessionRepositoryImpl (TradingSessionRepositoryReceiver receiver, String lid, String clientid) {
         data = new TradingSessionData(this, lid, clientid);
         this.receiver = receiver;
-        this.tradingSession = tradingSession;
     }
 
     @Override
@@ -33,8 +31,7 @@ public class TradingSessionRepositoryImpl implements TradingSessionRepository {
 
     @Override
     public void acceptProposedTrade(String clientID) {
-        Set<Card> cards = tradingSession.thisUserProposedCards;
-        data.acceptProposedTrade(clientID, cards);
+        data.acceptProposedTrade(clientID);
     }
 
     @Override
@@ -61,8 +58,7 @@ public class TradingSessionRepositoryImpl implements TradingSessionRepository {
                         (String) card.get("NAME"),
                         (String) card.get("DESCRIPTION"),
                         Card.Rarity.valueOf((String) card.get("RARITY")),
-                        (String) card.get("IMAGE_URL"),
-                        (String) card.get("CARD_ID")
+                        (String) card.get("IMAGE_URL")
                 ),
                 CardDiff.DiffOption.valueOf((String)dif.get("diff"))
                 );
@@ -70,7 +66,5 @@ public class TradingSessionRepositoryImpl implements TradingSessionRepository {
         }).collect(Collectors.toSet());
 
         receiver.changeProposedCards(diffs_list);
-
-        // TODO: Delete card diffs
     }
 }

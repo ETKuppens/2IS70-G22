@@ -39,8 +39,7 @@ public class InventoryRepositoryImpl implements InventoryRepository {
                     (String) cardRaw.get("name"),
                     (String) cardRaw.get("description"),
                     Card.Rarity.values()[(int) ((long) cardRaw.get("rarity"))],
-                    (String) cardRaw.get("imageurl"),
-                    (String) cardRaw.get("cardid")
+                    (String) cardRaw.get("imageurl")
             ));
             Log.d("CARDRAW", (String) cardRaw.get("name"));
         }
