@@ -294,7 +294,7 @@ public class TradingSessionData {
 
                                             WriteBatch batch = db.batch();
                                             for (DocumentReference ref : playerAOfferedRefs) {
-                                                Log.d("PLAYER_REF", ref.toString());
+                                                Log.d("PLAYER_REF", ref.getPath().toString());
                                                 batch.delete(ref);
                                             }
                                             DocumentReference docRefInvA = db.collection("users/" + playerAName + "/cards").document();
@@ -304,7 +304,7 @@ public class TradingSessionData {
 
                                             for (DocumentReference ref : playerBOfferedRefs) {
                                                 batch.delete(ref);
-                                                Log.d("PLAYER_REF", ref.toString());
+                                                Log.d("PLAYER_REF", ref.getPath().toString());
                                             }
                                             DocumentReference docRefInvB = db.collection("users/" + playerBName + "/cards").document();
                                             for (Map<String, Object> card : playerAOfferedCards) {
