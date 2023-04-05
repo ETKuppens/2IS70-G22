@@ -16,7 +16,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cardhub.CardRecyclerViewAdapter;
+import com.example.cardhub.inventory.Card;
+import com.example.cardhub.map.CardPack;
 import com.example.cardhub.map.MapActivity;
 import com.example.cardhub.PairingModeActivity;
 import com.example.cardhub.collector_navigation.CollectorBaseActivity;
@@ -24,6 +28,9 @@ import com.example.cardhub.authentification.LoginActivity;
 import com.example.cardhub.R;
 import com.example.cardhub.inventory.InventoryActivity;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProfileActivity extends CollectorBaseActivity {
     ProfileState state;
@@ -68,6 +75,8 @@ public class ProfileActivity extends CollectorBaseActivity {
                     return;
                 }
 
+                List<Card> cardList = new ArrayList<Card>();
+
                 LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
                 View cardpackPreviewView = inflater.inflate(R.layout.cardpack_preview, null);
 
@@ -84,6 +93,12 @@ public class ProfileActivity extends CollectorBaseActivity {
                         destroyCardpackPreviewWindow();
                     }
                 });
+
+                RecyclerView cardpackRecyclerView = cardpackPreviewView
+                        .findViewById(R.id.cardpack_preview_cards_recyclerview);
+                CardRecyclerViewAdapter adapter = new CardRecyclerViewAdapter(getApplicationContext(),
+                                                                              cardList);
+                cardpackRecyclerView.setAdapter(adapter);
 
                 cardpackPreviewWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
             }
