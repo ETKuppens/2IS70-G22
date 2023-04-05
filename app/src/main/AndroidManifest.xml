@@ -11,12 +11,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CardHub"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <!--
+             The API key for Google Maps-based APIs.
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".user_profile.CreatorProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".inventory.CreatorInventoryActivity"
             android:exported="false" />
         <activity
             android:name=".TradeModeActivity"
-            android:exported="false" />
+            android:exported="false"  />
         <activity
             android:name=".user_profile.ProfileActivity"
             android:exported="false" />
@@ -33,17 +46,20 @@
             android:name=".PairingModeActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.cardhub.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".ForgotPasswordActivity"
+            android:name=".authentification.ForgotPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".RegistrationActivity"
+            android:name=".authentification.RegistrationActivity"
             android:exported="false" />
         <activity
-            android:name=".MapActivity"
+            android:name=".map.MapActivity"
             android:exported="false" />
+        <activity
+            android:name="com.example.cardhub.authentification.LoginActivity"
+            android:exported="false"/>
         <activity
             android:name=".SplashActivity"
             android:exported="true">

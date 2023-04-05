@@ -10,6 +10,8 @@ import android.os.Handler;
 import android.view.View;
 import android.view.animation.AnticipateInterpolator;
 
+import com.example.cardhub.authentification.LoginActivity;
+
 public class SplashActivity extends AppCompatActivity {
     Handler handler;
 
@@ -25,7 +27,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 mp.stop();
-                Intent intent=new Intent(SplashActivity.this,LoginActivity.class);
+                Intent intent=new Intent(SplashActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }

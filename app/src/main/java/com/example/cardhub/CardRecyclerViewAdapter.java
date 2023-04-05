@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cardhub.TradingMode.OnRecyclerViewItemClickListener;
+import com.example.cardhub.inventory.Card;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -100,8 +101,8 @@ public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerVi
                 color = ContextCompat.getColor(context, R.color.rarity_rare);
                 break;
 
-            case UNKNOWN:
-                color = ContextCompat.getColor(context, R.color.rarity_unknown);
+            case ULTRA_RARE:
+                color = ContextCompat.getColor(context, R.color.rarity_ultra_rare);
                 break;
         }
         cardBackground.setBackgroundColor(color);

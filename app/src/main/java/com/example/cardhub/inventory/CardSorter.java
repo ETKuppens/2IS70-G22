@@ -1,4 +1,4 @@
-package com.example.cardhub;
+package com.example.cardhub.inventory;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ public class CardSorter {
     /**
      * Enum for different attributes a card can be sorted on.
      */
-    enum SortAttribute {
+    public enum SortAttribute {
         NAME,
         RARITY
     }
@@ -14,7 +14,7 @@ public class CardSorter {
     /**
      * Enum for the ordering type when sorting.
      */
-    enum SortOrder {
+    public enum SortOrder {
         DEFAULT, // Sort in the default order
         REVERSE  // Sort in the reverse order
     }
@@ -90,8 +90,8 @@ public class CardSorter {
         boolean isStrictlySmaller = false;
 
         switch (leftRarity) {
-            case UNKNOWN:
-                isStrictlySmaller = !rightRarity.equals(Card.Rarity.UNKNOWN);
+            case ULTRA_RARE:
+                isStrictlySmaller = !rightRarity.equals(Card.Rarity.ULTRA_RARE);
                 break;
 
             case COMMON:

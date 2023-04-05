@@ -1,4 +1,4 @@
-package com.example.cardhub;
+package com.example.cardhub.inventory;
 
 import java.io.Serializable;
 
@@ -13,13 +13,15 @@ public class Card implements Serializable {
         COMMON,
         RARE,
         LEGENDARY,
-        UNKNOWN
+        ULTRA_RARE
     }
 
     public final String NAME;        // The name of this card
     public final String DESCRIPTION; // An optional description of the card
     public final Rarity RARITY;      // The rarity of this card
     public final String IMAGE_URL;       // The image of this card
+
+    public boolean acquired;
 
     /**
      * Instantiate a card with a description

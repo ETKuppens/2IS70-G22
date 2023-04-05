@@ -1,25 +1,25 @@
 package com.example.cardhub.inventory;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
-import com.example.cardhub.Card;
+import com.bumptech.glide.Glide;
 import com.example.cardhub.R;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.ServiceConfigurationError;
 
 public class CardGridAdapter extends BaseAdapter {
     Context context;
@@ -33,6 +33,13 @@ public class CardGridAdapter extends BaseAdapter {
         inflater = LayoutInflater.from(context);
     }
 
+    public void updateData(List<Card> newCards) {
+        if (newCards != cards) {
+            cards.clear();
+            cards.addAll(newCards);
+        }
+    }
+
     @Override
     public int getCount() {
         return cards.size();
@@ -40,18 +47,18 @@ public class CardGridAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return null;
+        return cards.get(i);
     }
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return i;
     }
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         if (view == null) {
-            view = inflater.inflate(R.layout.card_grid_item, null);
+            view = inflater.inflate(R.layout.card_grid_item, viewGroup, false);
         }
 
         Card thisCard = cards.get(i);
@@ -71,28 +78,17 @@ public class CardGridAdapter extends BaseAdapter {
                 color = ContextCompat.getColor(context, R.color.rarity_rare);
                 break;
 
-            case UNKNOWN:
-                color = ContextCompat.getColor(context, R.color.rarity_unknown);
+            case ULTRA_RARE:
+                color = ContextCompat.getColor(context, R.color.rarity_ultra_rare);
                 break;
         }
         cardBackground.setBackgroundColor(color);
 
-
         ImageView cardImage = view.findViewById(R.id.card_image);
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    InputStream is = (InputStream) new URL(thisCard.IMAGE_URL).getContent();
-                    Drawable d = Drawable.createFromStream(is, "src name");
-                    cardImage.setImageDrawable(d);
-                } catch (Exception e) {
-                    Log.d("CARDGRID", e.toString());
-                }
-            }
-        });
-
-        thread.start();
+        if (!thisCard.acquired)  {
+            cardImage.setColorFilter(Color.rgb(123, 123, 123), android.graphics.PorterDuff.Mode.MULTIPLY);
+        }
+        Glide.with(context).load(thisCard.IMAGE_URL).into(cardImage);
 
         return view;
     }

@@ -2,9 +2,7 @@ package com.example.cardhub.card_creation;
 
 import android.net.Uri;
 
-import com.example.cardhub.Card;
-
-import java.net.URI;
+import com.example.cardhub.inventory.Card;
 
 /**
  * Keeps track of the card that is currently being created.
@@ -21,7 +19,7 @@ public class CardCreationState {
     private Card.Rarity rarity;
 
     //Repository for this class
-    private CardPoolRepository repository;
+    private CardCreationRepository repository;
 
     public CardCreationState() {
 

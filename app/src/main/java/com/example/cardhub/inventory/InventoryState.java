@@ -1,15 +1,17 @@
 package com.example.cardhub.inventory;
 
-import com.example.cardhub.Card;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class InventoryState implements InventoryRepositoryReceiver {
 
-    List<Card> cards = new ArrayList<>();
+    List<Card> displayCards = new ArrayList<>();
+    List<Card> userCards = new ArrayList<>();
     InventoryActivity activity;
     InventoryRepository repository;
+
+    public boolean showingInventory = true;
 
     /**
      * Creates an Inventory state for the InventoryActivity
@@ -23,13 +25,46 @@ public class InventoryState implements InventoryRepositoryReceiver {
 
     @Override
     public void receiveCardsResponse(List<Card> cards) {
-        this.cards = cards;
+
+        if (showingInventory) {
+            this.userCards.clear();
+            this.userCards.addAll(cards);
+            this.displayCards.clear();
+            this.displayCards.addAll(cards);
+        } else {
+            this.displayCards.clear();
+            this.displayCards.addAll(userCards);
+            this.displayCards.addAll(cards);
+        }
+
+        List<Card> missingCards = displayCards.stream().filter(
+                card -> !userCards.stream().anyMatch(uCard -> card.NAME == uCard.NAME)
+                ).collect(Collectors.toList());
+        missingCards.forEach(card -> card.acquired = false);
+
         activity.updateGrid();
     }
 
+    public void sortCards(CardSorter.SortAttribute attribute) {
+        CardSorter.Sort(this.displayCards, attribute, CardSorter.SortOrder.DEFAULT);
+        activity.updateGrid();
+    }
+
+    public void toggleCollection() {
+        if (showingInventory) {
+            repository.requestAllCards();
+        } else {
+            repository.requestUserCards();
+        }
+        showingInventory = !showingInventory;
+
+        activity.updateCollectionButton();
+        activity.scrollBackToTop();
+    }
+
     @Override
-    public void requestCards() {
-        repository.requestCards();
+    public void requestUserCards() {
+        repository.requestUserCards();
     }
 
     /**
@@ -37,8 +72,8 @@ public class InventoryState implements InventoryRepositoryReceiver {
      *
      * @return all the cards
      */
-    public List<Card> getCards() {
-        return cards;
+    public List<Card> getDisplayCards() {
+        return displayCards;
     }
 
     /**
@@ -48,6 +83,6 @@ public class InventoryState implements InventoryRepositoryReceiver {
      * @return the specific card
      */
     public Card getCard(int i) {
-        return cards.get(i);
+        return displayCards.get(i);
     }
 }

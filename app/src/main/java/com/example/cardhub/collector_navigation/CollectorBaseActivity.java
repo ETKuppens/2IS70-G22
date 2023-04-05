@@ -2,16 +2,15 @@ package com.example.cardhub.collector_navigation;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.cardhub.MapActivity;
 import com.example.cardhub.PairingModeActivity;
 import com.example.cardhub.R;
 import com.example.cardhub.inventory.InventoryActivity;
+import com.example.cardhub.map.MapActivity;
 import com.example.cardhub.user_profile.ProfileActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -63,16 +62,6 @@ public abstract class CollectorBaseActivity extends AppCompatActivity implements
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int itemId = item.getItemId();
-        if (itemId == R.id.action_inventory) {
-            startActivity(new Intent(this, InventoryActivity.class));
-        } else if (itemId == R.id.action_map) {
-            startActivity(new Intent(this, MapActivity.class));
-        } else if (itemId == R.id.action_trading) {
-            startActivity(new Intent(this, PairingModeActivity.class));
-        } else if (itemId == R.id.action_profile) {
-            startActivity(new Intent(this, ProfileActivity.class));
-        }
         return true;
     }
 

@@ -1,7 +1,5 @@
 package com.example.cardhub.inventory;
 
-import com.example.cardhub.Card;
-
 import java.util.List;
 
 /**
@@ -19,6 +17,6 @@ public interface InventoryRepositoryReceiver {
     /**
      * Make a request for the cards
      */
-    public void requestCards();
+    public void requestUserCards();
 
 }

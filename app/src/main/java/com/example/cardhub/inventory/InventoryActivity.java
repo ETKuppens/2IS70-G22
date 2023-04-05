@@ -4,24 +4,26 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 
-import com.example.cardhub.Card;
-import com.example.cardhub.TradingMode.CardDiff;
 import com.example.cardhub.R;
 
+import com.example.cardhub.TradingMode.CardDiff;
 import com.example.cardhub.collector_navigation.CollectorBaseActivity;
 import com.google.gson.Gson;
 
 public class InventoryActivity extends CollectorBaseActivity {
+
     InventoryState state;
+    CardGridAdapter adapter;
 
     boolean shouldSupportChoosingACard = false;
     CardDiff diff = null;
@@ -46,7 +48,35 @@ public class InventoryActivity extends CollectorBaseActivity {
 
         state = new InventoryState(this);
 
-        state.requestCards();
+        state.requestUserCards();
+
+        adapter = new CardGridAdapter(this, state.displayCards);
+        GridView cardGridView = findViewById(R.id.card_grid);
+        cardGridView.setAdapter(adapter);
+
+        Button name_sort = findViewById(R.id.sort_by_name);
+        name_sort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                state.sortCards(CardSorter.SortAttribute.NAME);
+            }
+        });
+
+        Button rarity_sort = findViewById(R.id.sort_by_rarity);
+        rarity_sort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                state.sortCards(CardSorter.SortAttribute.RARITY);
+            }
+        });
+
+        Button show_collection = findViewById(R.id.show_collection);
+        show_collection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                state.toggleCollection();
+            }
+        });
     }
 
     @Override
@@ -83,8 +113,13 @@ public class InventoryActivity extends CollectorBaseActivity {
      * Update the inventory grid
      */
     public void updateGrid() {
-        GridView cardGridView = findViewById(R.id.card_grid);
-        cardGridView.setAdapter(new CardGridAdapter(getApplicationContext(), state.cards));
+        CardGridView cardGridView = findViewById(R.id.card_grid);
+        adapter.updateData(state.displayCards);
+        adapter.notifyDataSetChanged();
+        cardGridView.invalidateViews();
+
+        Log.d("GRID_UPDATE", "cards length: " + state.displayCards.size());
+
         cardGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -102,6 +137,15 @@ public class InventoryActivity extends CollectorBaseActivity {
                 cardPreviewResultLauncher.launch(displayCardIntent);
             }
         });
+    }
+
+    public void updateCollectionButton() {
+        Button show_collection = findViewById(R.id.show_collection);
+        if (state.showingInventory) {
+            show_collection.setText("Show Collection");
+        } else {
+            show_collection.setText("Show Inventory");
+        }
     }
 
     ActivityResultLauncher<Intent> cardPreviewResultLauncher = registerForActivityResult(
@@ -125,4 +169,8 @@ public class InventoryActivity extends CollectorBaseActivity {
             }
     );
 
+    public void scrollBackToTop() {
+        CardGridView cardGridView = findViewById(R.id.card_grid);
+        cardGridView.scrollTo(1, 1);
+    }
 }
