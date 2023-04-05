@@ -28,7 +28,7 @@
             android:name=".inventory.CreatorInventoryActivity"
             android:exported="false" />
         <activity
-            android:name=".TradeModeActivity"
+            android:name=".TradingMode.TradeModeActivity"
             android:configChanges="orientation|screenSize|screenLayout"
             android:exported="false"  />
         <activity

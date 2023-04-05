@@ -1,8 +1,7 @@
-package com.example.cardhub;
+package com.example.cardhub.TradingMode;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -16,10 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cardhub.TradingMode.CardDiff;
-import com.example.cardhub.TradingMode.OnRecyclerViewItemClickListener;
-import com.example.cardhub.TradingMode.TradeModeState;
-import com.example.cardhub.TradingMode.TradingSession;
+import com.example.cardhub.CardRecyclerViewAdapter;
+import com.example.cardhub.R;
 import com.example.cardhub.inventory.Card;
 import com.example.cardhub.inventory.CardActivity;
 import com.example.cardhub.inventory.InventoryActivity;
@@ -266,5 +263,10 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
                                  "Cannot currently cancel",
                                       Toast.LENGTH_LONG);
         toast.show();
+    }
+
+    public void finishTrade() {
+        Intent finishTradeIntent = new Intent(this, InventoryActivity.class);
+        startActivity(finishTradeIntent);
     }
 }

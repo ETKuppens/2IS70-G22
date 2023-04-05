@@ -67,4 +67,19 @@ public class TradingSessionRepositoryImpl implements TradingSessionRepository {
 
         receiver.changeProposedCards(diffs_list);
     }
+
+    @Override
+    public void startTradeTimer() {
+        receiver.startTradeTimer();
+    }
+
+    @Override
+    public void doTrade() {
+        data.doTrade();
+    }
+
+    @Override
+    public void finishTrade() {
+        receiver.finishTrade();
+    }
 }
