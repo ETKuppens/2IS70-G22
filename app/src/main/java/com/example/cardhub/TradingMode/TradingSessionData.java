@@ -11,6 +11,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -19,6 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.WriteBatch;
+import com.google.firebase.firestore.core.View;
 import com.google.gson.internal.ObjectConstructor;
 
 import java.util.ArrayList;
@@ -64,9 +66,10 @@ public class TradingSessionData {
 
                     List<Map<String, Object>> diffList = new ArrayList<>();
 
-                    for (DocumentSnapshot diff: value.getDocuments()) {
-                        diffList.add(diff.getData());
-                        Log.d("DOCUMENTSNAPSHOT", "onEvent: " + diff.getData());
+                    for (DocumentChange dc: value.getDocumentChanges()) {
+                        if (dc.getType() == DocumentChange.Type.ADDED) {
+                            diffList.add(dc.getDocument().getData());
+                        }
                     }
 
                     Log.d("CARD", String.valueOf(diffList.get(0)));
