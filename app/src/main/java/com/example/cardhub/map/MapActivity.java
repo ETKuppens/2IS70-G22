@@ -102,7 +102,7 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
     private final LatLng defaultLocation = new LatLng(51.447782, 5.485958);
     private static final int DEFAULT_ZOOM = 15;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-    private boolean locationPermissionGranted;
+    private boolean locationPermissionGranted = false;
 
     // The geographical location where the device is currently located. That is, the last-known
     // location retrieved by the Fused Location Provider.
@@ -345,6 +345,7 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+            locationPermissionGranted = false;
         }
     }
 
