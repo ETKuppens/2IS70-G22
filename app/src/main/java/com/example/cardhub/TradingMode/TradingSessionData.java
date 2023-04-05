@@ -16,6 +16,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.WriteBatch;
 
@@ -59,10 +60,26 @@ public class TradingSessionData {
                 if (snapshot != null && snapshot.exists() && !snapshot.getMetadata().hasPendingWrites()) {
                     Log.d(TAG, "Current data: " + snapshot.getData());
 
+                    docRef.collection("cardDiffs_" + otherPlayer).get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        List<Map<String, Object>> cardDiffs = new ArrayList<>();
+                                        for (DocumentSnapshot documentSnapshots : task.getResult()) {
+                                            cardDiffs.add(documentSnapshots.getData());
+                                        }
+                                        repository.receiveUpdate(cardDiffs);
+                                    } else {
+                                        Log.d("CARDDIFFS", "onEvent: CardDiffs is null");
+                                    }
+                                }
+                            });
+
+
                     List<Map<String, Object>> otherCardDiffs = (List<Map<String, Object>>) snapshot.get("cardDiffs_" + otherPlayer);
 
                     // Call card change function
-
                     if (otherCardDiffs != null) {
                         repository.receiveUpdate(otherCardDiffs);
                     } else {
@@ -204,6 +221,7 @@ public class TradingSessionData {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Log.d("BATCH", "success");
+                    repository.changeProposedCardsConfirm(clientID);
                 } else {
                     Log.d("BATCH", "fail");
                 }
