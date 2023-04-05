@@ -132,7 +132,11 @@ public class InventoryActivity extends CollectorBaseActivity {
                 String encodedCard = converter.toJson(cardToEncode);
 
                 displayCardIntent.putExtra("card", encodedCard);
-                displayCardIntent.putExtra("ShouldSupportChoosingACard", shouldSupportChoosingACard);
+                if (!cardToEncode.acquired) {
+                    displayCardIntent.putExtra("ShouldSupportChoosingACard", false);
+                } else {
+                    displayCardIntent.putExtra("ShouldSupportChoosingACard", shouldSupportChoosingACard);
+                }
 
                 cardPreviewResultLauncher.launch(displayCardIntent);
             }
