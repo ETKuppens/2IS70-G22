@@ -3,6 +3,8 @@ package com.example.cardhub.TradingMode;
 import com.example.cardhub.inventory.Card;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * ADT that encodes whether a given Card should be added or removed from the trade proposal.
@@ -38,5 +40,14 @@ public class CardDiff implements Serializable {
      */
     public DiffOption getDiff() {
         return this.diff;
+    }
+
+    public Map<String, Object> serialize () {
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("card", this.card.serialize());
+        data.put("diff", this.diff);
+
+        return data;
     }
 }

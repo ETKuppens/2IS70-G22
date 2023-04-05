@@ -1,6 +1,8 @@
 package com.example.cardhub.inventory;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Class that stores data of a card instance.
@@ -39,5 +41,16 @@ public class Card implements Serializable {
         this.DESCRIPTION = "";
         this.RARITY = rarity;
         this.IMAGE_URL = imageUrl;
+    }
+
+    public Map<String, Object> serialize () {
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("name", this.NAME);
+        data.put("description", this.DESCRIPTION);
+        data.put("rarity", this.RARITY);
+        data.put("imageurl", this.IMAGE_URL);
+
+        return data;
     }
 }
