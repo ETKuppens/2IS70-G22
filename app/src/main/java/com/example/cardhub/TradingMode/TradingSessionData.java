@@ -135,6 +135,10 @@ public class TradingSessionData {
                             result.get("acceptance_playerB") == null) return;
                     boolean playerA = (boolean)result.get("acceptance_playerA");
                     boolean playerB = (boolean)result.get("acceptance_playerB");
+                    if (result.get("finished") != null && (boolean)result.get("finished")) {
+                        docRef.delete();
+                        repository.finishTrade();
+                    }
                     if (playerA && playerB) {
                         Log.d("TRADING_SESSION", "both players ready");
                         repository.startTradeTimer();
@@ -308,6 +312,7 @@ public class TradingSessionData {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if (task.isSuccessful()) {
+                                                        docRef.update("finished", true);
                                                         Log.d("TRADING", "trade complete");
                                                         repository.finishTrade();
                                                     } else {
