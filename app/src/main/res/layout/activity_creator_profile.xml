@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/dark_gray_1"
     tools:context=".inventory.CreatorInventoryActivity">
 
     <TextView
@@ -12,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:text="0"
+        android:textColor="@color/white"
         app:layout_constraintStart_toEndOf="@+id/trades"
         app:layout_constraintTop_toTopOf="@+id/trades" />
 
@@ -21,6 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="Log Out"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardsCollected" />
 
@@ -30,6 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="9dp"
         android:text="0"
+        android:textColor="@color/white"
         app:layout_constraintStart_toEndOf="@+id/cardsCollected"
         app:layout_constraintTop_toTopOf="@+id/cardsCollected" />
 
@@ -39,6 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="96dp"
         android:text="Trades Made:"
+        android:textColor="@color/white"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         app:layout_constraintBottom_toTopOf="@+id/cardsCollected"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,6 +55,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="20dp"
         android:text="Cards Collected:"
+        android:textColor="@color/white"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,6 +79,7 @@
         android:layout_height="71dp"
         android:fontFamily="sans-serif-light"
         android:text="User Name"
+        android:textColor="@color/white"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Display3"
         android:textSize="24sp"

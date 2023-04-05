@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/dark_gray_1"
     tools:context=".inventory.InventoryActivity">
 
     <com.google.android.flexbox.FlexboxLayout
@@ -20,37 +21,24 @@
             android:id="@+id/sort_by_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="sort by name" />
+            android:text="sort by name"
+            android:textColor="@color/white"/>
 
         <Button
             android:id="@+id/sort_by_rarity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="sort by rarity" />
+            android:text="sort by rarity"
+            android:textColor="@color/white"/>
 
         <Button
             android:id="@+id/show_collection"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="show collection" />
+            android:text="show collection"
+            android:textColor="@color/white"/>
     </com.google.android.flexbox.FlexboxLayout>
 
-
-    <com.example.cardhub.inventory.CardGridView
-        android:id="@+id/card_grid"
-        android:layout_width="match_parent"
-        android:layout_height="630dp"
-        android:layout_gravity="center|center_horizontal"
-        android:background="#FFFFFF"
-        android:horizontalSpacing="10dp"
-        android:numColumns="3"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/fragment_container"
-        app:layout_constraintStart_toStartOf="parent" >
-
-    </com.example.cardhub.inventory.CardGridView>
 
     <FrameLayout
         android:id="@+id/fragment_container"
@@ -61,6 +49,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <com.example.cardhub.inventory.CardGridView
+            android:id="@+id/card_grid"
+            android:layout_width="match_parent"
+            android:layout_height="630dp"
+            android:layout_gravity="center|center_horizontal"
+            android:background="@color/dark_gray_1"
+            android:horizontalSpacing="10dp"
+            android:numColumns="3"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="10dp">
+
+        </com.example.cardhub.inventory.CardGridView>
     </FrameLayout>
     <include
         layout="@menu/item_bottom_navigation_collector"
