@@ -11,77 +11,77 @@
         view to display our QR code-->
 
     <ScrollView
-        android:id="@+id/us_scroll"
+        android:id="@+id/pair_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="70dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/us"
+            android:id="@+id/pair"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/idIVQrcode"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:contentDescription="@string/qr_code"
-        android:padding="10sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+            <ImageView
+                android:id="@+id/idIVQrcode"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:contentDescription="@string/qr_code"
+                android:padding="10sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-    <Button
-        android:id="@+id/idScanQrCode"
-        android:layout_width="300dp"
-        android:layout_height="60dp"
-        android:layout_below="@+id/idBtnGenerateQR"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="15dp"
-        android:text="Join a trading session"
-        app:cornerRadius="40dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/idBtnGenerateQR" />
+            <Button
+                android:id="@+id/idScanQrCode"
+                android:layout_width="300dp"
+                android:layout_height="60dp"
+                android:layout_below="@+id/idBtnGenerateQR"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="15dp"
+                android:text="Join a trading session"
+                app:cornerRadius="40dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/idBtnGenerateQR" />
 
-    <Button
-        android:id="@+id/idBtnGenerateQR"
-        android:layout_width="300dp"
-        android:layout_height="60dp"
-        android:layout_below="@+id/idIVQrcode"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="60dp"
-        android:text="Create a trading session"
-        app:cornerRadius="40dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/idIVQrcode" />
+            <Button
+                android:id="@+id/idBtnGenerateQR"
+                android:layout_width="300dp"
+                android:layout_height="60dp"
+                android:layout_below="@+id/idIVQrcode"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="60dp"
+                android:text="Create a trading session"
+                app:cornerRadius="40dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/idIVQrcode" />
 
-    <!--Edit text to enter text
-        for creating a QR code-->
+            <!--Edit text to enter text
+                for creating a QR code-->
 
-    <!--Button for creating a QR code-->
+            <!--Button for creating a QR code-->
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="Card Trading"
-        android:textAllCaps="false"
-        android:textColor="#6200ED"
-        android:textSize="28sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Card Trading"
+                android:textAllCaps="false"
+                android:textColor="#6200ED"
+                android:textSize="28sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
