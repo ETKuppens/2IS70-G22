@@ -25,6 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cardhub.BuildConfig;
@@ -611,7 +612,7 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         View cardpackPreviewView = inflater.inflate(R.layout.cardpack_preview, null);
 
         cardpackPreviewWindow = new PopupWindow(cardpackPreviewView,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
 
         ImageButton cardpackPreviewCloseButton = (ImageButton)cardpackPreviewView
@@ -626,9 +627,13 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
 
         RecyclerView cardpackRecyclerView = (RecyclerView)cardpackPreviewView
                 .findViewById(R.id.cardpack_preview_cards_recyclerview);
-        CardRecyclerViewAdapter adapter = new CardRecyclerViewAdapter(getApplicationContext(),
+        cardpackRecyclerView.setLayoutManager(new LinearLayoutManager(this,
+                LinearLayoutManager.HORIZONTAL,
+                false));
+        CardRecyclerViewAdapter adapter = new CardRecyclerViewAdapter(cardpackRecyclerView.getContext(),
                 cardPackCards);
         cardpackRecyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
         cardpackPreviewWindow.showAtLocation(findViewById(R.id.map), Gravity.CENTER, 0, 0);
     }
