@@ -1,8 +1,6 @@
 package com.example.cardhub;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +14,6 @@ import com.bumptech.glide.Glide;
 import com.example.cardhub.TradingMode.OnRecyclerViewItemClickListener;
 import com.example.cardhub.inventory.Card;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.util.List;
 
 public class CardRecyclerViewAdapter extends RecyclerView.Adapter<CardRecyclerViewAdapter.CardViewHolder> {

@@ -44,21 +44,21 @@ public class InventoryData {
         cards.add(new HashMap<>());
 
         db.collection("cards/").get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            cards.clear();
-                            for (DocumentSnapshot documentSnapshots : task.getResult()) {
-                                cards.add(documentSnapshots.getData());
-                            }
-                            repository.cardRequestCallback(cards);
-                            Log.d("CARDREQUESTALL", "success");
-                        } else {
-                            Log.d("CARDREQUESTALL", "fail: " + task.getException());
+            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        cards.clear();
+                        for (DocumentSnapshot documentSnapshots : task.getResult()) {
+                            cards.add(documentSnapshots.getData());
                         }
+                        repository.cardRequestCallback(cards);
+                        Log.d("CARDREQUESTALL", "success");
+                    } else {
+                        Log.d("CARDREQUESTALL", "fail: " + task.getException());
                     }
-                });
+                }
+            });
     }
 
     public void requestUserCards() {
