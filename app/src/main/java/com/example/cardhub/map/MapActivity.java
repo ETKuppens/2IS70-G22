@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -215,12 +216,13 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
 
         // Get the current location of the device and set the position of the map.
         getDeviceLocation();
-
-        addPointsOnTheMap();
-
     }
 
     public void addPointsOnTheMap() {
+        if (!locationPermissionGranted) {
+            return;
+        }
+
         List<CardPack> cardPacks = state.packs;
         for (int i = 0; i < cardPacks.size(); i++) {
             map.addMarker(new MarkerOptions()
@@ -500,7 +502,6 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
                 map.setMyLocationEnabled(false);
                 map.getUiSettings().setMyLocationButtonEnabled(false);
                 lastKnownLocation = null;
-                getLocationPermission();
             }
         } catch (SecurityException e)  {
             Log.e("Exception: %s", e.getMessage());
@@ -560,9 +561,25 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
     }
 
     public void cardsResponse(List<CardPack> packs) {
-        // might cause an error if the map is not ready
-        // add pinpoints on the map
-        //addPointsOnTheMap(packs);
+        Thread waitForMapToBeReadyThread = new Thread (() -> {
+            while (map == null) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    // might cause an error if the map is not ready
+                    // add pinpoints on the map
+                    addPointsOnTheMap();
+                }
+            });
+        });
+        waitForMapToBeReadyThread.start();
     }
 
     }
