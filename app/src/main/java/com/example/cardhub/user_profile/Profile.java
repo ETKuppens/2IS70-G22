@@ -1,6 +1,5 @@
 package com.example.cardhub.user_profile;
 
-import android.graphics.Picture;
 import android.widget.ImageView;
 
 import com.example.cardhub.inventory.Card;

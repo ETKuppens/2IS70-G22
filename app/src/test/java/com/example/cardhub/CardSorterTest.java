@@ -1,6 +1,6 @@
 package com.example.cardhub;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import com.example.cardhub.inventory.Card;
 import com.example.cardhub.inventory.CardSorter;

@@ -7,12 +7,10 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.cardhub.PairingModeActivity;
 import com.example.cardhub.R;
 import com.example.cardhub.card_creation.CardCreationActivity;
 import com.example.cardhub.inventory.CreatorInventoryActivity;
 import com.example.cardhub.user_profile.CreatorProfileActivity;
-import com.example.cardhub.user_profile.ProfileActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 

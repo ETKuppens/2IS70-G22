@@ -6,14 +6,17 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,8 +24,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cardhub.BuildConfig;
+import com.example.cardhub.CardRecyclerViewAdapter;
 import com.example.cardhub.PairingModeActivity;
 import com.example.cardhub.R;
 import com.example.cardhub.collector_navigation.CollectorBaseActivity;
@@ -121,6 +127,8 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
     private LatLng[] likelyPlaceLatLngs;
 
     private View cardBanner;
+
+    PopupWindow cardpackPreviewWindow = null;
 
     MapState state;
 
@@ -285,6 +293,7 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         collectCardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                destroyCardpackPreviewWindow();
                 buttonCollectCardPackClicked(pack.rarity);
             }
         });
@@ -582,4 +591,53 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         waitForMapToBeReadyThread.start();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        destroyCardpackPreviewWindow();
     }
+
+    private void destroyCardpackPreviewWindow() {
+        if (cardpackPreviewWindow != null) {
+            cardpackPreviewWindow.dismiss();
+            cardpackPreviewWindow = null;
+        }
+    }
+
+    public void showCardpackPreviewWindow(List<Card> cardPackCards) {
+        if (cardpackPreviewWindow != null || cardPackCards == null) {
+            return;
+        }
+
+        LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
+        View cardpackPreviewView = inflater.inflate(R.layout.cardpack_preview, null);
+
+        cardpackPreviewWindow = new PopupWindow(cardpackPreviewView,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        ImageButton cardpackPreviewCloseButton = (ImageButton)cardpackPreviewView
+                .findViewById(R.id.cardpack_preview_close_button);
+
+        cardpackPreviewCloseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                destroyCardpackPreviewWindow();
+            }
+        });
+
+        RecyclerView cardpackRecyclerView = (RecyclerView)cardpackPreviewView
+                .findViewById(R.id.cardpack_preview_cards_recyclerview);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this,
+                LinearLayoutManager.HORIZONTAL,
+                false);
+        cardpackRecyclerView.setLayoutManager(layoutManager);
+        CardRecyclerViewAdapter adapter = new CardRecyclerViewAdapter(cardpackRecyclerView.getContext(),
+                cardPackCards);
+        cardpackRecyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+
+        cardpackPreviewWindow.showAtLocation(findViewById(R.id.map), Gravity.CENTER, 0, 0);
+    }
+}

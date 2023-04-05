@@ -2,8 +2,6 @@ package com.example.cardhub.inventory;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +13,6 @@ import androidx.core.content.ContextCompat;
 import com.bumptech.glide.Glide;
 import com.example.cardhub.R;
 
-import java.io.InputStream;
-import java.net.URL;
-import java.sql.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CardGridAdapter extends BaseAdapter {
