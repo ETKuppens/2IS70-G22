@@ -6,7 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.gms.common.api.Batch;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -20,8 +20,9 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.WriteBatch;
-import com.google.firebase.firestore.core.View;
-import com.google.gson.internal.ObjectConstructor;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.FirebaseFunctionsException;
+import com.google.firebase.functions.HttpsCallableResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,6 +39,7 @@ public class TradingSessionData {
     private String clientid;
     private String currentPlayer;
     private String otherPlayer;
+    private FirebaseFunctions mFunctions = FirebaseFunctions.getInstance();
 
     public TradingSessionData(TradingSessionRepository repository, String lid, String clientid) {
         this.repository = repository;
@@ -138,6 +140,26 @@ public class TradingSessionData {
                 });
     }
 
+    private Task<String> checkAcceptance() {
+        //
+        Map<String, Object> data = new HashMap<>();
+        data.put("lid", lid);
+
+        return mFunctions
+                .getHttpsCallable("testAcceptance")
+                .call(data)
+                .continueWith(new Continuation<HttpsCallableResult, String>() {
+                    @Override
+                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
+                        // This continuation runs on either success or failure, but if the task
+                        // has failed then getResult() will throw an Exception which will be
+                        // propagated down.
+                        String result = (String) task.getResult().getData();
+                        return result;
+                    }
+                });
+    }
+
     /**
      * Request the server to accept the currently proposed trade.
      *
@@ -153,6 +175,21 @@ public class TradingSessionData {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d("acceptance", "Updated succesfully!");
+                        checkAcceptance()
+                                .addOnCompleteListener(new OnCompleteListener<String>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<String> task) {
+                                        if (!task.isSuccessful()) {
+                                            Log.d("CF", "Acceptance check has failed!");
+                                            Exception e = task.getException();
+                                            if (e instanceof FirebaseFunctionsException) {
+                                                FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
+                                                FirebaseFunctionsException.Code code = ffe.getCode();
+                                                Object details = ffe.getDetails();
+                                            }
+                                        }
+                                    }
+                                });
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
