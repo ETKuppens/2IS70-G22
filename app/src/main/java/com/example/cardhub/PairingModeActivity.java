@@ -42,7 +42,6 @@ import androidmads.library.qrgenearator.QRGEncoder;
 public class PairingModeActivity extends CollectorBaseActivity {
     private ImageView qrCodeIV;
     private FirebaseFirestore db;
-    private TextView tv_lobby;
     Bitmap bitmap;
     QRGEncoder qrgEncoder;
     String uid;
@@ -59,9 +58,7 @@ public class PairingModeActivity extends CollectorBaseActivity {
         qrCodeIV = findViewById(R.id.idIVQrcode);
         Button generateQrBtn = findViewById(R.id.idBtnGenerateQR);
         Button scanQrBtn = findViewById(R.id.idScanQrCode);
-        Button button = findViewById(R.id.button);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        tv_lobby = findViewById(R.id.textView_lobby);
         db = FirebaseFirestore.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         uid = user.getUid();
@@ -115,9 +112,6 @@ public class PairingModeActivity extends CollectorBaseActivity {
             intentIntegrator.setPrompt("Scan a barcode or QR Code");
             intentIntegrator.setOrientationLocked(true);
             intentIntegrator.initiateScan();
-        });
-        button.setOnClickListener(v -> {
-            startActivity(new Intent(this, TradeModeActivity.class));
         });
     }
 
