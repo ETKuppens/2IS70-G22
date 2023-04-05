@@ -5,6 +5,7 @@
     android:id="@+id/constrain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/dark_gray_1"
     tools:context=".card_creation.CardCreationActivity">
 
     <Button
@@ -12,6 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Create Card"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/previewCardButton" />
@@ -22,6 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="200dp"
         android:text="Select Image"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rarityButtons" />
@@ -66,25 +69,29 @@
             android:id="@+id/commonButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Common" />
+            android:text="Common"
+            android:textColor="@color/white" />
 
         <RadioButton
             android:id="@+id/rareButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Rare" />
+            android:text="Rare"
+            android:textColor="@color/white"/>
 
         <RadioButton
             android:id="@+id/legendaryButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Legendary" />
+            android:text="Legendary"
+            android:textColor="@color/white"/>
 
         <RadioButton
             android:id="@+id/ultraRareButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ultra Rare" />
+            android:text="Ultra Rare"
+            android:textColor="@color/white"/>
 
     </RadioGroup>
 
@@ -94,6 +101,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="132dp"
         android:text="Preview Card"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/selectImageButton" />
 

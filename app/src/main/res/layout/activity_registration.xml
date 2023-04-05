@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/dark_gray_1"
     tools:context=".authentification.RegistrationActivity">
 
     <TextView
@@ -12,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="Sign Up"
+        android:textColor="@color/white"
         android:textSize="48sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,6 +26,7 @@
         android:layout_marginTop="30dp"
         android:ems="10"
         android:hint="Email"
+        android:textColor="@color/white"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="@+id/textView_signup"
@@ -38,6 +41,7 @@
         android:height="50dp"
         android:ems="10"
         android:hint="Password"
+        android:textColor="@color/white"
         android:inputType="textPassword"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="@+id/spinner_role"
@@ -52,6 +56,7 @@
         android:height="50dp"
         android:ems="10"
         android:hint="Confirm Password"
+        android:textColor="@color/white"
         android:inputType="textPassword"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="@+id/editText_registerpassword"
@@ -75,6 +80,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Register"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/textView_tos"
         app:layout_constraintStart_toEndOf="@+id/checkBox_tos"
         app:layout_constraintTop_toBottomOf="@+id/textView_tos" />
@@ -93,6 +99,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="I have read and agree to \n the Terms and Conditions"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/editText_confirm"
         app:layout_constraintStart_toStartOf="@+id/editText_confirm"
         app:layout_constraintTop_toBottomOf="@+id/editText_confirm" />
