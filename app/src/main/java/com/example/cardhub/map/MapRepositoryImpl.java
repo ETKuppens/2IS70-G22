@@ -40,4 +40,9 @@ public class MapRepositoryImpl implements MapRepository {
 
         state.setPacks(packs);
     }
+
+    @Override
+    public void acquireRandomCard(Card.Rarity rarity) {
+        data.acquireRandomCard(rarity);
+    }
 }
