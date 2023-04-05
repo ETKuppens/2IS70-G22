@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.cardhub.R;
 import com.google.gson.Gson;
 
@@ -72,20 +73,7 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         descView.setText(card.DESCRIPTION);
 
         ImageView imageView = findViewById(R.id.card_image);
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Log.d("CARD_ACTIVITY", "jo mama");
-                    InputStream is = (InputStream) new URL(card.IMAGE_URL).getContent();
-                    Drawable d = Drawable.createFromStream(is, "src name");
-                    imageView.setImageDrawable(d);
-                } catch (Exception e) {
-                    Log.d("CARD_ACTIVITY", e.toString());
-                }
-            }
-        });
-        thread.start();
+        Glide.with(getApplicationContext()).load(card.IMAGE_URL).into(imageView);
     }
 
     @Override
