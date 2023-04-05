@@ -213,7 +213,7 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
             public void onFinish() {
                 repository.doTrade();
             }
-        };
+        }.start();
     }
 
     @Override
