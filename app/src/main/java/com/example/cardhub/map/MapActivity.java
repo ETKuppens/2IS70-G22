@@ -543,9 +543,9 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         Double distance =
                 distanceBetween(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude(),
                         MarkerLatLng.latitude, MarkerLatLng.longitude);
-        Toast.makeText(getApplicationContext(),Double.toString(distance),Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(),Double.toString(distance),Toast.LENGTH_SHORT).show();
         // Init card collection
-        if (distance <= 30) {
+        if (distance <= 300) {
             state.acquireRandomCard(rarity);
         } else {
             String errMessage = String.format("%.2f", distance);
