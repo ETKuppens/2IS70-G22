@@ -7,6 +7,7 @@
     android:orientation="horizontal">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/cardpack_preview_cards_recyclerview"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
@@ -14,10 +15,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton" />
+        app:layout_constraintTop_toBottomOf="@+id/cardpack_preview_close_button" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/cardpack_preview_close_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
