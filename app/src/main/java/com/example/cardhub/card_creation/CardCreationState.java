@@ -4,8 +4,6 @@ import android.net.Uri;
 
 import com.example.cardhub.inventory.Card;
 
-import java.net.URI;
-
 /**
  * Keeps track of the card that is currently being created.
  * @author Rijkman
@@ -21,7 +19,7 @@ public class CardCreationState {
     private Card.Rarity rarity;
 
     //Repository for this class
-    private CardPoolRepository repository;
+    private CardCreationRepository repository;
 
     public CardCreationState() {
 

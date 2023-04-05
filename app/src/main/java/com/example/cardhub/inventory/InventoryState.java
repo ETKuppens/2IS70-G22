@@ -2,6 +2,7 @@ package com.example.cardhub.inventory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class InventoryState implements InventoryRepositoryReceiver {
 
@@ -24,13 +25,23 @@ public class InventoryState implements InventoryRepositoryReceiver {
 
     @Override
     public void receiveCardsResponse(List<Card> cards) {
-        this.displayCards.clear();
-        this.displayCards.addAll(cards);
 
         if (showingInventory) {
             this.userCards.clear();
             this.userCards.addAll(cards);
+            this.displayCards.clear();
+            this.displayCards.addAll(cards);
+        } else {
+            this.displayCards.clear();
+            this.displayCards.addAll(userCards);
+            this.displayCards.addAll(cards);
         }
+
+        List<Card> missingCards = displayCards.stream().filter(
+                card -> !userCards.stream().anyMatch(uCard -> card.NAME == uCard.NAME)
+                ).collect(Collectors.toList());
+        missingCards.forEach(card -> card.acquired = false);
+
         activity.updateGrid();
     }
 
