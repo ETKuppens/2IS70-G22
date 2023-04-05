@@ -257,6 +257,7 @@ public class TradingSessionData {
     }
 
     public void doTrade() {
+        Log.d("TRADING", "doTrade: Starting trade");
         docRef.collection("cardDiffs_" + currentPlayer).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -314,12 +315,18 @@ public class TradingSessionData {
                                                     }
                                                 }
                                             });
+                                        } else {
+                                            Log.e("TRADING_ERROR", "failed: " + task.getException());
                                         }
                                     }
                                 });
+                            } else {
+                                Log.e("TRADING_ERROR", "failed: " + task.getException());
                             }
                         }
                     });
+                } else {
+                    Log.e("TRADING_ERROR", "failed: " + task.getException());
                 }
             }
         });
