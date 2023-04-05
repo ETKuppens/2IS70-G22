@@ -1,11 +1,5 @@
 package com.example.cardhub.card_creation;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.PickVisualMediaRequest;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
-
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,8 +7,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RadioGroup;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
+
 import com.example.cardhub.R;
-import com.example.cardhub.collector_navigation.CollectorBaseActivity;
 import com.example.cardhub.creator_navigation.CreatorBaseActivity;
 import com.example.cardhub.inventory.Card;
 import com.example.cardhub.inventory.CardActivity;

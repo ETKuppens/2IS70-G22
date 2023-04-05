@@ -1,12 +1,8 @@
 package com.example.cardhub.authentification;
 
-import android.content.Intent;
 import android.widget.Toast;
 
-import com.example.cardhub.user_profile.ProfileActivity;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 public class RegistrationState implements RegisterReceiver {
     private final RegistrationData data;

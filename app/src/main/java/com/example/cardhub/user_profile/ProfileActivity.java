@@ -1,36 +1,22 @@
 package com.example.cardhub.user_profile;
 
 import android.content.Intent;
-import android.text.Layout;
-import android.view.Gravity;
-import android.view.LayoutInflater;
+import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.os.Bundle;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cardhub.CardRecyclerViewAdapter;
-import com.example.cardhub.inventory.Card;
-import com.example.cardhub.map.CardPack;
-import com.example.cardhub.map.MapActivity;
 import com.example.cardhub.PairingModeActivity;
-import com.example.cardhub.collector_navigation.CollectorBaseActivity;
-import com.example.cardhub.authentification.LoginActivity;
 import com.example.cardhub.R;
+import com.example.cardhub.authentification.LoginActivity;
+import com.example.cardhub.collector_navigation.CollectorBaseActivity;
 import com.example.cardhub.inventory.InventoryActivity;
+import com.example.cardhub.map.MapActivity;
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ProfileActivity extends CollectorBaseActivity {
     ProfileState state;

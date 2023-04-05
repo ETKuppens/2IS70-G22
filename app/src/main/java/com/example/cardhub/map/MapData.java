@@ -1,8 +1,6 @@
 package com.example.cardhub.map;
 
-import android.graphics.drawable.Drawable;
 import android.util.Log;
-import android.view.AttachedSurfaceControl;
 
 import androidx.annotation.NonNull;
 
@@ -15,11 +13,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
