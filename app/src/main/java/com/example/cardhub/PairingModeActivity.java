@@ -99,6 +99,12 @@ public class PairingModeActivity extends CollectorBaseActivity {
                                         Intent intent = new Intent(getApplicationContext(), TradeModeActivity.class);
                                         intent.putExtra("lobbyid", lobby);
                                         intent.putExtra("clientid", uid);
+
+                                        // Stop showing the QR code
+                                        qrCodeIV.clearColorFilter();
+                                        qrCodeIV.setImageDrawable(null);
+                                        qrCodeIV.invalidate();
+
                                         startActivity(intent);
                                         active =false;
                                     }
