@@ -18,6 +18,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.WriteBatch;
@@ -39,7 +40,7 @@ public class TradingSessionData {
     private String clientid;
     private String currentPlayer;
     private String otherPlayer;
-    private boolean readyToTrade = false;
+    private ListenerRegistration listenerRegistration;
 
     public TradingSessionData(TradingSessionRepository repository, String lid, String clientid) {
         this.repository = repository;
@@ -106,9 +107,7 @@ public class TradingSessionData {
                         }
 
                         startCardDiffListener();
-                        if (currentPlayer.equals("playerB")) {
-                            startReadyListener();
-                        }
+                        startReadyListener();
                     } else {
                         Log.d(TAG, "No such document");
                     }
@@ -120,7 +119,7 @@ public class TradingSessionData {
     }
 
     private void startReadyListener() {
-        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        listenerRegistration = docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException error) {
                 if (error != null) {
@@ -131,15 +130,23 @@ public class TradingSessionData {
                 if (snapshot != null && snapshot.exists()) {
                     Map<String, Object> result = snapshot.getData();
                     if (result == null) return;
-                    boolean playerA = (boolean)result.get("acceptance_playerA");
-                    boolean playerB = (boolean)result.get("acceptance_playerB");
-                    if (playerA && playerB) {
-                        Log.d("TRADING_SESSION", "both players ready");
-                        repository.startTradeTimer();
-                    } else {
+                    if (currentPlayer.equals("playerA")) {
+                        if (
+                                result.get("acceptance_playerA") == null ||
+                                result.get("acceptance_playerB") == null) return;
+                        boolean playerA = (boolean)result.get("acceptance_playerA");
+                        boolean playerB = (boolean)result.get("acceptance_playerB");
+                        if (playerA && playerB) {
+                            Log.d("TRADING_SESSION", "both players ready");
+                            repository.startTradeTimer();
+                        } else {
+                        }
+                    } else if(result.get("finished") != null && (boolean)result.get("finished"))  {
+                        docRef.delete();
+                        repository.finishTrade();
                     }
                 } else {
-                    //Log.d(TAG, source + " data: null");
+
                 }
 
             }
@@ -255,15 +262,14 @@ public class TradingSessionData {
     }
 
     public void doTrade() {
+        Log.d("TRADING", "doTrade: Starting trade");
         docRef.collection("cardDiffs_" + currentPlayer).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     List<Map<String,Object>> playerAOfferedCards = new ArrayList<>();
-                    List<DocumentReference> playerAOfferedRefs = new ArrayList<>();
                     for (DocumentSnapshot cd : task.getResult()) {
                         playerAOfferedCards.add((Map<String,Object>)cd.getData().get("card"));
-                        playerAOfferedRefs.add(cd.getReference());
                     }
 
                     docRef.collection("cardDiffs_" + otherPlayer).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -271,10 +277,8 @@ public class TradingSessionData {
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
                                 List<Map<String,Object>> playerBOfferedCards = new ArrayList<>();
-                                List<DocumentReference> playerBOfferedRefs = new ArrayList<>();
                                 for (DocumentSnapshot cd : task.getResult()) {
                                     playerBOfferedCards.add((Map<String,Object>)cd.getData().get("card"));
-                                    playerBOfferedRefs.add(cd.getReference());
                                 }
 
                                 docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -285,39 +289,91 @@ public class TradingSessionData {
                                             String playerBName = (String)task.getResult().get("playerBName");
 
                                             WriteBatch batch = db.batch();
-                                            for (DocumentReference ref : playerAOfferedRefs) {
-                                                batch.delete(ref);
-                                            }
-                                            DocumentReference docRefInvA = db.collection("users/" + playerAName + "/cards").document();
-                                            for (Map<String, Object> card : playerBOfferedCards) {
-                                                batch.set(docRefInvA, card);
+                                            if (playerAOfferedCards.size() > 0) {
+                                                List<String> offeredNamesA = playerAOfferedCards.stream()
+                                                        .map(card -> (String) card.get("name")).collect(Collectors.toList());
+                                                offeredNamesA.add("DO_NOT_USE_THIS_NAME");
+                                                db.collection("users/" + playerAName + "/cards")
+                                                        .whereIn("name", offeredNamesA)
+                                                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    for (DocumentSnapshot s : task.getResult()) {
+                                                                        batch.delete(s.getReference());
+                                                                    }
+
+                                                                    deletePlayerBOffers(playerAOfferedCards, playerBOfferedCards, playerBName, playerAName, batch);
+                                                                }
+                                                            }
+                                                        });
+                                            } else {
+                                                deletePlayerBOffers(playerAOfferedCards, playerBOfferedCards, playerBName, playerAName, batch);
                                             }
 
-                                            for (DocumentReference ref : playerBOfferedRefs) {
-                                                batch.delete(ref);
-                                            }
-                                            DocumentReference docRefInvB = db.collection("users/" + playerBName + "/cards").document();
-                                            for (Map<String, Object> card : playerAOfferedCards) {
-                                                batch.set(docRefInvB, card);
-                                            }
-
-                                            batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
-                                                        Log.d("TRADING", "trade complete");
-                                                        repository.finishTrade();
-                                                    } else {
-                                                        Log.d("TRADING", "trade failed" + task.getException());
-                                                    }
-                                                }
-                                            });
+                                            } else {
+                                                Log.e("TRADING_ERROR", "failed: " + task.getException());
                                         }
                                     }
                                 });
+                            } else {
+                                Log.e("TRADING_ERROR", "failed: " + task.getException());
                             }
                         }
                     });
+                } else {
+                    Log.e("TRADING_ERROR", "failed: " + task.getException());
+                }
+            }
+        });
+    }
+
+    void deletePlayerBOffers(List<Map<String,Object>> playerAOfferedCards, List<Map<String,Object>> playerBOfferedCards, String playerBName, String playerAName, WriteBatch batch) {
+        if (playerBOfferedCards.size() > 0) {
+            List<String> offeredNamesB = playerBOfferedCards.stream()
+                    .map(card -> (String) card.get("name")).collect(Collectors.toList());
+            offeredNamesB.add("DO_NOT_USE_THIS_NAME");
+            db.collection("users/" + playerBName + "/cards")
+                    .whereIn("name", offeredNamesB)
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (DocumentSnapshot s : task.getResult()) {
+                                    batch.delete(s.getReference());
+                                }
+
+                                exchangeCards(playerAOfferedCards, playerBOfferedCards, playerBName, playerAName, batch);
+                            }
+                        }
+                    });
+        } else {
+            exchangeCards(playerAOfferedCards, playerBOfferedCards, playerBName, playerAName, batch);
+        }
+    }
+
+    void exchangeCards (List<Map<String,Object>> playerAOfferedCards, List<Map<String,Object>> playerBOfferedCards, String playerBName, String playerAName, WriteBatch batch) {
+
+        DocumentReference docRefInvA = db.collection("users/" + playerAName + "/cards").document();
+        for (Map<String, Object> card : playerBOfferedCards) {
+            batch.set(docRefInvA, card);
+        }
+
+        DocumentReference docRefInvB = db.collection("users/" + playerBName + "/cards").document();
+        for (Map<String, Object> card : playerAOfferedCards) {
+            batch.set(docRefInvB, card);
+        }
+
+        batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    docRef.update("finished", true);
+                    listenerRegistration.remove();
+                    Log.d("TRADING", "trade complete");
+                    repository.finishTrade();
+                } else {
+                    Log.d("TRADING", "trade failed" + task.getException());
                 }
             }
         });

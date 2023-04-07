@@ -1,6 +1,7 @@
 package com.example.cardhub.TradingMode;
 
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.Set;
@@ -205,13 +206,14 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
             @Override
             public void onTick(long millisUntilFinished) {
                 long countDownVal = millisUntilFinished / 1000;
+                Log.d("TIMER", countDownVal+ " seconds left");
             }
 
             @Override
             public void onFinish() {
                 repository.doTrade();
             }
-        };
+        }.start();
     }
 
     @Override
