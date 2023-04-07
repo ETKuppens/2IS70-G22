@@ -34,7 +34,7 @@ public class MapRepositoryImpl implements MapRepository {
                 ),
                 (String) pack.get("name"),
                 (String) pack.get("description"),
-                Card.Rarity.values()[(int)(long)(pack.get("rarity"))],
+                Card.Rarity.valueOf((String) (pack.get("rarity"))),
                 (String) pack.get("image"))).collect(Collectors.toList());
 
         state.setPacks(packs);
