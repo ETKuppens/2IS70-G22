@@ -4,15 +4,24 @@ import android.widget.ImageView;
 
 import com.example.cardhub.inventory.InventoryRepositoryImpl;
 
-public class ProfileState {
+public class ProfileState implements ProfileRepositoryReceiver {
+    private ProfileActivity activity;
+    private CreatorProfileActivity creatorActivity;
     Profile currentProfile;
 
     //Repositories
     InventoryRepositoryImpl inventoryRepository;
-    ProfileRepository profileRepository;
-    public ProfileState() {
-        this.profileRepository = new ProfileRepository(this);
-        this.currentProfile = profileRepository.getProfile();
+    Profile profile;
+    ProfileRepositoryImpl profileRepository;
+
+    public ProfileState(ProfileActivity activity) {
+        this.profileRepository = new ProfileRepositoryImpl(this);
+        this.activity = activity;
+    }
+
+    public ProfileState(CreatorProfileActivity activity) {
+        this.profileRepository = new ProfileRepositoryImpl(this);
+        this.creatorActivity = activity;
     }
 
     public ImageView getProfilePicture() {
@@ -28,10 +37,20 @@ public class ProfileState {
     }
 
     public String getTradeAmount() {
-        return "5";
+        return currentProfile.getTradeAmount();
     }
 
     public void logout() {
         currentProfile = null;
+    }
+
+    @Override
+    public void receiverProfile(Profile profile) {
+        this.profile = profile;
+        activity.updateData();
+    }
+
+    public void requestProfile() {
+        profileRepository.requestProfile();
     }
 }

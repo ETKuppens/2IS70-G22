@@ -2,6 +2,7 @@ package com.example.cardhub.user_profile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -35,8 +36,9 @@ public class ProfileActivity extends CollectorBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        this.state = new ProfileState();
-        updateData();
+        this.state = new ProfileState(this);
+
+        state.requestProfile();
 
         setupNav();
 
@@ -67,16 +69,16 @@ public class ProfileActivity extends CollectorBaseActivity {
     }
 
     void updateData() {
-        ImageView profilePic = findViewById(R.id.profilePicture);
-        profilePic = state.getProfilePicture();
+
+        Log.d("PROFILE4", state.profile.toString());
 
         TextView userName = findViewById(R.id.userName);
-        userName.setText(state.getUsername());
+        userName.setText(state.profile.getUsername());
 
         TextView cardAmount = findViewById(R.id.cardsCollectedAmount);
-        cardAmount.setText(state.getCardAmount());
+        cardAmount.setText(state.profile.getCardAmount());
 
         TextView tradeAmount = findViewById(R.id.tradeAmount);
-        tradeAmount.setText(state.getTradeAmount());
+        tradeAmount.setText(state.profile.getTradeAmount());
     }
 }
