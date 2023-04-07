@@ -328,7 +328,7 @@ public class TradingSessionData {
         });
     }
 
-    void deletePlayerBOffers(List<Map<String,Object>> playerAOfferedCards, List<Map<String,Object>> playerBOfferedCards, String playerBName, String playerAName, WriteBatch batch) {
+    private void deletePlayerBOffers(List<Map<String,Object>> playerAOfferedCards, List<Map<String,Object>> playerBOfferedCards, String playerBName, String playerAName, WriteBatch batch) {
         if (playerBOfferedCards.size() > 0) {
             List<String> offeredNamesB = playerBOfferedCards.stream()
                     .map(card -> (String) card.get("name")).collect(Collectors.toList());
@@ -352,7 +352,7 @@ public class TradingSessionData {
         }
     }
 
-    void exchangeCards (List<Map<String,Object>> playerAOfferedCards, List<Map<String,Object>> playerBOfferedCards, String playerBName, String playerAName, WriteBatch batch) {
+    private void exchangeCards (List<Map<String,Object>> playerAOfferedCards, List<Map<String,Object>> playerBOfferedCards, String playerBName, String playerAName, WriteBatch batch) {
 
         DocumentReference docRefInvA = db.collection("users/" + playerAName + "/cards").document();
         for (Map<String, Object> card : playerBOfferedCards) {
