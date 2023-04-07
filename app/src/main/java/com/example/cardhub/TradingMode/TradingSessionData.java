@@ -394,7 +394,7 @@ public class TradingSessionData {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     db.collection("users").document(playerAName).update("tradesmade", FieldValue.increment(1));
-                    db.collection("users").document(playerAName).update("tradesmade", FieldValue.increment(1));
+                    db.collection("users").document(playerBName).update("tradesmade", FieldValue.increment(1));
                     docRef.update("finished", true);
                     listenerRegistration.remove();
                     Log.d("TRADING", "trade complete");
