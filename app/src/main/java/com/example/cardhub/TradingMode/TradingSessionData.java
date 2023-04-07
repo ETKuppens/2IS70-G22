@@ -342,8 +342,6 @@ public class TradingSessionData {
                         String playerAName = document.getString("playerAName");
                         String playerBName = document.getString("playerBName");
 
-                        db.collection("users").document(playerAName).update("tradesmade", FieldValue.increment(1));
-                        db.collection("users").document(playerAName).update("tradesmade", FieldValue.increment(1));
 
                     } else {
                         Log.d(TAG, "No such document");
@@ -395,6 +393,8 @@ public class TradingSessionData {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
+                    db.collection("users").document(playerAName).update("tradesmade", FieldValue.increment(1));
+                    db.collection("users").document(playerAName).update("tradesmade", FieldValue.increment(1));
                     docRef.update("finished", true);
                     listenerRegistration.remove();
                     Log.d("TRADING", "trade complete");
