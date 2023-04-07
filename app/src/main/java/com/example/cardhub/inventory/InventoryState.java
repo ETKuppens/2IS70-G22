@@ -38,7 +38,7 @@ public class InventoryState implements InventoryRepositoryReceiver {
         }
 
         List<Card> missingCards = displayCards.stream().filter(
-                card -> !userCards.stream().anyMatch(uCard -> card.NAME == uCard.NAME)
+                card -> !userCards.stream().anyMatch(uCard -> card.NAME.equals(uCard.NAME))
                 ).collect(Collectors.toList());
         missingCards.forEach(card -> card.acquired = false);
 
