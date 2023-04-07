@@ -1,5 +1,6 @@
 package com.example.cardhub.user_profile;
 
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.example.cardhub.inventory.Card;
@@ -24,9 +25,10 @@ public class Profile {
 
     public Profile(Map<String, Object>data) {
         //this.profilePicture = (String) profilePicture;
-        this.userName = (String) data.get("username");
-        this.cardsCollected = (int) data.get("cardscollected");
-        this.tradesMade = (int) data.get("tradesmade");
+        Log.d("PROFILE2", data.toString());
+        this.userName = (String) data.get("email");
+        this.cardsCollected = (int)  data.get("cardamount");
+        this.tradesMade = (int)  data.get("tradesmade");
     }
 
     public void setProfilePicture(ImageView profilePicture) {
@@ -47,7 +49,8 @@ public class Profile {
 
 
     public String getUsername() {
-        return this.userName;
+        Log.d("PROFILE3", userName);
+        return String.valueOf(this.userName);
     }
 
 }

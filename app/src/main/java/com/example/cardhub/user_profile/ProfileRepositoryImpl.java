@@ -23,5 +23,9 @@ public class ProfileRepositoryImpl implements ProfileRepository {
     public void receiverProfile(Map<String, Object> profile) {
         receiver.receiverProfile(new Profile(profile));
     }
+
+    public void requestProfile() {
+        data.requestProfile();
+    }
 }
 

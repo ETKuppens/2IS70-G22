@@ -1,5 +1,7 @@
 package com.example.cardhub.user_profile;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -42,8 +44,10 @@ public class ProfileData {
                             if (task.isSuccessful()) {
                                 Map<String, Object> profile = new HashMap<>();
                                 profile.put("email", auth.getCurrentUser().getEmail());
-                                profile.put("cardamount", cardAmount);
-                                profile.put("tradesmade", (int)task.getResult().get("tradesmade"));
+                                profile.put("cardamount", (int) (long)cardAmount);
+                                profile.put("tradesmade", (int)(long)task.getResult().get("tradesmade"));
+
+                                Log.d("PROFILE", "profile: " + profile.toString());
 
                                 repo.receiverProfile(profile);
                             }

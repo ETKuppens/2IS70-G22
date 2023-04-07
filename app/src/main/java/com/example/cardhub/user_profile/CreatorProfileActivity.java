@@ -67,8 +67,6 @@ public class CreatorProfileActivity extends CreatorBaseActivity {
     }
 
     void updateData() {
-        ImageView profilePic = findViewById(R.id.profilePicture);
-        profilePic = state.getProfilePicture();
 
         TextView userName = findViewById(R.id.userName);
         userName.setText(state.getUsername());

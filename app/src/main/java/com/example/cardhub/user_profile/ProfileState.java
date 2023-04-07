@@ -16,13 +16,11 @@ public class ProfileState implements ProfileRepositoryReceiver {
 
     public ProfileState(ProfileActivity activity) {
         this.profileRepository = new ProfileRepositoryImpl(this);
-        this.currentProfile = profileRepository.getProfile();
         this.activity = activity;
     }
 
     public ProfileState(CreatorProfileActivity activity) {
         this.profileRepository = new ProfileRepositoryImpl(this);
-        this.currentProfile = profileRepository.getProfile();
         this.creatorActivity = activity;
     }
 
@@ -39,7 +37,7 @@ public class ProfileState implements ProfileRepositoryReceiver {
     }
 
     public String getTradeAmount() {
-        return "5";
+        return currentProfile.getTradeAmount();
     }
 
     public void logout() {
@@ -48,6 +46,11 @@ public class ProfileState implements ProfileRepositoryReceiver {
 
     @Override
     public void receiverProfile(Profile profile) {
+        this.profile = profile;
         activity.updateData();
+    }
+
+    public void requestProfile() {
+        profileRepository.requestProfile();
     }
 }
