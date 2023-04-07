@@ -19,7 +19,7 @@ import com.example.cardhub.inventory.InventoryActivity;
 import com.example.cardhub.map.MapActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class ProfileActivity extends CollectorBaseActivity {
+public class ProfileActivity extends CollectorBaseActivity implements ProfileBaseActivity {
     ProfileState state;
 
     @Override
@@ -68,17 +68,18 @@ public class ProfileActivity extends CollectorBaseActivity {
         return true;
     }
 
-    void updateData() {
+    @Override
+    public void updateData() {
 
-        Log.d("PROFILE4", state.profile.toString());
+        Log.d("PROFILE4", state.currentProfile.toString());
 
         TextView userName = findViewById(R.id.userName);
-        userName.setText(state.profile.getUsername());
+        userName.setText(state.currentProfile.getUsername());
 
         TextView cardAmount = findViewById(R.id.cardsCollectedAmount);
-        cardAmount.setText(state.profile.getCardAmount());
+        cardAmount.setText(state.currentProfile.getCardAmount());
 
         TextView tradeAmount = findViewById(R.id.tradeAmount);
-        tradeAmount.setText(state.profile.getTradeAmount());
+        tradeAmount.setText(state.currentProfile.getTradeAmount());
     }
 }

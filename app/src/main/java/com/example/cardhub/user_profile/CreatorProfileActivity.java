@@ -18,7 +18,7 @@ import com.example.cardhub.inventory.InventoryActivity;
 import com.example.cardhub.map.MapActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class CreatorProfileActivity extends CreatorBaseActivity {
+public class CreatorProfileActivity extends CreatorBaseActivity implements ProfileBaseActivity {
     ProfileState state;
 
     @Override
@@ -36,9 +36,20 @@ public class CreatorProfileActivity extends CreatorBaseActivity {
         setContentView(R.layout.activity_creator_profile);
 
         this.state = new ProfileState(this);
-        updateData();
+        state.requestProfile();
 
         setupNav();
+
+        TextView cardAmount = findViewById(R.id.cardsCollectedAmount);
+        TextView cardsCollected = findViewById(R.id.cardsCollected);
+        cardAmount.setVisibility(View.INVISIBLE);
+        cardsCollected.setVisibility(View.INVISIBLE);
+
+        TextView tradeAmount = findViewById(R.id.tradeAmount);
+        TextView trades = findViewById(R.id.trades);
+        tradeAmount.setVisibility(View.INVISIBLE);
+        trades.setVisibility(View.INVISIBLE);
+
 
         //Bind functionality to Buttons
         Button logoutButton = (Button)findViewById(R.id.logoutButton);
@@ -66,15 +77,10 @@ public class CreatorProfileActivity extends CreatorBaseActivity {
         return true;
     }
 
-    void updateData() {
-
+    @Override
+    public void updateData() {
         TextView userName = findViewById(R.id.userName);
         userName.setText(state.getUsername());
 
-        TextView cardAmount = findViewById(R.id.cardsCollectedAmount);
-        cardAmount.setText(state.getCardAmount());
-
-        TextView tradeAmount = findViewById(R.id.tradeAmount);
-        tradeAmount.setText(state.getTradeAmount());
     }
 }

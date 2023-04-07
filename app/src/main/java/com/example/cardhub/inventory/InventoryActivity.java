@@ -147,7 +147,7 @@ public class InventoryActivity extends CollectorBaseActivity {
     public void updateCollectionButton() {
         Button show_collection = findViewById(R.id.show_collection);
         if (state.showingInventory) {
-            show_collection.setText("Show Collection");
+            show_collection.setText("Progress");
         } else {
             show_collection.setText("Show Inventory");
         }
