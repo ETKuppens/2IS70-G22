@@ -35,7 +35,7 @@ public class ProfileActivity extends CollectorBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        this.state = new ProfileState();
+        this.state = new ProfileState(this);
         updateData();
 
         setupNav();
@@ -71,12 +71,12 @@ public class ProfileActivity extends CollectorBaseActivity {
         profilePic = state.getProfilePicture();
 
         TextView userName = findViewById(R.id.userName);
-        userName.setText(state.getUsername());
+        userName.setText(state.profile.getUsername());
 
         TextView cardAmount = findViewById(R.id.cardsCollectedAmount);
-        cardAmount.setText(state.getCardAmount());
+        cardAmount.setText(state.profile.getCardAmount());
 
         TextView tradeAmount = findViewById(R.id.tradeAmount);
-        tradeAmount.setText(state.getTradeAmount());
+        tradeAmount.setText(state.profile.getTradeAmount());
     }
 }

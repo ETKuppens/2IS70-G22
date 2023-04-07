@@ -5,18 +5,28 @@ import android.widget.ImageView;
 import com.example.cardhub.inventory.Card;
 
 import java.util.List;
+import java.util.Map;
 
 public class Profile {
     private String userName;
 
     private ImageView profilePicture;
 
-    private List<Card> inventory;
+    private int cardsCollected;
+    private int tradesMade;
 
-    public Profile(ImageView profilePicture, String userName, List<Card> inventory) {
+    public Profile(ImageView profilePicture, String userName, int cardsCollected, int tradesMade) {
         this.profilePicture = profilePicture;
         this.userName = userName;
-        this.inventory = inventory;
+        this.cardsCollected = cardsCollected;
+        this.tradesMade = tradesMade;
+    }
+
+    public Profile(Map<String, Object>data) {
+        //this.profilePicture = (String) profilePicture;
+        this.userName = (String) data.get("username");
+        this.cardsCollected = (int) data.get("cardscollected");
+        this.tradesMade = (int) data.get("tradesmade");
     }
 
     public void setProfilePicture(ImageView profilePicture) {
@@ -28,19 +38,16 @@ public class Profile {
     }
 
     public String getCardAmount() {
-        return String.valueOf(inventory.size());
+        return String.valueOf(this.cardsCollected);
     }
 
     public String getTradeAmount() {
-        return "0";
-        // TODO: Implement trade amount;
+        return String.valueOf(this.tradesMade);
     }
 
-    public void setInventory(List<Card> cards) {
-        this.inventory = cards;
-    }
 
     public String getUsername() {
         return this.userName;
     }
+
 }

@@ -35,7 +35,7 @@ public class CreatorProfileActivity extends CreatorBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_creator_profile);
 
-        this.state = new ProfileState();
+        this.state = new ProfileState(this);
         updateData();
 
         setupNav();
