@@ -129,14 +129,8 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
                     "currently in a state where the proposed trade may not be accepted.");
         }
 
-        this.proposedCardsMayBeChanged = false;
-        this.activity.disableChangeTradeProposal();
-
         this.proposedTradeMayBeAccepted = false;
         this.activity.disableAcceptTrade();
-
-        this.proposedTradeMayBeCanceled = false;
-        this.activity.disableCancelTrade();
 
         this.repository.acceptProposedTrade(this.clientid);
     }
