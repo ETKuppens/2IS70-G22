@@ -48,6 +48,7 @@
         <activity
             android:name=".inventory.InventoryActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".PairingModeActivity"
