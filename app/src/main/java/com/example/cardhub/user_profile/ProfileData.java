@@ -44,7 +44,7 @@ public class ProfileData {
                             if (task.isSuccessful()) {
                                 Map<String, Object> profile = new HashMap<>();
                                 profile.put("email", auth.getCurrentUser().getEmail());
-                                profile.put("cardamount", (int) (long)cardAmount);
+                                profile.put("cardamount", cardAmount);
                                 profile.put("tradesmade", (int)(long)task.getResult().get("tradesmade"));
 
                                 Log.d("PROFILE", "profile: " + profile.toString());
@@ -54,6 +54,15 @@ public class ProfileData {
                         }
                     });
 
+                }
+                else {
+
+                    Map<String, Object> profile = new HashMap<>();
+                    profile.put("email", auth.getCurrentUser().getEmail());
+                    profile.put("cardamount", 0);
+                    profile.put("tradesmade", 0);
+
+                    repo.receiverProfile(profile);
                 }
             }
 

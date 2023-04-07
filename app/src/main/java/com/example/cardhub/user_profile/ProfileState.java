@@ -5,23 +5,16 @@ import android.widget.ImageView;
 import com.example.cardhub.inventory.InventoryRepositoryImpl;
 
 public class ProfileState implements ProfileRepositoryReceiver {
-    private ProfileActivity activity;
-    private CreatorProfileActivity creatorActivity;
+    private ProfileBaseActivity activity;
     Profile currentProfile;
 
     //Repositories
     InventoryRepositoryImpl inventoryRepository;
-    Profile profile;
     ProfileRepositoryImpl profileRepository;
 
-    public ProfileState(ProfileActivity activity) {
+    public ProfileState(ProfileBaseActivity activity) {
         this.profileRepository = new ProfileRepositoryImpl(this);
         this.activity = activity;
-    }
-
-    public ProfileState(CreatorProfileActivity activity) {
-        this.profileRepository = new ProfileRepositoryImpl(this);
-        this.creatorActivity = activity;
     }
 
     public ImageView getProfilePicture() {
@@ -46,7 +39,7 @@ public class ProfileState implements ProfileRepositoryReceiver {
 
     @Override
     public void receiverProfile(Profile profile) {
-        this.profile = profile;
+        this.currentProfile = profile;
         activity.updateData();
     }
 
