@@ -34,13 +34,15 @@ public class InventoryState implements InventoryRepositoryReceiver {
         } else {
             this.displayCards.clear();
             this.displayCards.addAll(userCards);
-            this.displayCards.addAll(cards);
+
+            List<Card> missingCards = displayCards.stream().filter(
+                    card -> !userCards.stream().anyMatch(uCard -> card.NAME.equals(uCard.NAME))
+            ).collect(Collectors.toList());
+            missingCards.forEach(card -> card.acquired = false);
+
+            this.displayCards.addAll(missingCards);
         }
 
-        List<Card> missingCards = displayCards.stream().filter(
-                card -> !userCards.stream().anyMatch(uCard -> card.NAME.equals(uCard.NAME))
-                ).collect(Collectors.toList());
-        missingCards.forEach(card -> card.acquired = false);
 
         activity.updateGrid();
     }
