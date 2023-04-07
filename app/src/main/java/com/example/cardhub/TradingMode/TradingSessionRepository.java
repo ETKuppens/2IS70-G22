@@ -65,4 +65,10 @@ public interface TradingSessionRepository {
     void changeProposedCardsConfirm(String clientID);
 
     public void receiveUpdate(List<Map<String, Object>> diffs);
+
+    void startTradeTimer();
+
+    void doTrade();
+
+    void finishTrade();
 }

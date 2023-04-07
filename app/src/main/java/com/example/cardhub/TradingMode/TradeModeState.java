@@ -1,9 +1,7 @@
 package com.example.cardhub.TradingMode;
 
-import android.util.Log;
+import android.os.CountDownTimer;
 import android.widget.Toast;
-
-import com.example.cardhub.TradeModeActivity;
 
 import java.util.Set;
 
@@ -197,6 +195,28 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
     public void changeProposedCardsResponse() {
         this.proposedCardsMayBeChanged = true;
         this.activity.enableChangeTradeProposal();
+    }
+
+    // ADD ABILITY TO CANCEL TRADE
+    @Override
+    public void startTradeTimer() {
+        new CountDownTimer(5000, 1000) {
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+                long countDownVal = millisUntilFinished / 1000;
+            }
+
+            @Override
+            public void onFinish() {
+                repository.doTrade();
+            }
+        };
+    }
+
+    @Override
+    public void finishTrade() {
+        activity.finishTrade();
     }
 
     public boolean getCardMayBeRemoved() {

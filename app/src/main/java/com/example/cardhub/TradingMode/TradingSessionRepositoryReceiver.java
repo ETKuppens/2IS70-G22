@@ -51,4 +51,8 @@ public interface TradingSessionRepositoryReceiver {
      * Set<CardDiff> diffs)}, as a confirmation that the changed proposed cards were handled correctly.
      */
     void changeProposedCardsResponse();
+
+    void startTradeTimer();
+
+    void finishTrade();
 }
