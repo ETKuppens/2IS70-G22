@@ -58,7 +58,7 @@ public class MapData {
                             .map((DocumentSnapshot snapshot) -> snapshot.getData())
                             .collect(Collectors.toList());
                     List<Map<String, Object>> cardsWithMatchingRarity = cards.stream().filter((card) ->
-                            (Card.Rarity.values()[(int)(long)card.get("rarity")]) == rarity)
+                            (Card.Rarity.valueOf((String) card.get("rarity")) == rarity))
                             .collect(Collectors.toList());
                     Map<String, Object> acquiredCard = cardsWithMatchingRarity.get(ThreadLocalRandom.current().nextInt(cardsWithMatchingRarity.size()));
                     db.collection("users/" + auth.getUid() + "/cards").add(acquiredCard).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
@@ -68,7 +68,7 @@ public class MapData {
                                 Card decodedCard = new Card(
                                         (String) acquiredCard.get("name"),
                                         (String) acquiredCard.get("description"),
-                                        Card.Rarity.values()[(int) ((long) acquiredCard.get("rarity"))],
+                                        Card.Rarity.valueOf((String) acquiredCard.get("rarity")),
                                         (String) acquiredCard.get("imageurl"));
 
                                 receiver.acquireRandomCardCallback(decodedCard);
