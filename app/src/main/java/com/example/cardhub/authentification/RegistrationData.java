@@ -42,6 +42,7 @@ public class RegistrationData {
                            String uid = user.getUid();
                            Map<String, Object> userEntry = new HashMap<>();
                            userEntry.put("role", role);
+                           userEntry.put("tradesmade", 0);
 
                            // Add a new document with a generated ID
                            db.collection("users").document(uid)

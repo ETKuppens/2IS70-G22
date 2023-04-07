@@ -81,6 +81,8 @@ public class CardGridAdapter extends BaseAdapter {
         ImageView cardImage = view.findViewById(R.id.card_image);
         if (!thisCard.acquired)  {
             cardImage.setColorFilter(Color.rgb(123, 123, 123), android.graphics.PorterDuff.Mode.MULTIPLY);
+        } else {
+            cardImage.clearColorFilter();
         }
         Glide.with(context).load(thisCard.IMAGE_URL).into(cardImage);
 

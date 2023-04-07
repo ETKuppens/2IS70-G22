@@ -16,6 +16,7 @@ import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
@@ -304,6 +305,7 @@ public class TradingSessionData {
                                                                     }
 
                                                                     deletePlayerBOffers(playerAOfferedCards, playerBOfferedCards, playerBName, playerAName, batch);
+                                                                    incrementTradeCounters();
                                                                 }
                                                             }
                                                         });
@@ -323,6 +325,31 @@ public class TradingSessionData {
                     });
                 } else {
                     Log.e("TRADING_ERROR", "failed: " + task.getException());
+                }
+            }
+        });
+    }
+
+    private void incrementTradeCounters() {
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+
+                        String playerAName = document.getString("playerAName");
+                        String playerBName = document.getString("playerBName");
+
+                        db.collection("users").document(playerAName).update("tradesmade", FieldValue.increment(1));
+                        db.collection("users").document(playerAName).update("tradesmade", FieldValue.increment(1));
+
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
                 }
             }
         });
