@@ -45,7 +45,9 @@
                     android:id="@+id/show_collection"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="show collection" />
+                    android:text="progress"
+                    tools:layout_editor_absoluteX="256dp"
+                    tools:layout_editor_absoluteY="20dp" />
             </com.google.android.flexbox.FlexboxLayout>
 
 

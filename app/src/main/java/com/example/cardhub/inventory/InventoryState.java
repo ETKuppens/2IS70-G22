@@ -35,7 +35,6 @@ public class InventoryState implements InventoryRepositoryReceiver {
             this.displayCards.addAll(cards);
         } else {
             this.displayCards.clear();
-            this.displayCards.addAll(userCards);
 
             List<Card> missingCards = cards.stream().filter(
                     card -> !userCards.stream().anyMatch(uCard -> card.NAME.equals(uCard.NAME))
