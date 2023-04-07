@@ -1,5 +1,7 @@
 package com.example.cardhub.inventory;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,13 +36,17 @@ public class InventoryState implements InventoryRepositoryReceiver {
         } else {
             this.displayCards.clear();
             this.displayCards.addAll(userCards);
-            this.displayCards.addAll(cards);
+
+            List<Card> missingCards = cards.stream().filter(
+                    card -> !userCards.stream().anyMatch(uCard -> card.NAME.equals(uCard.NAME))
+            ).collect(Collectors.toList());
+            missingCards.forEach(card -> card.acquired = false);
+
+            Log.d("CHUNGUS", "size: " + missingCards.size());
+
+            this.displayCards.addAll(missingCards);
         }
 
-        List<Card> missingCards = displayCards.stream().filter(
-                card -> !userCards.stream().anyMatch(uCard -> card.NAME.equals(uCard.NAME))
-                ).collect(Collectors.toList());
-        missingCards.forEach(card -> card.acquired = false);
 
         activity.updateGrid();
     }

@@ -3,9 +3,13 @@ package com.example.cardhub;
 import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -117,6 +121,14 @@ public class PairingModeActivity extends CollectorBaseActivity {
             intentIntegrator.setOrientationLocked(true);
             intentIntegrator.initiateScan();
         });
+
+//        WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
+//        Display display = manager.getDefaultDisplay();
+//        Point point = new Point();
+//        display.getSize(point);
+//        Bitmap bts = Bitmap.createBitmap(point.x, point.y, Bitmap.Config.ARGB_8888);
+//        bts.eraseColor(Color.WHITE);
+//        qrCodeIV.setImageBitmap(bitmap);
     }
 
     /**
@@ -246,4 +258,28 @@ public class PairingModeActivity extends CollectorBaseActivity {
     public int getBottomNavigationMenuItemId() {
         return R.id.action_trading;
     }
+
+//    @Override
+//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+//        super.onRestoreInstanceState(savedInstanceState);
+//        if (savedInstanceState != null && savedInstanceState.containsKey("image")) {
+//            Bitmap bts = savedInstanceState.getParcelable("image");
+//            final float[] NEGATIVE = {
+//                    -1.0f, 0, 0, 0, 255, // red
+//                    0, -1.0f, 0, 0, 255, // green
+//                    0, 0, -1.0f, 0, 255, // blue
+//                    0, 0, 0, 1.0f, 0  // alpha
+//            };
+//            qrCodeIV.setColorFilter(new ColorMatrixColorFilter(NEGATIVE));
+//            qrCodeIV.setImageBitmap(bts);
+//        }
+//    }
+//
+//    @Override
+//    protected void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        BitmapDrawable bitmapDrawable = (BitmapDrawable) qrCodeIV.getDrawable();
+//        Bitmap bts = bitmapDrawable.getBitmap();
+//        outState.putParcelable("image", bts);
+//    }
 }

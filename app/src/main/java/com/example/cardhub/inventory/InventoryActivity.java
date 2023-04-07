@@ -58,6 +58,7 @@ public class InventoryActivity extends CollectorBaseActivity {
             @Override
             public void onClick(View v) {
                 state.sortCards(CardSorter.SortAttribute.NAME);
+                updateGrid();
             }
         });
 
@@ -66,6 +67,7 @@ public class InventoryActivity extends CollectorBaseActivity {
             @Override
             public void onClick(View v) {
                 state.sortCards(CardSorter.SortAttribute.RARITY);
+                updateGrid();
             }
         });
 
