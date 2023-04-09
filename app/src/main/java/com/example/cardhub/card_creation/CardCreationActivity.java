@@ -16,6 +16,7 @@ import com.example.cardhub.creator_navigation.CreatorBaseActivity;
 import com.example.cardhub.inventory.Card;
 import com.example.cardhub.inventory.CardActivity;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.gson.Gson;
 
 /**
  * Activity that allows a creator user to create custom cards.
@@ -72,7 +73,10 @@ public class CardCreationActivity extends CreatorBaseActivity {
                 checkCardValidity();
 
                 Intent intent = new Intent(getApplicationContext(), CardActivity.class);
-                intent.putExtra("card", state.getCard());
+                Card c = state.getCard();
+                Gson converter = new Gson();
+                String encodedCard = converter.toJson(c);
+                intent.putExtra("card", encodedCard);
                 startActivity(intent);
             }
         });
