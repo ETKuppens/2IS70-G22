@@ -22,7 +22,7 @@ public class CardCreationState {
     private CardCreationRepository repository;
 
     public CardCreationState() {
-
+        repository = new CardCreationRepository();
     }
 
     /**
@@ -47,7 +47,7 @@ public class CardCreationState {
         this.selectedImageUri = newUri;
     }
     public boolean hasSelectedImage() {
-        return selectedImageUri == null;
+        return selectedImageUri != null;
     }
 
     public void setCurrentName(String currentName) {

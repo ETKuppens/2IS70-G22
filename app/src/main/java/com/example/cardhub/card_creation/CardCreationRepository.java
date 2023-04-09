@@ -6,7 +6,7 @@ public class CardCreationRepository {
     CardCreationData data;
 
     CardCreationRepository() {
-
+        data = new CardCreationData();
     }
 
     public void publishCard(Card c) {
