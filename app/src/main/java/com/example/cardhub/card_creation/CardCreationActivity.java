@@ -99,20 +99,22 @@ public class CardCreationActivity extends CreatorBaseActivity {
 
     private boolean checkCardValidity() {
         //First check if everything is specified
-        TextInputEditText cardName = (TextInputEditText)(findViewById(R.id.cardNameInput));
+        TextInputEditText cardName = findViewById(R.id.cardNameInput);
         if (cardName.getText().equals("")) {
+            Log.d("CARD_CREATION", "name invalid");
             return false;
         }
         state.setCurrentName(cardName.getText().toString());
 
-        TextInputEditText cardDescription = (TextInputEditText) (findViewById((R.id.cardDescriptionInput)));
+        TextInputEditText cardDescription = findViewById(R.id.cardDescriptionInput);
         if (cardDescription.getText().equals("")) {
+            Log.d("CARD_CREATION", "description invalid");
             return false;
         }
         state.setCurrentDescription(cardDescription.getText().toString());
 
         //Rarity defaults to common
-        RadioGroup rarityButtons = (RadioGroup)findViewById(R.id.rarityButtons);
+        RadioGroup rarityButtons = findViewById(R.id.rarityButtons);
         switch(rarityButtons.getCheckedRadioButtonId()) {
             case R.id.commonButton: {
                 state.setRarity(Card.Rarity.COMMON);
@@ -130,6 +132,7 @@ public class CardCreationActivity extends CreatorBaseActivity {
 
         //Check if there is a selected image
         if (!state.hasSelectedImage()) {
+            Log.d("CARD_CREATION", "image not selected");
             return false;
         }
 

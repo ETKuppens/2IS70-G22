@@ -46,7 +46,6 @@ public class InventoryState implements InventoryRepositoryReceiver {
             this.displayCards.addAll(missingCards);
         }
 
-
         activity.updateGrid();
     }
 
