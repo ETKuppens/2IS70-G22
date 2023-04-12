@@ -18,7 +18,7 @@ import com.example.cardhub.TradingMode.CardDiff;
 import com.example.cardhub.collector_navigation.CollectorBaseActivity;
 import com.google.gson.Gson;
 
-public class InventoryActivity extends CollectorBaseActivity {
+public class InventoryActivity extends CollectorBaseActivity implements BaseInventoryActivity {
 
     InventoryState state;
     CardGridAdapter adapter;
@@ -113,6 +113,7 @@ public class InventoryActivity extends CollectorBaseActivity {
     /**
      * Update the inventory grid
      */
+    @Override
     public void updateGrid() {
         CardGridView cardGridView = findViewById(R.id.card_grid);
         adapter.updateData(state.displayCards);
@@ -144,6 +145,7 @@ public class InventoryActivity extends CollectorBaseActivity {
         });
     }
 
+    @Override
     public void updateCollectionButton() {
         Button show_collection = findViewById(R.id.show_collection);
         if (state.showingInventory) {
@@ -174,6 +176,7 @@ public class InventoryActivity extends CollectorBaseActivity {
             }
     );
 
+    @Override
     public void scrollBackToTop() {
         CardGridView cardGridView = findViewById(R.id.card_grid);
         cardGridView.scrollTo(1, 1);

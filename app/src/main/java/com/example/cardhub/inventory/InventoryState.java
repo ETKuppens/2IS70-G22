@@ -10,7 +10,7 @@ public class InventoryState implements InventoryRepositoryReceiver {
 
     List<Card> displayCards = new ArrayList<>();
     List<Card> userCards = new ArrayList<>();
-    InventoryActivity activity;
+    BaseInventoryActivity activity;
     InventoryRepository repository;
 
     public boolean showingInventory = true;
@@ -20,7 +20,7 @@ public class InventoryState implements InventoryRepositoryReceiver {
      *
      * @param activity the activity the state is responsible for
      */
-    public InventoryState(InventoryActivity activity) {
+    public InventoryState(BaseInventoryActivity activity) {
         this.activity = activity;
         this.repository = new InventoryRepositoryImpl(this);
     }
@@ -45,7 +45,6 @@ public class InventoryState implements InventoryRepositoryReceiver {
 
             this.displayCards.addAll(missingCards);
         }
-
 
         activity.updateGrid();
     }
