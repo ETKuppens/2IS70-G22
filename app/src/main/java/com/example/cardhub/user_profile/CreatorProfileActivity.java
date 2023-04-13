@@ -17,8 +17,10 @@ import com.example.cardhub.creator_navigation.CreatorBaseActivity;
 import com.example.cardhub.inventory.InventoryActivity;
 import com.example.cardhub.map.MapActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class CreatorProfileActivity extends CreatorBaseActivity implements ProfileBaseActivity {
+    private FirebaseAuth mAuth;
     ProfileState state;
 
     @Override
@@ -36,6 +38,8 @@ public class CreatorProfileActivity extends CreatorBaseActivity implements Profi
         setContentView(R.layout.activity_creator_profile);
 
         this.state = new ProfileState(this);
+        mAuth = FirebaseAuth.getInstance();
+
         state.requestProfile();
 
         setupNav();
@@ -82,5 +86,18 @@ public class CreatorProfileActivity extends CreatorBaseActivity implements Profi
         TextView userName = findViewById(R.id.userName);
         userName.setText(state.getUsername());
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null){
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            this.startActivity(intent);
+            startActivity(intent);
+        }
     }
 }

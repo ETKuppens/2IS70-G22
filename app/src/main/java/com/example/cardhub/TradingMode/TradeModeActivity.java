@@ -17,10 +17,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cardhub.CardRecyclerViewAdapter;
+import com.example.cardhub.PairingModeActivity;
 import com.example.cardhub.R;
+import com.example.cardhub.authentification.LoginActivity;
 import com.example.cardhub.inventory.Card;
 import com.example.cardhub.inventory.CardActivity;
 import com.example.cardhub.inventory.InventoryActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -50,6 +54,7 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
     private Card clickedCard = null; // Card that was clicked to be removed
     private String lid; // Lobby id
     private String clientid;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +77,7 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
         clientid = getClientID();
 
         state = new TradeModeState(this, lid, clientid);
+        mAuth = FirebaseAuth.getInstance();
 
         otherPlayerProposedCardsRecyclerView = findViewById(R.id.ProposedCardsOtherPlayer);
         otherPlayerProposedCardsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -270,5 +276,18 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
     public void finishTrade() {
         Intent finishTradeIntent = new Intent(this, InventoryActivity.class);
         startActivity(finishTradeIntent);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null){
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            this.startActivity(intent);
+            startActivity(intent);
+        }
     }
 }

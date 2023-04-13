@@ -11,11 +11,15 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 
+import com.example.cardhub.PairingModeActivity;
 import com.example.cardhub.R;
+import com.example.cardhub.authentification.LoginActivity;
 import com.example.cardhub.creator_navigation.CreatorBaseActivity;
 import com.example.cardhub.inventory.Card;
 import com.example.cardhub.inventory.CardActivity;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 
 /**
@@ -23,6 +27,7 @@ import com.google.gson.Gson;
  * @author Rijkman
  */
 public class CardCreationActivity extends CreatorBaseActivity {
+    private FirebaseAuth mAuth;
     //Keeps track of the current state variable
     CardCreationState state;
 
@@ -42,6 +47,7 @@ public class CardCreationActivity extends CreatorBaseActivity {
 
         setupNav();
         state = new CardCreationState();
+        mAuth = FirebaseAuth.getInstance();
 
         //Object to prompt the user to pick an image
         ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
@@ -75,7 +81,7 @@ public class CardCreationActivity extends CreatorBaseActivity {
                 Intent intent = new Intent(getApplicationContext(), CardActivity.class);
                 Card c = state.getCard();
                 Gson converter = new Gson();
-                String encodedCard = converter.toJson(c);
+                String encodedCard = converter.toJson(c); 
                 intent.putExtra("card", encodedCard);
                 startActivity(intent);
             }
@@ -137,5 +143,18 @@ public class CardCreationActivity extends CreatorBaseActivity {
         }
 
         return true;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null){
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            this.startActivity(intent);
+            startActivity(intent);
+        }
     }
 }

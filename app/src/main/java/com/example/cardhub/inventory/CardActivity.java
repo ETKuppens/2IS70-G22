@@ -13,11 +13,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.cardhub.R;
+import com.example.cardhub.authentification.LoginActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 
 public class CardActivity extends AppCompatActivity implements View.OnClickListener {
 
     private boolean shouldSupportChoosingACard = false;
+    private FirebaseAuth mAuth;
 
     private Intent intent; // Intent of this CardActivity
 
@@ -36,6 +40,7 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         this.confirmButton = findViewById(R.id.button_card_activity_confirm);
 
         intent = getIntent();
+        mAuth = FirebaseAuth.getInstance();
 
         if (intent.getBooleanExtra("ShouldSupportChoosingACard", false)) {
             shouldSupportChoosingACard = true;
@@ -101,6 +106,19 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
 
             default:
                 break;
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null){
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            this.startActivity(intent);
+            startActivity(intent);
         }
     }
 }

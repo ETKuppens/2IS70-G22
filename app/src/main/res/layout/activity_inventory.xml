@@ -31,16 +31,12 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <Button
-                    android:id="@+id/sort_by_name"
+                    android:id="@+id/button_sort"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="sort by name" />
-
-                <Button
-                    android:id="@+id/sort_by_rarity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="sort by rarity" />
+                    android:text="sort cards"
+                    tools:layout_editor_absoluteX="51dp"
+                    tools:layout_editor_absoluteY="20dp" />
 
                 <Button
                     android:id="@+id/show_collection"

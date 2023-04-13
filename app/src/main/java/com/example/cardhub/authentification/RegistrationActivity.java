@@ -18,6 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.text.HtmlCompat;
 
 import com.example.cardhub.R;
+import com.example.cardhub.card_creation.CardCreationActivity;
+import com.example.cardhub.user_profile.CreatorProfileActivity;
 import com.example.cardhub.user_profile.ProfileActivity;
 
 
@@ -122,15 +124,22 @@ public class RegistrationActivity extends AppCompatActivity {
     //    });
     //}
 
-    public void openStartActivity() {
+    public void openStartActivity(String role) {
         Toast.makeText(this, "Registration succeeded.",
                 Toast.LENGTH_SHORT).show();
-        // Move to next screen
-        Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+
+        Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
+
+        if (role.equals("Card Collector")) {
+            // Move to next screen
+            intent = new Intent(getApplicationContext(), ProfileActivity.class);
+        }
+        else if (role.equals("Card Creator")) {
+            intent = new Intent(getApplicationContext(), CreatorProfileActivity.class);
+        }
 
         // Ensure no returns to registration screen
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
-
 }

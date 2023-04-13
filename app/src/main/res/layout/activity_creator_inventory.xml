@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:id="@+id/sort_by_name"
+            android:id="@+id/button_sort"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="sort by name"

@@ -31,6 +31,7 @@ import com.example.cardhub.BuildConfig;
 import com.example.cardhub.CardRecyclerViewAdapter;
 import com.example.cardhub.PairingModeActivity;
 import com.example.cardhub.R;
+import com.example.cardhub.authentification.LoginActivity;
 import com.example.cardhub.collector_navigation.CollectorBaseActivity;
 import com.example.cardhub.inventory.Card;
 import com.example.cardhub.inventory.InventoryActivity;
@@ -55,12 +56,15 @@ import com.google.android.libraries.places.api.model.PlaceLikelihood;
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
 import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class MapActivity extends CollectorBaseActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+    private FirebaseAuth mAuth;
 
     // Navigation part
     @Override
@@ -138,6 +142,7 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         setupNav();
 
         state = new MapState(this);
+        mAuth = FirebaseAuth.getInstance();
 
         state.requestPacks();
 
@@ -639,5 +644,18 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         adapter.notifyDataSetChanged();
 
         cardpackPreviewWindow.showAtLocation(findViewById(R.id.map), Gravity.CENTER, 0, 0);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null){
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            this.startActivity(intent);
+            startActivity(intent);
+        }
     }
 }
