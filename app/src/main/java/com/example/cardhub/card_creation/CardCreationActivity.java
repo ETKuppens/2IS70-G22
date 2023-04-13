@@ -27,6 +27,7 @@ import com.google.gson.Gson;
  * @author Rijkman
  */
 public class CardCreationActivity extends CreatorBaseActivity {
+    //Authorizaton instance
     private FirebaseAuth mAuth;
     //Keeps track of the current state variable
     CardCreationState state;
@@ -45,6 +46,7 @@ public class CardCreationActivity extends CreatorBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_creation);
 
+        //Set up the navigation bar on the bottom of the screen
         setupNav();
         state = new CardCreationState();
         mAuth = FirebaseAuth.getInstance();
@@ -103,8 +105,12 @@ public class CardCreationActivity extends CreatorBaseActivity {
         });
     }
 
+    /**
+     * Function that verifies the validity of the currently created card object.
+     * @return true if object is valid
+     */
     private boolean checkCardValidity() {
-        //First check if everything is specified
+        //First check if cardName is specified
         TextInputEditText cardName = findViewById(R.id.cardNameInput);
         if (cardName.getText().equals("")) {
             Log.d("CARD_CREATION", "name invalid");
@@ -112,6 +118,7 @@ public class CardCreationActivity extends CreatorBaseActivity {
         }
         state.setCurrentName(cardName.getText().toString());
 
+        //Check if card description is not empty
         TextInputEditText cardDescription = findViewById(R.id.cardDescriptionInput);
         if (cardDescription.getText().equals("")) {
             Log.d("CARD_CREATION", "description invalid");
@@ -124,6 +131,7 @@ public class CardCreationActivity extends CreatorBaseActivity {
         switch(rarityButtons.getCheckedRadioButtonId()) {
             case R.id.commonButton: {
                 state.setRarity(Card.Rarity.COMMON);
+                break;
             }
             case R.id.rareButton: {
                 state.setRarity(Card.Rarity.RARE);
