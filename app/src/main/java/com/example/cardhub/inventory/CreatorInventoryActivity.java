@@ -6,8 +6,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.GridView;
-import android.widget.ImageView;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -53,7 +51,7 @@ public class CreatorInventoryActivity extends CreatorBaseActivity implements Bas
         cardGridView.setExpanded(true);
         cardGridView.setAdapter(adapter);
 
-        Button name_sort = findViewById(R.id.sort_by_name);
+        Button name_sort = findViewById(R.id.button_sort);
         name_sort.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
