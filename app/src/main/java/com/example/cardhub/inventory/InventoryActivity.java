@@ -88,13 +88,10 @@ public class InventoryActivity extends CollectorBaseActivity implements BaseInve
         int currentChoice = Arrays.asList(criteria).indexOf(sortType.toString());
 
         sortingDialog.setTitle("Select Sorting Criteria");
-//        sortingDialog.setMessage("Pick a sorting order");
-//        sortingDialog.setSing
+
         sortingDialog.setSingleChoiceItems(criteria, currentChoice, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-//                dialog.dismiss();
-
                 switch (which) {
                     case 0: // Rarity
                         setSortType(CardSorter.SortAttribute.RARITY);
@@ -115,22 +112,12 @@ public class InventoryActivity extends CollectorBaseActivity implements BaseInve
             }
         });
 
-//        sortingDialog.setNegativeButton("Name", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                state.sortCards(sortType);
-//                updateGrid();
-//                Toast.makeText(InventoryActivity.this, "Sorting by " + sortType.toString(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
         sortingDialog.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
         });
-
 
         sortingDialog.show();
     }
