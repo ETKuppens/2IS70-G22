@@ -53,6 +53,7 @@ public class ProfileActivity extends CollectorBaseActivity implements ProfileBas
                 Intent logout = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(logout);
                 FirebaseAuth.getInstance().signOut();
+                Log.d("USER", "LOGGED OUT!");
             }
         });
     }
