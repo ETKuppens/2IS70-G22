@@ -138,6 +138,12 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Retrieve location and camera position from saved instance state.
+        if (savedInstanceState != null) {
+            lastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
+            cameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
+        }
+
         super.onCreate(savedInstanceState);
         setupNav();
 
@@ -145,12 +151,6 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         mAuth = FirebaseAuth.getInstance();
 
         state.requestPacks();
-
-        // Retrieve location and camera position from saved instance state.
-        if (savedInstanceState != null) {
-            lastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
-            cameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
-        }
 
 
         // Construct a PlacesClient
