@@ -7,37 +7,59 @@
     android:background="@color/dark_gray_1"
     tools:context=".inventory.CreatorInventoryActivity">
 
-    <com.google.android.flexbox.FlexboxLayout
+    <ScrollView
+        android:id="@+id/creator_inv_scroll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingVertical="20dp"
-        app:justifyContent="space_evenly"
-        app:layout_constraintBottom_toTopOf="@+id/card_grid"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/button_sort"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="sort by name"
-            android:textColor="@color/white"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/creator_inv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/sort_by_rarity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="sort by rarity"
-            android:textColor="@color/white" />
+            <com.google.android.flexbox.FlexboxLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="20dp"
+                app:justifyContent="space_evenly"
+                app:layout_constraintBottom_toTopOf="@+id/creator_card_grid"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/show_collection"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="show collection"
-            android:textColor="@color/white"/>
-    </com.google.android.flexbox.FlexboxLayout>
+                <Button
+                    android:id="@+id/creator_button_sort"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="sort cards"
+                    tools:layout_editor_absoluteX="51dp"
+                    tools:layout_editor_absoluteY="20dp" />
+
+            </com.google.android.flexbox.FlexboxLayout>
+
+
+            <com.example.cardhub.inventory.CardGridView
+                android:id="@+id/creator_card_grid"
+                android:layout_width="match_parent"
+                android:layout_height="630dp"
+                android:layout_gravity="center|center_horizontal"
+                android:background="#FFFFFF"
+                android:horizontalSpacing="10dp"
+                android:numColumns="3"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+            </com.example.cardhub.inventory.CardGridView>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 
     <include
         layout="@menu/item_bottom_navigation_creator"
