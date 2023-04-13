@@ -20,9 +20,9 @@ public class RegistrationState implements RegisterReceiver {
 
 
     @Override
-    public void registrationSuccess(FirebaseUser user) {
+    public void registrationSuccess(FirebaseUser user, String role) {
         this.user = user;
-        activity.openStartActivity();
+        activity.openStartActivity(role);
     }
 
     @Override
