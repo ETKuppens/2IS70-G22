@@ -1,11 +1,14 @@
 package com.example.cardhub.inventory;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -21,9 +24,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 
+import java.util.Arrays;
+
 public class CreatorInventoryActivity extends CreatorBaseActivity implements BaseInventoryActivity {
 
     private FirebaseAuth mAuth;
+    private CardSorter.SortAttribute sortType = CardSorter.SortAttribute.RARITY;
     InventoryState state;
     CardGridAdapter adapter;
 
@@ -58,21 +64,11 @@ public class CreatorInventoryActivity extends CreatorBaseActivity implements Bas
         cardGridView.setExpanded(true);
         cardGridView.setAdapter(adapter);
 
-        Button name_sort = findViewById(R.id.button_sort);
-        name_sort.setOnClickListener(new View.OnClickListener() {
+        Button sort = findViewById(R.id.button_sort);
+        sort.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                state.sortCards(CardSorter.SortAttribute.NAME);
-                updateGrid();
-            }
-        });
-
-        Button rarity_sort = findViewById(R.id.sort_by_rarity);
-        rarity_sort.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                state.sortCards(CardSorter.SortAttribute.RARITY);
-                updateGrid();
+                showSortingDialog(v);
             }
         });
 
@@ -83,6 +79,50 @@ public class CreatorInventoryActivity extends CreatorBaseActivity implements Bas
                 state.toggleCollection();
             }
         });
+    }
+
+    private void showSortingDialog(View v) {
+        AlertDialog.Builder sortingDialog = new AlertDialog.Builder(this);
+        String[] criteria = {"RARITY", "NAME"};
+        int currentChoice = Arrays.asList(criteria).indexOf(sortType.toString());
+
+        sortingDialog.setTitle("Select Sorting Criteria");
+
+        sortingDialog.setSingleChoiceItems(criteria, currentChoice, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case 0: // Rarity
+                        setSortType(CardSorter.SortAttribute.RARITY);
+                        break;
+                    case 1: // Name
+                        setSortType(CardSorter.SortAttribute.NAME);
+                        break;
+                }
+            }
+        });
+
+        sortingDialog.setPositiveButton("Sort", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                state.sortCards(sortType);
+                updateGrid();
+                Toast.makeText(CreatorInventoryActivity.this, "Sorting by " + sortType.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        sortingDialog.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        sortingDialog.show();
+    }
+
+    private void setSortType(CardSorter.SortAttribute rarity) {
+        sortType = rarity;
     }
 
     @Override
