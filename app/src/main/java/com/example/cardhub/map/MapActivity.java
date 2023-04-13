@@ -366,8 +366,8 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
             locationPermissionGranted = false;
+            recreate();
         }
-        recreate();
     }
 
     /**
