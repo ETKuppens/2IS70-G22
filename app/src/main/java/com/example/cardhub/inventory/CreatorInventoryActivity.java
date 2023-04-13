@@ -12,12 +12,18 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 
+import com.example.cardhub.PairingModeActivity;
 import com.example.cardhub.R;
 import com.example.cardhub.TradingMode.CardDiff;
+import com.example.cardhub.authentification.LoginActivity;
 import com.example.cardhub.creator_navigation.CreatorBaseActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 
 public class CreatorInventoryActivity extends CreatorBaseActivity implements BaseInventoryActivity {
+
+    private FirebaseAuth mAuth;
     InventoryState state;
     CardGridAdapter adapter;
 
@@ -43,6 +49,7 @@ public class CreatorInventoryActivity extends CreatorBaseActivity implements Bas
         }
 
         state = new InventoryState(this);
+        mAuth = FirebaseAuth.getInstance();
 
         state.requestUserCards();
 
@@ -180,4 +187,16 @@ public class CreatorInventoryActivity extends CreatorBaseActivity implements Bas
         cardGridView.scrollTo(1, 1);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null){
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            this.startActivity(intent);
+            startActivity(intent);
+        }
+    }
 }

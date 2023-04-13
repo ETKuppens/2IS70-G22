@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.cardhub.TradingMode.TradeModeActivity;
+import com.example.cardhub.authentification.LoginActivity;
 import com.example.cardhub.collector_navigation.CollectorBaseActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -46,6 +47,7 @@ import androidmads.library.qrgenearator.QRGEncoder;
 public class PairingModeActivity extends CollectorBaseActivity {
     private ImageView qrCodeIV;
     private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
     Bitmap bitmap;
     QRGEncoder qrgEncoder;
     String uid;
@@ -62,7 +64,7 @@ public class PairingModeActivity extends CollectorBaseActivity {
         qrCodeIV = findViewById(R.id.idIVQrcode);
         Button generateQrBtn = findViewById(R.id.idBtnGenerateQR);
         Button scanQrBtn = findViewById(R.id.idScanQrCode);
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         uid = user.getUid();
@@ -265,27 +267,16 @@ public class PairingModeActivity extends CollectorBaseActivity {
         return R.id.action_trading;
     }
 
-//    @Override
-//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-//        super.onRestoreInstanceState(savedInstanceState);
-//        if (savedInstanceState != null && savedInstanceState.containsKey("image")) {
-//            Bitmap bts = savedInstanceState.getParcelable("image");
-//            final float[] NEGATIVE = {
-//                    -1.0f, 0, 0, 0, 255, // red
-//                    0, -1.0f, 0, 0, 255, // green
-//                    0, 0, -1.0f, 0, 255, // blue
-//                    0, 0, 0, 1.0f, 0  // alpha
-//            };
-//            qrCodeIV.setColorFilter(new ColorMatrixColorFilter(NEGATIVE));
-//            qrCodeIV.setImageBitmap(bts);
-//        }
-//    }
-//
-//    @Override
-//    protected void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//        BitmapDrawable bitmapDrawable = (BitmapDrawable) qrCodeIV.getDrawable();
-//        Bitmap bts = bitmapDrawable.getBitmap();
-//        outState.putParcelable("image", bts);
-//    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null){
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            this.startActivity(intent);
+            startActivity(intent);
+        }
+    }
 }
