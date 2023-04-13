@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 
 /**
  * Activity that allows a creator user to create custom cards.
+ *
  * @author Rijkman
  */
 public class CardCreationActivity extends CreatorBaseActivity {
@@ -84,7 +85,7 @@ public class CardCreationActivity extends CreatorBaseActivity {
                 Intent intent = new Intent(getApplicationContext(), CardActivity.class);
                 Card c = state.getCard();
                 Gson converter = new Gson();
-                String encodedCard = converter.toJson(c); 
+                String encodedCard = converter.toJson(c);
                 intent.putExtra("card", encodedCard);
                 startActivity(intent);
             }
@@ -137,12 +138,19 @@ public class CardCreationActivity extends CreatorBaseActivity {
             }
             case R.id.rareButton: {
                 state.setRarity(Card.Rarity.RARE);
+                break;
             }
             case R.id.legendaryButton: {
                 state.setRarity(Card.Rarity.LEGENDARY);
+                break;
             }
             case R.id.ultraRareButton: {
                 state.setRarity(Card.Rarity.ULTRA_RARE);
+                break;
+            }
+            default: {
+                state.setRarity(Card.Rarity.COMMON);
+                break;
             }
         }
 
@@ -151,7 +159,6 @@ public class CardCreationActivity extends CreatorBaseActivity {
             Log.d("CARD_CREATION", "image not selected");
             return false;
         }
-
         return true;
     }
 
