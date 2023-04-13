@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
@@ -101,6 +102,7 @@ public class CardCreationActivity extends CreatorBaseActivity {
                 }
 
                 state.publishCard();
+                Toast.makeText(CardCreationActivity.this, "Card has been created", Toast.LENGTH_SHORT).show();
             }
         });
     }

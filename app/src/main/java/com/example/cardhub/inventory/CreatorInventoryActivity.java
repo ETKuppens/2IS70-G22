@@ -41,7 +41,7 @@ public class CreatorInventoryActivity extends CreatorBaseActivity implements Bas
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_inventory);
+        setContentView(R.layout.activity_creator_inventory);
         setupNav();
         this.thisIntent = getIntent();
         Bundle intentBundle = thisIntent.getExtras();
@@ -60,11 +60,11 @@ public class CreatorInventoryActivity extends CreatorBaseActivity implements Bas
         state.requestUserCards();
 
         adapter = new CardGridAdapter(this, state.displayCards);
-        CardGridView cardGridView = findViewById(R.id.card_grid);
+        CardGridView cardGridView = findViewById(R.id.creator_card_grid);
         cardGridView.setExpanded(true);
         cardGridView.setAdapter(adapter);
 
-        Button sort = findViewById(R.id.button_sort);
+        Button sort = findViewById(R.id.creator_button_sort);
         sort.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,13 +72,13 @@ public class CreatorInventoryActivity extends CreatorBaseActivity implements Bas
             }
         });
 
-        Button show_collection = findViewById(R.id.show_collection);
-        show_collection.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                state.toggleCollection();
-            }
-        });
+//        Button show_collection = findViewById(R.id.creator_show_collection);
+//        show_collection.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                state.toggleCollection();
+//            }
+//        });
     }
 
     private void showSortingDialog(View v) {
@@ -160,7 +160,7 @@ public class CreatorInventoryActivity extends CreatorBaseActivity implements Bas
      */
     @Override
     public void updateGrid() {
-        CardGridView cardGridView = findViewById(R.id.card_grid);
+        CardGridView cardGridView = findViewById(R.id.creator_card_grid);
         adapter.updateData(state.displayCards);
         adapter.notifyDataSetChanged();
         cardGridView.invalidateViews();
@@ -192,12 +192,12 @@ public class CreatorInventoryActivity extends CreatorBaseActivity implements Bas
 
     @Override
     public void updateCollectionButton() {
-        Button show_collection = findViewById(R.id.show_collection);
-        if (state.showingInventory) {
-            show_collection.setText("Progress");
-        } else {
-            show_collection.setText("Show Inventory");
-        }
+//        Button show_collection = findViewById(R.id.creator_show_collection);
+//        if (state.showingInventory) {
+//            show_collection.setText("Progress");
+//        } else {
+//            show_collection.setText("Show Inventory");
+//        }
     }
 
     ActivityResultLauncher<Intent> cardPreviewResultLauncher = registerForActivityResult(
@@ -223,7 +223,7 @@ public class CreatorInventoryActivity extends CreatorBaseActivity implements Bas
 
     @Override
     public void scrollBackToTop() {
-        CardGridView cardGridView = findViewById(R.id.card_grid);
+        CardGridView cardGridView = findViewById(R.id.creator_card_grid);
         cardGridView.scrollTo(1, 1);
     }
 
