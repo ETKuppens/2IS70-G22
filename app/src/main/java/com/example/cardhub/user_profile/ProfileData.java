@@ -41,7 +41,7 @@ public class ProfileData {
                     db.document("users/" + auth.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
+                            if (task.isSuccessful() && auth.getCurrentUser() != null) {
                                 Map<String, Object> profile = new HashMap<>();
                                 profile.put("email", auth.getCurrentUser().getEmail());
                                 profile.put("cardamount", cardAmount);

@@ -51,7 +51,7 @@ public class RegistrationData {
                                        @Override
                                        public void onSuccess(Void aVoid) {
                                            Log.d("FIRESTORE", "DocumentSnapshot successfully written!");
-                                           receiver.registrationSuccess(mAuth.getCurrentUser());
+                                           receiver.registrationSuccess(mAuth.getCurrentUser(), role);
                                        }
                                    })
                                    .addOnFailureListener(new OnFailureListener() {

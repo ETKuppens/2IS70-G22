@@ -11,11 +11,15 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 
+import com.example.cardhub.PairingModeActivity;
 import com.example.cardhub.R;
+import com.example.cardhub.authentification.LoginActivity;
 import com.example.cardhub.creator_navigation.CreatorBaseActivity;
 import com.example.cardhub.inventory.Card;
 import com.example.cardhub.inventory.CardActivity;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 
 /**
@@ -23,6 +27,7 @@ import com.google.gson.Gson;
  * @author Rijkman
  */
 public class CardCreationActivity extends CreatorBaseActivity {
+    private FirebaseAuth mAuth;
     //Keeps track of the current state variable
     CardCreationState state;
 
@@ -42,6 +47,7 @@ public class CardCreationActivity extends CreatorBaseActivity {
 
         setupNav();
         state = new CardCreationState();
+        mAuth = FirebaseAuth.getInstance();
 
         //Object to prompt the user to pick an image
         ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
@@ -99,20 +105,22 @@ public class CardCreationActivity extends CreatorBaseActivity {
 
     private boolean checkCardValidity() {
         //First check if everything is specified
-        TextInputEditText cardName = (TextInputEditText)(findViewById(R.id.cardNameInput));
+        TextInputEditText cardName = findViewById(R.id.cardNameInput);
         if (cardName.getText().equals("")) {
+            Log.d("CARD_CREATION", "name invalid");
             return false;
         }
         state.setCurrentName(cardName.getText().toString());
 
-        TextInputEditText cardDescription = (TextInputEditText) (findViewById((R.id.cardDescriptionInput)));
+        TextInputEditText cardDescription = findViewById(R.id.cardDescriptionInput);
         if (cardDescription.getText().equals("")) {
+            Log.d("CARD_CREATION", "description invalid");
             return false;
         }
         state.setCurrentDescription(cardDescription.getText().toString());
 
         //Rarity defaults to common
-        RadioGroup rarityButtons = (RadioGroup)findViewById(R.id.rarityButtons);
+        RadioGroup rarityButtons = findViewById(R.id.rarityButtons);
         switch(rarityButtons.getCheckedRadioButtonId()) {
             case R.id.commonButton: {
                 state.setRarity(Card.Rarity.COMMON);
@@ -130,9 +138,23 @@ public class CardCreationActivity extends CreatorBaseActivity {
 
         //Check if there is a selected image
         if (!state.hasSelectedImage()) {
+            Log.d("CARD_CREATION", "image not selected");
             return false;
         }
 
         return true;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null){
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            this.startActivity(intent);
+            startActivity(intent);
+        }
     }
 }

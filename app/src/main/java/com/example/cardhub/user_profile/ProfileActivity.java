@@ -18,8 +18,10 @@ import com.example.cardhub.collector_navigation.CollectorBaseActivity;
 import com.example.cardhub.inventory.InventoryActivity;
 import com.example.cardhub.map.MapActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class ProfileActivity extends CollectorBaseActivity implements ProfileBaseActivity {
+    private FirebaseAuth mAuth;
     ProfileState state;
 
     @Override
@@ -37,6 +39,7 @@ public class ProfileActivity extends CollectorBaseActivity implements ProfileBas
         setContentView(R.layout.activity_profile);
 
         this.state = new ProfileState(this);
+        mAuth = FirebaseAuth.getInstance();
 
         state.requestProfile();
 
@@ -47,9 +50,10 @@ public class ProfileActivity extends CollectorBaseActivity implements ProfileBas
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent logout = new Intent(getApplicationContext(), LoginActivity.class);
+                Intent logout = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(logout);
                 FirebaseAuth.getInstance().signOut();
+                Log.d("USER", "LOGGED OUT!");
             }
         });
     }
@@ -81,5 +85,18 @@ public class ProfileActivity extends CollectorBaseActivity implements ProfileBas
 
         TextView tradeAmount = findViewById(R.id.tradeAmount);
         tradeAmount.setText(state.currentProfile.getTradeAmount());
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null){
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            this.startActivity(intent);
+            startActivity(intent);
+        }
     }
 }
