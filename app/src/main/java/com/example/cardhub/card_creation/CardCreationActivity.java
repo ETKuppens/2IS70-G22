@@ -75,7 +75,7 @@ public class CardCreationActivity extends CreatorBaseActivity {
                 Intent intent = new Intent(getApplicationContext(), CardActivity.class);
                 Card c = state.getCard();
                 Gson converter = new Gson();
-                String encodedCard = converter.toJson(c);
+                String encodedCard = converter.toJson(c); 
                 intent.putExtra("card", encodedCard);
                 startActivity(intent);
             }
