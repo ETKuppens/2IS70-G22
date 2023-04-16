@@ -10,8 +10,6 @@ package com.example.cardhub.authentication;
  * @date 16-04-2023
  */
 public class ForgotPasswordState implements ForgotPasswordReceiver {
-    // Variables
-    private ForgotPasswordData data = new ForgotPasswordData(this);
     private ForgotPasswordActivity activity;
 
     /**
@@ -64,6 +62,9 @@ public class ForgotPasswordState implements ForgotPasswordReceiver {
             throw new NullPointerException("ForgotPasswordState.sendForgotPasswordEmail.pre violated: emailAddress == null");
         }
 
-        data.sendForgotPasswordEmail(emailAddress);
+        // Variables
+        ForgotPasswordData data = new ForgotPasswordData(this);
+
+        data.sendForgotPasswordEmail(emailAddress); // Pass password-reset request
     }
 }
