@@ -76,7 +76,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 String role = spr_role.getSelectedItem().toString();
 
                 if (password.equals(confirm)) {
-                    state.register(email, password, confirm, role);
+                    state.register(email, password, role);
                 } else {
                     Toast.makeText(RegistrationActivity.this, "Passwords don't match.", Toast.LENGTH_SHORT).show();
                 }

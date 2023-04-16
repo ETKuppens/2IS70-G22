@@ -14,8 +14,8 @@ public class RegistrationState implements RegisterReceiver {
         this.data = new RegistrationData(this);
     }
 
-    public void register(String email, String password, String confirm, String role) {
-        data.register(email, password, confirm, role);
+    public void register(String email, String password, String role) {
+        data.register(email, password, role);
     }
 
 

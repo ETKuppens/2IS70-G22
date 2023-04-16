@@ -19,18 +19,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RegistrationData {
-    private static FirebaseAuth mAuth;
+    private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-    private static FirebaseFirestore db;
+    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
     private RegisterReceiver receiver;
 
     public RegistrationData(RegisterReceiver receiver) {
-        this.mAuth = FirebaseAuth.getInstance();
         this.receiver = receiver;
-        this.db = FirebaseFirestore.getInstance();
     }
 
-    public void register(String email, String password, String confirm, String role) {
+    public void register(String email, String password, String role) {
             // Create account
             mAuth.createUserWithEmailAndPassword(email, password)
                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
