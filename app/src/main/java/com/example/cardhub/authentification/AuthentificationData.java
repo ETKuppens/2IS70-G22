@@ -17,12 +17,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class AuthentificationData {
 
-    private AuthentificationReciever receiver;
+    private AuthenticationReceiver receiver;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private FirebaseUser user;
 
-    public AuthentificationData(AuthentificationReciever receiver) {
+    public AuthentificationData(AuthenticationReceiver receiver) {
         this.receiver = receiver;
         this.mAuth = FirebaseAuth.getInstance();
 
@@ -48,7 +48,7 @@ public class AuthentificationData {
     }
 
     public void getCurrentUser() {
-        receiver.recieveCurrentUser(mAuth.getCurrentUser());
+        receiver.receiveCurrentUser(mAuth.getCurrentUser());
     }
 
     public void getUserRole(FirebaseUser currentUser) {
