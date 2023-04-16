@@ -3,7 +3,7 @@ package com.example.cardhub.authentification;
 import com.google.firebase.auth.FirebaseUser;
 
 /**
- * Interface for the State Design pattern implementation of the authentication
+ * Interface for the State Design pattern implementation of the signing in
  * of users.
  *
  * @author  Vladislav Budiak, Sevket Tulgar Dinc, Etienne Kuppens,
@@ -14,14 +14,16 @@ import com.google.firebase.auth.FirebaseUser;
 public interface AuthenticationReceiver {
 
     /**
-     * Takes appropriate action upon the successful authentication of the {@code user}.
+     * Takes appropriate action upon the successful signing in of the
+     * {@code user}.
      *
-     * @param user user account that has been logged in to successfully
+     * @param user user account that has been signed in to successfully
      */
     public void signInSuccess(FirebaseUser user);
 
     /**
-     * Takes appropriate action upon the unsuccessful authentication of the {@code user}.
+     * Takes appropriate action upon the unsuccessful signing in of the
+     * {@code user}.
      */
     public void signInFail();
 
@@ -33,7 +35,7 @@ public interface AuthenticationReceiver {
     public void userRoleCallback(String role);
 
     /**
-     * Receives the {@code user} account upon authentication.
+     * Receives the {@code user} account upon signing in.
      *
      * @param user given user account
      */
