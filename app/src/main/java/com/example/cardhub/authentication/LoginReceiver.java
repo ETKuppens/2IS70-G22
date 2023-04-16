@@ -3,7 +3,7 @@ package com.example.cardhub.authentication;
 import com.google.firebase.auth.FirebaseUser;
 
 /**
- * Interface for the State Design pattern implementation of the signing in
+ * Interface for the State Design Pattern implementation of the signing in
  * of users.
  *
  * @author  Vladislav Budiak, Sevket Tulgar Dinc, Etienne Kuppens,

@@ -15,19 +15,39 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+/**
+ * Data Design Pattern implementation for the signing in of users.
+ *
+ * @author  Vladislav Budiak, Sevket Tulgar Dinc, Etienne Kuppens,
+ *          Aqiel Oostenbrug, Marios Papalouka, Rijkman Pilaar
+ * @groupname Group 22
+ * @date 16-04-2023
+ */
 public class LoginData {
+    // Variables
+    private LoginReceiver receiver; // Receiver to be used after task execution
+    private FirebaseAuth mAuth; // Firebase authentication instance
+    private FirebaseFirestore db; // Firebase firestore instance
+    private FirebaseUser user; // Firebase user instance
 
-    private LoginReceiver receiver;
-    private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
-    private FirebaseUser user;
-
+    /**
+     * Constructs a new LoginData instance using the given {@code receiver}
+     * instance.
+     *
+     * @param receiver given receiver instance
+     */
     public LoginData(LoginReceiver receiver) {
         this.receiver = receiver;
         this.mAuth = FirebaseAuth.getInstance();
 
     }
 
+    /**
+     * Signs in the client using the given {@code email} and {@code password}.
+     *
+     * @param email email used to sign in
+     * @param password password used to sign in
+     */
     public void signIn(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -47,14 +67,22 @@ public class LoginData {
                 });
     }
 
+    /**
+     * Retrieves the user account that has been logged in.
+     */
     public void getCurrentUser() {
         receiver.receiveCurrentUser(mAuth.getCurrentUser());
     }
 
-    public void getUserRole(FirebaseUser currentUser) {
+    /**
+     * Retrieves the role of the {@code user}.
+     *
+     * @param user current user account that has been logged in
+     */
+    public void getUserRole(FirebaseUser user) {
         db = FirebaseFirestore.getInstance();
-        currentUser = mAuth.getCurrentUser();
-        String uid = currentUser.getUid();
+        user = mAuth.getCurrentUser();
+        String uid = user.getUid();
         DocumentReference docRef = db.collection("users").document(uid);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
