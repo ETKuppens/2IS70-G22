@@ -1,27 +1,44 @@
 package com.example.cardhub.TradingMode;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.content.Intent;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+
+import com.example.cardhub.inventory.Card;
+import com.example.cardhub.inventory.CardActivity;
+import com.example.cardhub.inventory.InventoryActivity;
+import com.google.gson.Gson;
+
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 public class TradeModeState implements TradingSessionRepositoryReceiver {
     private String clientid;
 
-    private TradeModeActivity activity;
-    private TradingSessionRepository repository;
+    private TradeModeActivity activity; // Activity this state is interacting with.
+    private TradingSessionRepository repository; // Repository this state is interacting with.
 
     // TradingSession instance that keeps track which user proposes which cards in the current
     // trading session.
     private TradingSession tradingSession = new TradingSession();
+
+    private Card clickedCard = null; // Card that was clicked to be removed
 
     /**
      * Construct a new TradeModeState that is linked to an existing TradeModeActivity.
      *
      * @param activity the TradeModeActivity storing the UI that should be represented by this TradeModeState.
      * @param lid      lobby id of the trade.
-     * @param clientid
+     * @param clientid ID of the client that instantiated this TradeModeState.
      */
     public TradeModeState(TradeModeActivity activity, String lid, String clientid) {
         this.activity = activity;
@@ -48,6 +65,11 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
      */
     private boolean proposedTradeMayBeCanceled = true;
 
+    /**
+     * Handle the event when proposed cards are changed from the UI.
+     * @param diffs set of CardDiffs that show which cards should be added and which should be
+     *              removed.
+     */
     public void changeProposedCardsFromUI(Set<CardDiff> diffs) {
         if (!this.proposedCardsMayBeChanged)
         {
@@ -91,10 +113,13 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
         cancelTradeMode();
     }
 
+    /**
+     * Receive a message that the back button is pressed from the UI.
+     */
     public void backPressedFromUI() {
         if (this.proposedTradeMayBeCanceled) {
             this.cancelTradingSessionFromUI();
-        } else {
+        } else { // !this.proposedTradeMayBeCanceled
             this.activity.showCancelByBackPressedToast();
         }
     }
@@ -105,6 +130,87 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
     public void readyFromUI() {
         acceptTrade();
     }
+
+    /**
+     * Receive a message that the card select button was clicked in the UI.
+     */
+    public void cardSelectFromUI() {
+        Intent intent = new Intent(this.activity, InventoryActivity.class);
+        intent.putExtra("origin","TradeModeActivity"); // Show that the inventory activity is
+                                                                  // started from a TradeModeActivity.
+
+        cardSelectResultLauncher.launch(intent);
+    }
+
+    /**
+     * Intent launcher used to create a new activity to select cards from the players inventory
+     * to propose in the trade.
+     */
+    private ActivityResultLauncher<Intent> cardSelectResultLauncher = activity.registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() != RESULT_OK) {
+                        return;
+                    }
+                    // result.getResultCode() == RESULT_OK
+
+                    String encodedCardDiff = result.getData().getStringExtra("CardDiff");
+
+                    Gson converter = new Gson();
+                    CardDiff decodedCardDiff = converter.fromJson(encodedCardDiff, CardDiff.class);
+
+                    changeProposedCardsFromUI(new HashSet<>(Arrays.asList(decodedCardDiff)));
+                }
+            }
+    );
+
+    /**
+     * Receive a message that one of the cards proposed by this player was clicked in the UI.
+     * @param clickedCard the proposed card that was clicked.
+     */
+    public void proposedCardClickedFromUI(Card clickedCard) {
+        if (!this.getCardMayBeRemoved()) {
+            return;
+        }
+
+        this.clickedCard = clickedCard;
+
+        Intent intent = new Intent(activity, CardActivity.class);
+        intent.putExtra("origin","TradeModeActivity"); // Show that the inventory activity is
+                                                                  // started from a TradeModeActivity.
+        Gson converter = new Gson();
+        String encodedCard = converter.toJson(clickedCard);
+
+        intent.putExtra("card", encodedCard);
+        intent.putExtra("ShouldSupportChoosingACard", true);
+
+        proposedCardRemoveResultLauncher.launch(intent);
+    }
+
+    /**
+     * Intent launcher used to create a new activity to remove a card from this players proposed
+     * trade.
+     */
+    private ActivityResultLauncher<Intent> proposedCardRemoveResultLauncher = activity.registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() != RESULT_OK) {
+                        clickedCard = null;
+                        return;
+                    }
+                    // result.getResultCode() == RESULT_OK
+                    CardDiff decodedCardDiff = new CardDiff(clickedCard, CardDiff.DiffOption.REMOVE);
+
+                    changeProposedCardsFromUI(new HashSet<>(Arrays.asList(decodedCardDiff)));
+
+                    clickedCard = null;
+                }
+            }
+    );
 
     /**
      * Update the UI in activity using the data from the TradingSession instance.
@@ -136,6 +242,9 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
     }
 
 
+    /**
+     * Cancel the trading session.
+     */
     @Override
     public void cancelTradingSession() {
         this.proposedCardsMayBeChanged = false;
@@ -149,12 +258,19 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
     }
 
 
+    /**
+     * Receive a message from the server that the other party has canceled the Trading Session.
+     */
     @Override
     public void cancelTradingSessionResponse() {
         cancelTradeMode();
     }
 
 
+    /**
+     * Receive a message from the server whether the other party has accepted the trade proposal.
+     * @param tradeAccepted whether the trade was accepted by the other client instance.
+     */
     @Override
     public void acceptProposedTradeResponse(boolean tradeAccepted) {
         if (tradeAccepted) {
@@ -174,11 +290,18 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
         }
     }
 
+    /**
+     * Receive a message from the server that the other player is ready to accept the trade.
+     */
     @Override
     public void acceptProposedTradeFromOtherTrader() {
         this.activity.enableOtherPlayerReadyMessage();
     }
 
+    /**
+     * Receive a message from the server that the other player has changed their proposed cards.
+     * @param diffs a set of CardDiffs that should be applied to the other clients' proposed cards.
+     */
     @Override
     public void changeProposedCards(Set<CardDiff> diffs) {
         this.tradingSession.AddCardDiffsForOtherUser(diffs);
@@ -186,6 +309,10 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
         this.repository.changeProposedCardsConfirm(this.clientid);
     }
 
+    /**
+     * Receive a message from the server that the other player has received the change in proposed
+     * cards correctly.
+     */
     @Override
     public void changeProposedCardsResponse() {
         this.proposedCardsMayBeChanged = true;
@@ -210,11 +337,18 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
         }.start();
     }
 
+    /**
+     * Finish the trade from the Activity.
+     */
     @Override
     public void finishTrade() {
         activity.finishTrade();
     }
 
+    /**
+     * Get whether a proposed card may currently be removed.
+     * @return this.proposedCardsMayBeChanged.
+     */
     public boolean getCardMayBeRemoved() {
         if (this.proposedCardsMayBeChanged) {
             return true;
