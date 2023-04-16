@@ -14,7 +14,7 @@ import com.example.cardhub.R;
 import com.google.firebase.auth.FirebaseUser;
 
 /**
- * Displays the Login View.
+ * Displays the Login Activity, and manages interactions.
  */
 public class LoginActivity extends AppCompatActivity {
     // Variables
