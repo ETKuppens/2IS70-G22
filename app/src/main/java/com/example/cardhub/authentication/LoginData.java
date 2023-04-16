@@ -15,14 +15,14 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class AuthenticationData {
+public class LoginData {
 
-    private AuthenticationReceiver receiver;
+    private LoginReceiver receiver;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private FirebaseUser user;
 
-    public AuthenticationData(AuthenticationReceiver receiver) {
+    public LoginData(LoginReceiver receiver) {
         this.receiver = receiver;
         this.mAuth = FirebaseAuth.getInstance();
 

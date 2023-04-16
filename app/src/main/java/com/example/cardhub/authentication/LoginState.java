@@ -8,16 +8,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class LoginState implements AuthenticationReceiver {
+public class LoginState implements LoginReceiver {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
-    private AuthenticationData data;
+    private LoginData data;
     private FirebaseUser user;
     private LoginActivity activity;
 
     public LoginState(LoginActivity activity) {
-        data = new AuthenticationData(this);
+        data = new LoginData(this);
         this.activity = activity;
     }
 

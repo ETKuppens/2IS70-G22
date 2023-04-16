@@ -11,7 +11,7 @@ import com.google.firebase.auth.FirebaseUser;
  * @groupname Group 22
  * @date 16-04-2023
  */
-public interface AuthenticationReceiver {
+public interface LoginReceiver {
 
     /**
      * Takes appropriate action upon the successful signing in of the
