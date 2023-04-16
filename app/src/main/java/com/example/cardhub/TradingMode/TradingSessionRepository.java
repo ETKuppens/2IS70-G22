@@ -64,11 +64,25 @@ public interface TradingSessionRepository {
      */
     void changeProposedCardsConfirm(String clientID);
 
-    public void receiveUpdate(List<Map<String, Object>> diffs);
+    /**
+     * Receive a message from the server containing a list of cardDiffs representing changes in
+     * the current trading session.
+     * @param diffs list of encoded cardDiffs.
+     */
+    void receiveUpdate(List<Map<String, Object>> diffs);
 
+    /**
+     * Start the timer for the trade.
+     */
     void startTradeTimer();
 
+    /**
+     * Apply the trade proposal.
+     */
     void doTrade();
 
+    /**
+     * Finish the trade.
+     */
     void finishTrade();
 }
