@@ -21,16 +21,13 @@ import com.google.firebase.auth.FirebaseAuth;
  * Display the ForgotPassword View, and manages interactions.
  */
 public class ForgotPasswordActivity extends AppCompatActivity {
-    // Variables
-    private ForgotPasswordState state;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
 
         // Firebase Authentication
-        state = new ForgotPasswordState(this);
+        ForgotPasswordState state = new ForgotPasswordState(this);
 
         // Instantiate layout components
         EditText et_forgotpassword = findViewById(R.id.editText_email_forgot);
