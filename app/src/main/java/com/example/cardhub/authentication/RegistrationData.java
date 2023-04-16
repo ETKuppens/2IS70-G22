@@ -19,10 +19,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RegistrationData {
-    FirebaseAuth mAuth;
-    RegisterReceiver receiver;
-    FirebaseFirestore db;
-    RegistrationState state;
+    private static FirebaseAuth mAuth;
+
+    private static FirebaseFirestore db;
+    private RegisterReceiver receiver;
 
     public RegistrationData(RegisterReceiver receiver) {
         this.mAuth = FirebaseAuth.getInstance();
