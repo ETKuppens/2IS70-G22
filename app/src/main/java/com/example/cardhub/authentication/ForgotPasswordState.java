@@ -10,6 +10,7 @@ package com.example.cardhub.authentication;
  * @date 16-04-2023
  */
 public class ForgotPasswordState implements ForgotPasswordReceiver {
+    // Variables
     private ForgotPasswordActivity activity;
 
     /**
@@ -32,17 +33,11 @@ public class ForgotPasswordState implements ForgotPasswordReceiver {
         this.activity = activity;
     }
 
-    /**
-     * Passes the password-reset email success signal to the {@code activity}.
-     */
     @Override
     public void sendForgotPasswordEmailSuccess() {
         activity.sendForgotPasswordEmailSuccess();
     }
 
-    /**
-     * Passes the password-reset email failure signal to the {@code activity}.
-     */
     @Override
     public void sendForgotPasswordEmailFailure() {
         activity.sendForgotPasswordEmailFailure();
