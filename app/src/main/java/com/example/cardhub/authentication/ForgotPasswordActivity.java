@@ -19,6 +19,11 @@ import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * Display the ForgotPassword View, and manages interactions.
+ *
+ * @author  Vladislav Budiak, Sevket Tulgar Dinc, Etienne Kuppens,
+ *          Aqiel Oostenbrug, Marios Papalouka, Rijkman Pilaar
+ * @groupname Group 22
+ * @date 16-04-2023
  */
 public class ForgotPasswordActivity extends AppCompatActivity {
     @Override
