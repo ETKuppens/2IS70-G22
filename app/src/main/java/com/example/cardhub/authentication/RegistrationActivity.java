@@ -23,7 +23,6 @@ import com.example.cardhub.user_profile.ProfileActivity;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-
 /**
  * Displays the Login Activity, and manages interactions.
  */

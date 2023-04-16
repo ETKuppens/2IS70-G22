@@ -12,7 +12,6 @@ import com.google.firebase.auth.FirebaseUser;
  * @date 16-04-2023
  */
 public interface LoginReceiver {
-
     /**
      * Takes appropriate action upon the successful signing in of the
      * {@code user}.
@@ -40,5 +39,4 @@ public interface LoginReceiver {
      * @param user given user account
      */
     public void receiveCurrentUser(FirebaseUser user);
-
 }
