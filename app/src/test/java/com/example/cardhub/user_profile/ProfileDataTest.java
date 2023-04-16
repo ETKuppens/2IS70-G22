@@ -4,6 +4,9 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import junit.framework.TestCase;
 
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+
 import java.util.Map;
 
 public class ProfileDataTest extends TestCase {
@@ -11,7 +14,7 @@ public class ProfileDataTest extends TestCase {
     ProfileData data;
 
     public ProfileDataTest() {
-        auth = FirebaseAuth.getInstance();
+        auth = Mockito.mock(FirebaseAuth.class);
         auth.signInWithEmailAndPassword("unit@test.com", "123123");
         data = new ProfileData(new ProfileRepository() {
             @Override
