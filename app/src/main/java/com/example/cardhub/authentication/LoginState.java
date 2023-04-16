@@ -44,6 +44,8 @@ public class LoginState implements LoginReceiver {
     }
 
     /**
+     * Passes the signing in success signal to the {@code activity}.
+     *
      * @param user user account that has been signed in to successfully
      *
      * @pre {@code activity != null && user != null}

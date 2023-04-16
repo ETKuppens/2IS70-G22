@@ -91,6 +91,7 @@ public class RegistrationData {
                        // Add the userEntry to the database
                        uploadUserEntry(uid, userEntry, role);
                    } else { // Client has not been registered successfully
+                       // Log failure
                        Log.w(TAG, "signUpWithEmail:failure", task.getException());
                        receiver.registrationFail(); // Display error message
                    }
@@ -101,29 +102,29 @@ public class RegistrationData {
     /**
      * Uploads the given {@code userEntry}.
      *
-     * @param uid
-     * @param userEntry
-     * @param role
+     * @param uid uid of the user for which the userEntry is being uploaded
+     * @param userEntry entry that is going to be uploaded
+     * @param role role of the user
      */
     @NonNull
     private void uploadUserEntry(String uid, Map<String, Object> userEntry, String role) {
         db.collection("users").document(uid)
-                .set(userEntry)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "userEntryUpload:success");
-                        receiver.registrationSuccess(mAuth.getCurrentUser(), role);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Log failure
-                        Log.e(TAG, "userEntryUpload:failure", e);
-                        receiver.registrationFail(); // Display error message
-                    }
-                });
+            .set(userEntry)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d(TAG, "userEntryUpload:success");
+                    receiver.registrationSuccess(role);
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    // Log failure
+                    Log.e(TAG, "userEntryUpload:failure", e);
+                    receiver.registrationFail(); // Display error message
+                }
+            });
     }
 
     /**
@@ -137,7 +138,7 @@ public class RegistrationData {
      * @throws IllegalArgumentException if {@code !role.equals("Card Collector") && !role.equals("Card Creator")}
      */
     @NonNull
-    private Map<String, Object> createNewUserEntry(String role) {
+    private Map<String, Object> createNewUserEntry(String role) throws NullPointerException, IllegalArgumentException {
         if (role == null) {
             throw new NullPointerException("RegistrationData.createNewUserEntry.pre violated: role == null");
         }

@@ -13,13 +13,11 @@ import com.google.firebase.auth.FirebaseUser;
  */
 public interface RegisterReceiver {
     /**
-     * Takes appropriate action upon the successful registration of the
-     * {@code user}.
+     * Takes appropriate action upon the successful registration.
      *
-     * @param user user that has been successfully registered
      * @param role role of the the user that has been successfully registered
      */
-    public void registrationSuccess(FirebaseUser user, String role);
+    public void registrationSuccess(String role);
 
     /**
      * Takes appropriate action upon the unsuccessful registration of the
