@@ -109,8 +109,15 @@ public class LoginData {
      * Retrieves the role of the {@code user}.
      *
      * @param currentUser current user account that has been logged in
+     *
+     * @pre {@code currentUser != null && currentUser in Firestore database}
+     *
+     * @throws NullPointerException if {@code currentUser == null}
+     * @throws IllegalArgumentException if {@code currentUser is not in Firestore
+     *                                      Database}
+     *
      */
-    public void getUserRole(FirebaseUser currentUser) {
+    public void getUserRole(FirebaseUser currentUser) throws NullPointerException, IllegalArgumentException {
         if (currentUser == null) {
             throw new NullPointerException("LoginData.getUserRole.pre violated: currentUser == null");
         }
@@ -138,7 +145,8 @@ public class LoginData {
                         // Initialize exception
                         IllegalArgumentException exception =
                                 new IllegalArgumentException(
-                                        "No such user in the database."
+                                        "LoginData.getUserRole.pre violated:" +
+                                                "currentUser not in database"
                                 );
 
                         // Log failure
