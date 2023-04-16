@@ -24,8 +24,8 @@ import java.util.Set;
 public class TradeModeState implements TradingSessionRepositoryReceiver {
     private String clientid;
 
-    private TradeModeActivity activity;
-    private TradingSessionRepository repository;
+    private TradeModeActivity activity; // Activity this state is interacting with.
+    private TradingSessionRepository repository; // Repository this state is interacting with.
 
     // TradingSession instance that keeps track which user proposes which cards in the current
     // trading session.
@@ -38,7 +38,7 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
      *
      * @param activity the TradeModeActivity storing the UI that should be represented by this TradeModeState.
      * @param lid      lobby id of the trade.
-     * @param clientid
+     * @param clientid ID of the client that instantiated this TradeModeState.
      */
     public TradeModeState(TradeModeActivity activity, String lid, String clientid) {
         this.activity = activity;
@@ -65,6 +65,11 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
      */
     private boolean proposedTradeMayBeCanceled = true;
 
+    /**
+     * Handle the event when proposed cards are changed from the UI.
+     * @param diffs set of CardDiffs that show which cards should be added and which should be
+     *              removed.
+     */
     public void changeProposedCardsFromUI(Set<CardDiff> diffs) {
         if (!this.proposedCardsMayBeChanged)
         {
@@ -108,10 +113,13 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
         cancelTradeMode();
     }
 
+    /**
+     * Receive a message that the back button is pressed from the UI.
+     */
     public void backPressedFromUI() {
         if (this.proposedTradeMayBeCanceled) {
             this.cancelTradingSessionFromUI();
-        } else {
+        } else { // !this.proposedTradeMayBeCanceled
             this.activity.showCancelByBackPressedToast();
         }
     }
@@ -234,6 +242,9 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
     }
 
 
+    /**
+     * Cancel the trading session.
+     */
     @Override
     public void cancelTradingSession() {
         this.proposedCardsMayBeChanged = false;
@@ -247,12 +258,19 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
     }
 
 
+    /**
+     * Receive a message from the server that the other party has canceled the Trading Session.
+     */
     @Override
     public void cancelTradingSessionResponse() {
         cancelTradeMode();
     }
 
 
+    /**
+     * Receive a message from the server whether the other party has accepted the trade proposal.
+     * @param tradeAccepted whether the trade was accepted by the other client instance.
+     */
     @Override
     public void acceptProposedTradeResponse(boolean tradeAccepted) {
         if (tradeAccepted) {
@@ -272,11 +290,18 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
         }
     }
 
+    /**
+     * Receive a message from the server that the other player is ready to accept the trade.
+     */
     @Override
     public void acceptProposedTradeFromOtherTrader() {
         this.activity.enableOtherPlayerReadyMessage();
     }
 
+    /**
+     * Receive a message from the server that the other player has changed their proposed cards.
+     * @param diffs a set of CardDiffs that should be applied to the other clients' proposed cards.
+     */
     @Override
     public void changeProposedCards(Set<CardDiff> diffs) {
         this.tradingSession.AddCardDiffsForOtherUser(diffs);
@@ -284,6 +309,10 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
         this.repository.changeProposedCardsConfirm(this.clientid);
     }
 
+    /**
+     * Receive a message from the server that the other player has received the change in proposed
+     * cards correctly.
+     */
     @Override
     public void changeProposedCardsResponse() {
         this.proposedCardsMayBeChanged = true;
@@ -308,11 +337,18 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
         }.start();
     }
 
+    /**
+     * Finish the trade from the Activity.
+     */
     @Override
     public void finishTrade() {
         activity.finishTrade();
     }
 
+    /**
+     * Get whether a proposed card may currently be removed.
+     * @return this.proposedCardsMayBeChanged.
+     */
     public boolean getCardMayBeRemoved() {
         if (this.proposedCardsMayBeChanged) {
             return true;
