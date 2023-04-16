@@ -9,21 +9,20 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LoginState implements LoginReceiver {
-    private FirebaseAuth mAuth;
     private FirebaseFirestore db;
-
     private LoginData data;
     private FirebaseUser user;
     private LoginActivity activity;
 
     public LoginState(LoginActivity activity) {
-        data = new LoginData(this);
         this.activity = activity;
+        this.data = new LoginData(this);
     }
 
     @Override
     public void signInSuccess(FirebaseUser user) {
         this.user = user;
+
         getUserRole(user);
         activity.signInSuccess();
     }
