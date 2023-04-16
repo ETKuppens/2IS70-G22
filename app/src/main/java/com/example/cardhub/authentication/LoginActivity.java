@@ -1,4 +1,4 @@
-package com.example.cardhub.authentification;
+package com.example.cardhub.authentication;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package com.example.cardhub.authentification;
+package com.example.cardhub.authentication;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +18,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.text.HtmlCompat;
 
 import com.example.cardhub.R;
-import com.example.cardhub.card_creation.CardCreationActivity;
 import com.example.cardhub.user_profile.CreatorProfileActivity;
 import com.example.cardhub.user_profile.ProfileActivity;
 

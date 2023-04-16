@@ -1,4 +1,4 @@
-package com.example.cardhub.authentification;
+package com.example.cardhub.authentication;
 
 import static android.content.ContentValues.TAG;
 

@@ -12,9 +12,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 
-import com.example.cardhub.PairingModeActivity;
 import com.example.cardhub.R;
-import com.example.cardhub.authentification.LoginActivity;
+import com.example.cardhub.authentication.LoginActivity;
 import com.example.cardhub.creator_navigation.CreatorBaseActivity;
 import com.example.cardhub.inventory.Card;
 import com.example.cardhub.inventory.CardActivity;

@@ -17,9 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cardhub.CardRecyclerViewAdapter;
-import com.example.cardhub.PairingModeActivity;
 import com.example.cardhub.R;
-import com.example.cardhub.authentification.LoginActivity;
+import com.example.cardhub.authentication.LoginActivity;
 import com.example.cardhub.inventory.Card;
 import com.example.cardhub.inventory.CardActivity;
 import com.example.cardhub.inventory.InventoryActivity;

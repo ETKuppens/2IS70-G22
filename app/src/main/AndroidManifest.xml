@@ -58,11 +58,11 @@
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:exported="false" />
         <activity
-            android:name="com.example.cardhub.authentification.ForgotPasswordActivity"
+            android:name="com.example.cardhub.authentication.ForgotPasswordActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:exported="false" />
         <activity
-            android:name="com.example.cardhub.authentification.RegistrationActivity"
+            android:name="com.example.cardhub.authentication.RegistrationActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:exported="false" />
         <activity
@@ -70,7 +70,7 @@
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:exported="false" />
         <activity
-            android:name="com.example.cardhub.authentification.LoginActivity"
+            android:name="com.example.cardhub.authentication.LoginActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:exported="true">
             <intent-filter>
