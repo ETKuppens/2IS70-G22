@@ -27,16 +27,10 @@ import org.checkerframework.checker.nullness.qual.NonNull;
  * Displays the Login Activity, and manages interactions.
  */
 public class RegistrationActivity extends AppCompatActivity {
-    // Variables
-    private RegistrationState state;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-
-        state = new RegistrationState(this);
-
 
         // Instantiate layout components
         EditText et_registeremail = findViewById(R.id.editText_registeremail);
@@ -47,6 +41,9 @@ public class RegistrationActivity extends AppCompatActivity {
         Button btn_register = findViewById(R.id.button_register);
         TextView tv_tos = findViewById(R.id.textView_tos);
         Spinner spr_role = findViewById(R.id.spinner_role);
+
+        // Registration variables
+        RegistrationState state = new RegistrationState(this);
 
         // Create dropdown variables
         String[] roles = new String[]{"Card Collector", "Card Creator"};
@@ -75,7 +72,7 @@ public class RegistrationActivity extends AppCompatActivity {
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Instantiate variables
+                // Variables
                 String email = et_registeremail.getText().toString();
                 String password = et_registerpassword.getText().toString();
                 String confirm = et_confirm.getText().toString();
