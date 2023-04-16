@@ -36,6 +36,8 @@ public class LoginData {
      *
      * @param receiver given receiver instance
      *
+     * @pre {@code receiver != null}
+     *
      * @throws NullPointerException if {@code receiver == null}
      */
     public LoginData(LoginReceiver receiver) throws NullPointerException {
