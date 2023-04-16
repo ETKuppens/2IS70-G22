@@ -12,12 +12,12 @@ public class LoginState implements AuthenticationReceiver {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
-    private AuthentificationData data;
+    private AuthenticationData data;
     private FirebaseUser user;
     private LoginActivity activity;
 
     public LoginState(LoginActivity activity) {
-        data = new AuthentificationData(this);
+        data = new AuthenticationData(this);
         this.activity = activity;
     }
 
