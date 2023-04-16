@@ -22,7 +22,6 @@ public class ForgotPasswordData {
     public static final String TAG = "ForgotPasswordData";
 
     // Variables
-    private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private ForgotPasswordReceiver receiver;
 
     /**
@@ -58,6 +57,8 @@ public class ForgotPasswordData {
         if (emailAddress == null) {
             throw new NullPointerException("ForgotPasswordData.ForgotPasswordData.pre violated: emailAddress == null");
         }
+
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
         // Attempt to send a password-reset request
         mAuth.sendPasswordResetEmail(emailAddress).addOnCompleteListener(new OnCompleteListener<Void>() {
