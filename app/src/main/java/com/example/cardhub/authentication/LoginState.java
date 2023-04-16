@@ -199,6 +199,6 @@ public class LoginState implements LoginReceiver {
             throw new NullPointerException("LoginState.receiveCurrentUser.pre violated: activity == null");
         }
 
-        activity.getCurrentUser(user); // User retrieval
+        getUserRole(user); // User retrieval
     }
 }

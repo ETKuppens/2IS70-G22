@@ -13,8 +13,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.cardhub.R;
 import com.google.firebase.auth.FirebaseUser;
 
+/**
+ * Displays the Login View.
+ */
 public class LoginActivity extends AppCompatActivity {
-    LoginState state;
+    // Variables
+    private LoginState state;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,29 +34,32 @@ public class LoginActivity extends AppCompatActivity {
         TextView tv_register = findViewById(R.id.textView_registerreferral);
         Button btn_login = findViewById(R.id.button_login);
 
-        // Login Button is Pressed
+        // Login button is pressed
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 // Instantiate variables
                 String email = et_email.getText().toString();
                 String password = et_password.getText().toString();
 
-                state.signIn(email, password);
+                state.signIn(email, password); // Pass authentication request
             }
         });
 
+        // Registration link is pressed
         tv_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Open RegistrationActivity
                 startActivity(new Intent(getApplicationContext(), RegistrationActivity.class));
             }
         });
 
+        // Forgotten password link is pressed
         tv_forgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Open ForgotPasswordActivity
                 startActivity(new Intent(getApplicationContext(), ForgotPasswordActivity.class));
             }
         });
@@ -61,26 +68,36 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
 
+        // Check if user is signed in (non-null) and update UI accordingly.
         state.getCurrentUser();
     }
 
-    public void getCurrentUser(FirebaseUser user) {
-        if (user != null) {
-            // Open MapsActivity for a Collector or CreatorActivity for a Creator
-            state.getUserRole(user);
+    /**
+     * Displays the given {@code msg} as a toast.
+     *
+     * @param msg message to be displayed on the toast
+     * @pre {@code msg != null}
+     * @throws NullPointerException if {@code msg == null}
+     */
+    private void makeToast(String msg) {
+        if (msg == null) {
+            throw new NullPointerException("LoginActivity.makeToast.pre violated: msg == null");
         }
-    }
 
-    public void makeToast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Displays a success toast.
+     */
     public void signInSuccess() {
         makeToast( "Login successful");
     }
 
+    /**
+     * Displays a failure toast.
+     */
     public void signInFail() {
         makeToast( "Login Fail");
     }

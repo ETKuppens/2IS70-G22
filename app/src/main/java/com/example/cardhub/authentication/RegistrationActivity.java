@@ -91,38 +91,6 @@ public class RegistrationActivity extends AppCompatActivity {
         });
     }
 
-    //private void openStartActivity(FirebaseUser currentUser) {
-    //    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-    //        @Override
-    //        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-    //            if (task.isSuccessful()) {
-    //                DocumentSnapshot document = task.getResult();
-    //                if (document.exists()) {
-    //                    // Read data
-    //                    String role = (String) document.get("role");
-    //                    Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
-    //                    if (role.equals("Card Collector")) {
-    //                        // Move to next screen
-    //                        intent = new Intent(getApplicationContext(), ProfileActivity.class);
-    //                    }
-    //                    else if (role.equals("Card Creator")) {
-    //                        intent = new Intent(getApplicationContext(), ProfileActivity.class);
-    //                    }
-
-    //                    // Remove returnal activities from memory
-    //                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-    //                    startActivity(intent);
-    //                } else {
-    //                    Log.d(TAG, "No account!");
-    //                    Toast.makeText(RegistrationActivity.this, "No account!", Toast.LENGTH_SHORT).show();
-    //                }
-    //            } else {
-    //                Log.d(TAG, "get failed with ", task.getException());
-    //            }
-    //        }
-    //    });
-    //}
-
     public void openStartActivity(String role) {
         Toast.makeText(this, "Registration succeeded.",
                 Toast.LENGTH_SHORT).show();
