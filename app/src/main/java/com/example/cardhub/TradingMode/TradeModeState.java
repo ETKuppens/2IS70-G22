@@ -1,9 +1,24 @@
 package com.example.cardhub.TradingMode;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.content.Intent;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+
+import com.example.cardhub.inventory.Card;
+import com.example.cardhub.inventory.CardActivity;
+import com.example.cardhub.inventory.InventoryActivity;
+import com.google.gson.Gson;
+
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 public class TradeModeState implements TradingSessionRepositoryReceiver {
@@ -15,6 +30,8 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
     // TradingSession instance that keeps track which user proposes which cards in the current
     // trading session.
     private TradingSession tradingSession = new TradingSession();
+
+    private Card clickedCard = null; // Card that was clicked to be removed
 
     /**
      * Construct a new TradeModeState that is linked to an existing TradeModeActivity.
@@ -105,6 +122,87 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
     public void readyFromUI() {
         acceptTrade();
     }
+
+    /**
+     * Receive a message that the card select button was clicked in the UI.
+     */
+    public void cardSelectFromUI() {
+        Intent intent = new Intent(this.activity, InventoryActivity.class);
+        intent.putExtra("origin","TradeModeActivity"); // Show that the inventory activity is
+                                                                  // started from a TradeModeActivity.
+
+        cardSelectResultLauncher.launch(intent);
+    }
+
+    /**
+     * Intent launcher used to create a new activity to select cards from the players inventory
+     * to propose in the trade.
+     */
+    private ActivityResultLauncher<Intent> cardSelectResultLauncher = activity.registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() != RESULT_OK) {
+                        return;
+                    }
+                    // result.getResultCode() == RESULT_OK
+
+                    String encodedCardDiff = result.getData().getStringExtra("CardDiff");
+
+                    Gson converter = new Gson();
+                    CardDiff decodedCardDiff = converter.fromJson(encodedCardDiff, CardDiff.class);
+
+                    changeProposedCardsFromUI(new HashSet<>(Arrays.asList(decodedCardDiff)));
+                }
+            }
+    );
+
+    /**
+     * Receive a message that one of the cards proposed by this player was clicked in the UI.
+     * @param clickedCard the proposed card that was clicked.
+     */
+    public void proposedCardClickedFromUI(Card clickedCard) {
+        if (!this.getCardMayBeRemoved()) {
+            return;
+        }
+
+        this.clickedCard = clickedCard;
+
+        Intent intent = new Intent(activity, CardActivity.class);
+        intent.putExtra("origin","TradeModeActivity"); // Show that the inventory activity is
+                                                                  // started from a TradeModeActivity.
+        Gson converter = new Gson();
+        String encodedCard = converter.toJson(clickedCard);
+
+        intent.putExtra("card", encodedCard);
+        intent.putExtra("ShouldSupportChoosingACard", true);
+
+        proposedCardRemoveResultLauncher.launch(intent);
+    }
+
+    /**
+     * Intent launcher used to create a new activity to remove a card from this players proposed
+     * trade.
+     */
+    private ActivityResultLauncher<Intent> proposedCardRemoveResultLauncher = activity.registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() != RESULT_OK) {
+                        clickedCard = null;
+                        return;
+                    }
+                    // result.getResultCode() == RESULT_OK
+                    CardDiff decodedCardDiff = new CardDiff(clickedCard, CardDiff.DiffOption.REMOVE);
+
+                    changeProposedCardsFromUI(new HashSet<>(Arrays.asList(decodedCardDiff)));
+
+                    clickedCard = null;
+                }
+            }
+    );
 
     /**
      * Update the UI in activity using the data from the TradingSession instance.
