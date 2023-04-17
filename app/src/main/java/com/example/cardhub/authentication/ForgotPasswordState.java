@@ -44,7 +44,7 @@ public class ForgotPasswordState implements ForgotPasswordReceiver {
     }
 
     /**
-     * Passes password-reset email of {@code emailAddress} to {@code data}.
+     * Passes password-reset email requests of {@code emailAddress}.
      *
      * @pre {@code emailAddress != null}
      *

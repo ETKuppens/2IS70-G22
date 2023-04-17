@@ -1,7 +1,6 @@
 package com.example.cardhub.authentication;
 
 import android.util.Log;
-import androidx.annotation.NonNull;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -19,7 +18,9 @@ import java.util.Map;
 public class RegistrationData {
     // Constants
     public static final String TAG = "RegistrationData";
-    private final RegisterReceiver receiver;
+
+    // Variables
+    private final RegistrationReceiver receiver;
 
     /**
      * Constructs a new RegistrationData instance using the given {@code receiver}
@@ -30,7 +31,7 @@ public class RegistrationData {
      * @throws NullPointerException if {@code receiver == null}
      * @post instance is initialized
      */
-    public RegistrationData(RegisterReceiver receiver) throws NullPointerException {
+    public RegistrationData(RegistrationReceiver receiver) throws NullPointerException {
         // Precondition testing
         // Receiver precondition test
         if (receiver == null) {
@@ -134,7 +135,6 @@ public class RegistrationData {
      * @throws IllegalArgumentException if {@code !(role.equals("Card Collector") ^ role.equals("Card Creator"))}
      * @return HashMap with the appropriate user characteristics for Firestore
      */
-    @NonNull
     private Map<String, Object> createNewUserEntry(String role) throws NullPointerException, IllegalArgumentException {
         // Variables
         Map<String, Object> userEntry = new HashMap<>();

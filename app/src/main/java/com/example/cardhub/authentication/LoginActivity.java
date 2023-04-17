@@ -7,11 +7,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.cardhub.R;
-import com.google.firebase.auth.FirebaseUser;
 
 /**
  * Displays the Login View, and manages interactions.
