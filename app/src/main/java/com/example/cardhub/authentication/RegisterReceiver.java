@@ -1,5 +1,7 @@
 package com.example.cardhub.authentication;
 
+import android.widget.Toast;
+
 import com.google.firebase.auth.FirebaseUser;
 
 /**
@@ -13,15 +15,14 @@ import com.google.firebase.auth.FirebaseUser;
  */
 public interface RegisterReceiver {
     /**
-     * Takes appropriate action upon the successful registration.
+     * Passes the registration success signal.
      *
      * @param role role of the the user that has been successfully registered
      */
     public void registrationSuccess(String role);
 
     /**
-     * Takes appropriate action upon the unsuccessful registration of the
-     * {@code user}.
+     * Passes the registration database-failure signal.
      */
-    public void registrationFail();
+    public void registrationDatabaseFail();
 }

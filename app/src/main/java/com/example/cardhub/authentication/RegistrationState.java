@@ -48,9 +48,10 @@ public class RegistrationState implements RegisterReceiver {
      * @throws NullPointerException if {@code email == null || password == null || role == null}
      * @throws IllegalArgumentException if {@code !role.equals("Card Creator") && !role.equals("Card Collector")}
      *
-     * @pre {@code email != null && password != null && (role.equals('Card Creator') ^ role.equals('Card Collector'))}
+     * @pre {@code email != null && password != null && (role.equals('Card Creator') ^ role.equals('Card Collector'))
+     *      && password.equals(confirm)}
      */
-    public void register(String email, String password, String role) throws NullPointerException, IllegalArgumentException {
+    public void register(String email, String password, String confirm, String role) throws NullPointerException, IllegalArgumentException {
         if (email == null) {
             throw new NullPointerException("RegistrationState.register.pre violated: email == null");
         }
@@ -65,6 +66,10 @@ public class RegistrationState implements RegisterReceiver {
 
         if (!role.equals("Card Creator") && !role.equals("Card Collector")) {
             throw new IllegalArgumentException("RegistrationState.register.pre violated: !role.equals(\"Card Creator\") && !role.equals(\"Card Collector\")");
+        }
+
+        if (password.equals(confirm)) {
+
         }
 
         data.register(email, password, role); // Account Creation
@@ -106,7 +111,7 @@ public class RegistrationState implements RegisterReceiver {
      * @throws NullPointerException if {@code activity == null}
      */
     @Override
-    public void registrationFail() throws NullPointerException {
+    public void registrationDatabaseFail() throws NullPointerException {
         if (activity == null) {
             throw new NullPointerException("RegistrationState.registrationFail.pre violated: activity == null");
         }

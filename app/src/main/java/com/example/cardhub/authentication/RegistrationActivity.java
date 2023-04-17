@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -24,7 +23,7 @@ import com.example.cardhub.user_profile.ProfileActivity;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
- * Displays the Login Activity, and manages interactions.
+ * Displays the Login View, and manages interactions.
  */
 public class RegistrationActivity extends AppCompatActivity {
     @Override
@@ -61,12 +60,7 @@ public class RegistrationActivity extends AppCompatActivity {
         tv_tos.setMovementMethod(LinkMovementMethod.getInstance());
 
         // TOS has been clicked
-        cb_tos.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                btn_register.setEnabled(isChecked);
-            }
-        });
+        cb_tos.setOnCheckedChangeListener((compoundButton, isChecked) -> btn_register.setEnabled(isChecked));
 
         // Register button was pressed
         btn_register.setOnClickListener(new View.OnClickListener() {
@@ -78,21 +72,20 @@ public class RegistrationActivity extends AppCompatActivity {
                 String confirm = et_confirm.getText().toString();
                 String role = spr_role.getSelectedItem().toString();
 
-                if (password.equals(confirm)) {
-                    state.register(email, password, role); // Pass login request
-                } else {
-                    Toast.makeText(RegistrationActivity.this, "Passwords don't match.", Toast.LENGTH_SHORT).show();
-                }
+                state.register(email, password, confirm, role); // Pass login request
+
+//                if (password.equals(confirm)) {
+//                    state.register(email, password, role); // Pass login request
+//                } else {
+//                    Toast.makeText(RegistrationActivity.this, "Passwords don't match.", Toast.LENGTH_SHORT).show();
+//                }
             }
         });
 
         // Login link was clicked
-        tv_loginreferral.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Open Login View
-                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-            }
+        tv_loginreferral.setOnClickListener(view -> {
+            // Open Login View
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         });
     }
 
@@ -122,5 +115,40 @@ public class RegistrationActivity extends AppCompatActivity {
         // Empty activity memory
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+    }
+
+    /**
+     * Takes appropriate action upon the success of the registration.
+     *
+     * @param role role of the user that was registered
+     */
+    public void registrationSuccess(String role) {
+        openStartActivity(role); // Open the appropriate activity
+        // Display success message
+        Toast.makeText(RegistrationActivity.this, "Registration has succeeded", Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * Takes appropriate action upon the database-failure of the registration.
+     */
+    public void registrationDatabaseFail() {
+        // Display database failure message
+        Toast.makeText(RegistrationActivity.this, "Registration has failed, please try again later", Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * Takes appropriate action upon the confirmation-failure of the registration.
+     */
+    public void registrationConfirmationFail() {
+        // Display confirmation failure message
+        Toast.makeText(RegistrationActivity.this, "Passwords do not match", Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * Takes appropriate action upon the database-failure of the registration.
+     */
+    public void registrationPasswordFail() {
+        // Display password failure message
+        Toast.makeText(RegistrationActivity.this, "Password length must be at least 6 characters", Toast.LENGTH_LONG).show();
     }
 }

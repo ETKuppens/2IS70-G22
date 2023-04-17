@@ -2,11 +2,6 @@ package com.example.cardhub.authentication;
 
 import android.util.Log;
 import androidx.annotation.NonNull;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -14,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Data Design Pattern Implementation for the registering of users.
+ * Data Design Pattern Implementation for the registration of users.
  *
  * @author  Vladislav Budiak, Sevket Tulgar Dinc, Etienne Kuppens,
  *          Aqiel Oostenbrug, Marios Papalouka, Rijkman Pilaar
@@ -24,23 +19,20 @@ import java.util.Map;
 public class RegistrationData {
     // Constants
     public static final String TAG = "RegistrationData";
-
-    // Variables
-    private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private RegisterReceiver receiver;
+    private final RegisterReceiver receiver;
 
     /**
      * Constructs a new RegistrationData instance using the given {@code receiver}
      * instance.
      *
      * @param receiver given receiver instance
-     *
      * @pre {@code receiver != null}
-     *
      * @throws NullPointerException if {@code receiver == null}
+     * @post instance is initialized
      */
     public RegistrationData(RegisterReceiver receiver) throws NullPointerException {
+        // Precondition testing
+        // Receiver precondition test
         if (receiver == null) {
             throw new NullPointerException(
                     "RegistrationData.RegistrationData.pre violated: receiver == null"
@@ -51,50 +43,52 @@ public class RegistrationData {
     }
 
     /**
-     * Registers the client using the given {@code email}, and {@code password}
-     * with the {@code role} role.
+     * Registers an account using the given {@code email}, {@code password}, and {@code role}.
      *
      * @param email email to register with
      * @param password password to register with
      * @param role role to register with
-     *
      * @pre {@code email != null && password != null && role != null}
-     *
      * @throws NullPointerException if {@code email != null || password != null || role != null}
+     * @post new account has been registered
      */
     public void register(String email, String password, String role) throws NullPointerException {
+        // Precondition testing
+        // Email precondition test
         if (email == null) {
             throw new NullPointerException("RegistrationData.signIn.pre violated: email == null");
         }
 
+        // Password precondition test
         if (password == null) {
             throw new NullPointerException("RegistrationData.signIn.pre violated: password == null");
         }
 
+        // Role precondition test
         if (role == null) {
             throw new NullPointerException("RegistrationData.signIn.pre violated: role == null");
         }
 
+        // Variables
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
         // Create account
         mAuth.createUserWithEmailAndPassword(email, password)
-           .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-               @Override
-               public void onComplete(@NonNull Task<AuthResult> task) {
-                   if (task.isSuccessful()) { // Client has been registered successfully
-                       // Log success
-                       Log.d(TAG, "signUpWithEmail:success");
-                       // Variables
-                       FirebaseUser user = mAuth.getCurrentUser();
-                       String uid = user.getUid();
-                       Map<String, Object> userEntry = createNewUserEntry(role);
+           .addOnCompleteListener(task -> {
+               if (task.isSuccessful()) { // Registration succeeded
+                   // Log success
+                   Log.d(TAG, "signUpWithEmail:success");
 
-                       // Add the userEntry to the database
-                       uploadUserEntry(uid, userEntry, role);
-                   } else { // Client has not been registered successfully
-                       // Log failure
-                       Log.w(TAG, "signUpWithEmail:failure", task.getException());
-                       receiver.registrationFail(); // Display error message
-                   }
+                   // Variables
+                   FirebaseUser user = mAuth.getCurrentUser();
+                   Map<String, Object> userEntry = createNewUserEntry(role);
+
+                   // Add the userEntry to the database
+                   uploadUserEntry(user, userEntry, role);
+               } else { // Registration failed
+                   // Log failure
+                   Log.w(TAG, "signUpWithEmail:failure", task.getException());
+                   receiver.registrationDatabaseFail(); // Propagate database-failure
                }
            });
     }
@@ -102,28 +96,33 @@ public class RegistrationData {
     /**
      * Uploads the given {@code userEntry}.
      *
-     * @param uid uid of the user for which the userEntry is being uploaded
+     * @param user user for which the userEntry is being uploaded
      * @param userEntry entry that is going to be uploaded
      * @param role role of the user
+     * @pre {@code user != null}
+     * @throws NullPointerException if {@code user == null}
+     * @post userEntry has been uploaded
      */
-    @NonNull
-    private void uploadUserEntry(String uid, Map<String, Object> userEntry, String role) {
-        db.collection("users").document(uid)
+    private void uploadUserEntry(FirebaseUser user, Map<String, Object> userEntry, String role) throws NullPointerException {
+        // Precondition testing
+        // User precondition test
+        if (user == null) {
+            throw new NullPointerException("RegistrationData.uploadUserEntry.pre violated: user == null");
+        }
+
+        // Attempt to upload the userEntry
+        FirebaseFirestore.getInstance()
+            .collection("users").document(user.getUid())
             .set(userEntry)
-            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    Log.d(TAG, "userEntryUpload:success");
-                    receiver.registrationSuccess(role);
-                }
+            .addOnSuccessListener(aVoid -> { // Upload succeeded
+                // Log success
+                Log.d(TAG, "userEntryUpload:success");
+                receiver.registrationSuccess(role); // Propagate success signal
             })
-            .addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    // Log failure
-                    Log.e(TAG, "userEntryUpload:failure", e);
-                    receiver.registrationFail(); // Display error message
-                }
+            .addOnFailureListener(e -> { // Upload failed
+                // Log failure
+                Log.e(TAG, "userEntryUpload:failure", e);
+                receiver.registrationDatabaseFail(); // Propagate database-failure signal
             });
     }
 
@@ -131,18 +130,12 @@ public class RegistrationData {
      * Creates a new {@code userEntry} HashMap using the given {@code role}.
      *
      * @param role role of the user for which the userEntry is generated
-     *
      * @pre {@code role.equals("Card Collector") ^ role.equals(Card Creator)}
-     *
-     * @throws NullPointerException if {@code role == null}
-     * @throws IllegalArgumentException if {@code !role.equals("Card Collector") && !role.equals("Card Creator")}
+     * @throws IllegalArgumentException if {@code !(role.equals("Card Collector") ^ role.equals("Card Creator"))}
+     * @return HashMap with the appropriate user characteristics for Firestore
      */
     @NonNull
     private Map<String, Object> createNewUserEntry(String role) throws NullPointerException, IllegalArgumentException {
-        if (role == null) {
-            throw new NullPointerException("RegistrationData.createNewUserEntry.pre violated: role == null");
-        }
-
         // Variables
         Map<String, Object> userEntry = new HashMap<>();
 
@@ -151,8 +144,8 @@ public class RegistrationData {
 
         if (role.equals("Card Collector")) {
             userEntry.put("tradesmade", 0); // Mandatory Card Collector Statistic
-        } else if (!role.equals("Card Creator")) {
-            throw new IllegalArgumentException("RegistrationData.createNewUserEntry.pre violated: !role.equals('Card Collector') && !role.equals('Card Creator')");
+        } else if (!role.equals("Card Creator")) { // Role precondition test
+            throw new IllegalArgumentException("RegistrationData.createNewUserEntry.pre violated: role == " + role);
         }
 
         return userEntry;
