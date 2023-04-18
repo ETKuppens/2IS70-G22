@@ -36,22 +36,22 @@ public class RegistrationState implements RegistrationReceiver {
     }
 
     /**
-     * Passes registration requests using {@code email}, {@code password},
+     * Passes registration requests using {@code emailAddress}, {@code password},
      * and {@code role}.
      *
-     * @param email email to be registered with
+     * @param emailAddress emailAddress to be registered with
      * @param password password to register with
      * @param role role to register with
      * @throws IllegalArgumentException if {@code !(role.equals("Card Creator") ^ role.equals("Card Collector"))}
-     * @throws NullPointerException if {@code email == null && password == null && role == null}
-     * @pre {@code email != null && password != null && (role.equals('Card Creator') ^ role.equals('Card Collector'))}
+     * @throws NullPointerException if {@code emailAddress == null && password == null && role == null}
+     * @pre {@code emailAddress != null && password != null && (role.equals('Card Creator') ^ role.equals('Card Collector'))}
      * @post parameters have been passed for registration
      */
-    public void register(String email, String password, String confirm, String role) throws IllegalArgumentException {
+    public void register(String emailAddress, String password, String confirm, String role) throws IllegalArgumentException {
         // Precondition testing
         // Email precondition test
-        if (email == null) {
-            throw new NullPointerException("RegistrationState.register.pre violated: email == null");
+        if (emailAddress == null) {
+            throw new NullPointerException("RegistrationState.register.pre violated: emailAddress == null");
         }
 
         // Password precondition test
@@ -70,24 +70,33 @@ public class RegistrationState implements RegistrationReceiver {
         
         // Credential testing
         // Variables
+        final boolean isProperEmail = emailAddress != null && !emailAddress.isEmpty();
         final boolean hasAdequatePasswordLength = password.length() >= PASSWORD_LENGTH;
         final boolean isPasswordMatching = password.equals(confirm);
+
+        // Check if the emailAddress is not empty or null.
+        if (!isProperEmail) {
+            activity.registrationEmailStringFail();
+            return;
+        }
 
         // Check if the password is long enough
         if (!hasAdequatePasswordLength) {
             activity.registrationPasswordLengthFail();
+            return;
         }
                 
         // Check if the password has been properly re-typed.
         if (!isPasswordMatching) {
             activity.registrationConfirmationFail();
+            return;
         }
 
         // Send registration request
         // Variables
         final RegistrationData data = new RegistrationData(this);
 
-        data.register(email, password, role); // Passes registration request
+        data.register(emailAddress, password, role); // Passes registration request
     }
 
     @Override

@@ -146,4 +146,12 @@ public class RegistrationActivity extends AppCompatActivity {
         // Display password-failure message
         Toast.makeText(this, "Password length must be at least " + PASSWORD_LENGTH + " characters", Toast.LENGTH_LONG).show();
     }
+
+    /**
+     * Takes appropriate action upon the email-string-failure of the registration.
+     */
+    public void registrationEmailStringFail() {
+        // Display email-string-failure message
+        Toast.makeText(this, "Fill in an email", Toast.LENGTH_LONG).show();
+    }
 }
