@@ -20,6 +20,11 @@ import com.example.cardhub.user_profile.ProfileActivity;
 
 /**
  * Displays the Login View, and manages interactions.
+ *
+ * @author  Vladislav Budiak, Sevket Tulgar Dinc, Etienne Kuppens,
+ *          Aqiel Oostenbrug, Marios Papalouka, Rijkman Pilaar
+ * @groupname Group 22
+ * @date 16-04-2023
  */
 public class RegistrationActivity extends AppCompatActivity {
     // Constants
