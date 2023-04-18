@@ -21,9 +21,9 @@ public interface LoginReceiver {
     void signInSuccess(String role);
 
     /**
-     * Propagates sign-in-failure signals.
+     * Propagates sign-in-database-failure signals.
      *
-     * @post sign-in-failure function has been called
+     * @post sign-in-database-failure function has been called
      */
     void signInDatabaseFail();
 }

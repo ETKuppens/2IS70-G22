@@ -22,7 +22,7 @@ public interface RegistrationReceiver {
     void registrationSuccess(String role) throws NullPointerException, IllegalArgumentException;
 
     /**
-     * Propagates registration-failure signals.
+     * Propagates database-registration-failure signals.
      *
      * @post database-registration-failure function has been called
      */

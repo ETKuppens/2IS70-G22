@@ -78,7 +78,7 @@ public class LoginData {
                     sendRole(user); // Get user role
                 } else { // Sign in attempt was unsuccessful
                     Log.w(TAG, "signInWithEmail:failure", task.getException()); // Log failure
-                    receiver.signInDatabaseFail(); // Propagate failure signal
+                    receiver.signInDatabaseFail(); // Propagate database-failure signal
                 }
             });
     }
@@ -114,11 +114,11 @@ public class LoginData {
                         receiver.signInSuccess(role); // Propagate success signal
                     } else { // User document could not be found or is empty
                         Log.w(TAG, "sendRole:document-failure", task.getException()); // Log failure
-                        receiver.signInDatabaseFail(); // Propagate document-failure signal
+                        receiver.signInDatabaseFail(); // Propagate database-failure signal
                     }
                 } else { // Database read attempt failed
                     Log.w(TAG, "sendRole:database-read-failure", task.getException()); // Log failure
-                    receiver.signInDatabaseFail(); // Propagate database-read-failure signal
+                    receiver.signInDatabaseFail(); // Propagate database-failure signal
                 }
             });
     }
