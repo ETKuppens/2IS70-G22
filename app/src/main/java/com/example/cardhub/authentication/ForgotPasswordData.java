@@ -1,11 +1,6 @@
 package com.example.cardhub.authentication;
 
 import android.util.Log;
-
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 /**
@@ -63,16 +58,13 @@ public class ForgotPasswordData {
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
         // Attempt to send a password-reset request
-        mAuth.sendPasswordResetEmail(emailAddress).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) { // Email was send successfully
-                    Log.d(TAG, "sendPasswordResetEmail:success"); // Log success
-                    receiver.sendForgotPasswordEmailSuccess(); // Propagate success signal
-                } else { // Email was not send successfully
-                    Log.w(TAG, "sendPasswordResetEmail:failure", task.getException()); // Log failure
-                    receiver.sendForgotPasswordEmailFailure(); // Propagate failure signal
-                }
+        mAuth.sendPasswordResetEmail(emailAddress).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) { // Email was send successfully
+                Log.d(TAG, "sendPasswordResetEmail:success"); // Log success
+                receiver.sendForgotPasswordEmailSuccess(); // Propagate success signal
+            } else { // Email was not send successfully
+                Log.w(TAG, "sendPasswordResetEmail:failure", task.getException()); // Log failure
+                receiver.sendForgotPasswordEmailFailure(); // Propagate failure signal
             }
         });
     }
