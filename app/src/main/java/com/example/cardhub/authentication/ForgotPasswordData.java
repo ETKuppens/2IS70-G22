@@ -59,7 +59,7 @@ public class ForgotPasswordData {
             throw new NullPointerException("ForgotPasswordData.ForgotPasswordData.pre violated: emailAddress == null");
         }
 
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
         // Attempt to send a password-reset request
         mAuth.sendPasswordResetEmail(emailAddress).addOnCompleteListener(new OnCompleteListener<Void>() {

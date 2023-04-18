@@ -71,7 +71,7 @@ public class RegistrationData {
         }
 
         // Variables
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
         // Create account
         mAuth.createUserWithEmailAndPassword(email, password)
