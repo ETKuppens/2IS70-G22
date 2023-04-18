@@ -84,7 +84,9 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
         lid = getLobbyID();
         clientid = getClientID();
 
-        state = new TradeModeState(this, lid, clientid);
+        TradingSessionRepository repo = new TradingSessionRepositoryImpl(lid, clientid);
+        state = new TradeModeState(this, repo, clientid);
+        repo.setReceiver(state);
         mAuth = FirebaseAuth.getInstance();
 
         otherPlayerProposedCardsRecyclerView = findViewById(R.id.ProposedCardsOtherPlayer);

@@ -10,6 +10,13 @@ import java.util.Set;
  */
 public interface TradingSessionRepository {
     /**
+     * Set the receiver this TradingSessionRepository should be interacting with.
+     * @param receiver the TradingSessionRepositoryReceiver that this TradingSessionRepository
+     *                 should be interacting with.
+     */
+    void setReceiver(TradingSessionRepositoryReceiver receiver);
+
+    /**
      * Request the server to cancel the trading session.
      *
      * @param clientID the ID of the application instance that will be used by the server to

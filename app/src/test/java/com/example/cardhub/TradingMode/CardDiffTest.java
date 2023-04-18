@@ -55,6 +55,7 @@ public class CardDiffTest {
                                CardDiff.DiffOption expectedDiffOption) {
         Map<String, Object> serialization = cardDiffToTest.serialize();
 
+        @SuppressWarnings("unchecked")
         Map<String, Object> trueCardSerialized = (Map<String, Object>)serialization.get("card");
         CardDiff.DiffOption trueDiffOption = (CardDiff.DiffOption)serialization.get("diff");
 
