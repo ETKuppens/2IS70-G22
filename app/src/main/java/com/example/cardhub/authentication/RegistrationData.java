@@ -44,20 +44,20 @@ public class RegistrationData {
     }
 
     /**
-     * Registers an account using the given {@code email}, {@code password}, and {@code role}.
+     * Registers an account using the given {@code emailAddress}, {@code password}, and {@code role}.
      *
-     * @param email email to register with
+     * @param emailAddress emailAddress to register with
      * @param password password to register with
      * @param role role to register with
-     * @pre {@code email != null && password != null && role != null}
-     * @throws NullPointerException if {@code email != null || password != null || role != null}
+     * @pre {@code emailAddress != null && password != null && role != null}
+     * @throws NullPointerException if {@code emailAddress != null || password != null || role != null}
      * @post new account has been registered
      */
-    public void register(String email, String password, String role) throws NullPointerException {
+    public void register(String emailAddress, String password, String role) throws NullPointerException {
         // Precondition testing
         // Email precondition test
-        if (email == null) {
-            throw new NullPointerException("RegistrationData.signIn.pre violated: email == null");
+        if (emailAddress == null) {
+            throw new NullPointerException("RegistrationData.signIn.pre violated: emailAddress == null");
         }
 
         // Password precondition test
@@ -74,7 +74,7 @@ public class RegistrationData {
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
         // Attempt to create an account
-        mAuth.createUserWithEmailAndPassword(email, password)
+        mAuth.createUserWithEmailAndPassword(emailAddress, password)
            .addOnCompleteListener(task -> {
                if (task.isSuccessful()) { // Registration succeeded
                    Log.d(TAG, "signUpWithEmail:success"); // Log success
