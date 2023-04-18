@@ -29,23 +29,23 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         ForgotPasswordState state = new ForgotPasswordState(this);
 
         // Instantiate layout components
-        EditText et_forgotpassword = findViewById(R.id.editText_email_forgot);
-        Button btn_forgotpassword = findViewById(R.id.button_email_forgotten);
-        TextView tv_loginreferral = findViewById(R.id.textView_loginreferral_forgot);
+        EditText et_forgot_password = findViewById(R.id.editText_email_forgot);
+        Button btn_forgot_password = findViewById(R.id.button_email_forgotten);
+        TextView tv_login_referral = findViewById(R.id.textView_loginreferral_forgot);
 
         // Reset pressed
-        btn_forgotpassword.setOnClickListener(new View.OnClickListener() {
+        btn_forgot_password.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Variables
-                String emailAddress = et_forgotpassword.getText().toString();
+                String emailAddress = et_forgot_password.getText().toString();
 
                 state.sendForgotPasswordEmail(emailAddress); // Pass password reset request
             }
         });
 
         // Login link was clicked
-        tv_loginreferral.setOnClickListener(new View.OnClickListener() {
+        tv_login_referral.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
