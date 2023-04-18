@@ -2,7 +2,6 @@ package com.example.cardhub.authentication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -34,23 +33,15 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         TextView tv_login_referral = findViewById(R.id.textView_loginreferral_forgot);
 
         // Reset pressed
-        btn_forgot_password.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Variables
-                String emailAddress = et_forgot_password.getText().toString();
+        btn_forgot_password.setOnClickListener(view -> {
+            // Variables
+            String emailAddress = et_forgot_password.getText().toString();
 
-                state.sendForgotPasswordEmail(emailAddress); // Pass password reset request
-            }
+            state.sendForgotPasswordEmail(emailAddress); // Pass password reset request
         });
 
         // Login link was clicked
-        tv_login_referral.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-            }
-        });
+        tv_login_referral.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), LoginActivity.class)));
     }
 
     /**
