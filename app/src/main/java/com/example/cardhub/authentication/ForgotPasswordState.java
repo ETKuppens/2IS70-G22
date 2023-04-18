@@ -39,8 +39,8 @@ public class ForgotPasswordState implements ForgotPasswordReceiver {
     }
 
     @Override
-    public void sendForgotPasswordEmailFailure() {
-        activity.sendForgotPasswordEmailFailure();
+    public void sendForgotPasswordEmailDatabaseFailure() {
+        activity.sendForgotPasswordEmailDatabaseFailure();
     }
 
     /**
@@ -56,6 +56,16 @@ public class ForgotPasswordState implements ForgotPasswordReceiver {
         // EmailAddress precondition test
         if (emailAddress == null) {
             throw new NullPointerException("ForgotPasswordState.sendForgotPasswordEmail.pre violated: emailAddress == null");
+        }
+
+        // Credential testing
+        // Variables
+        final boolean isProperEmail = !emailAddress.isEmpty();
+
+        // Check if the emailAddress is not empty or null.
+        if (!isProperEmail) {
+            activity.registrationEmailStringFail();
+            return;
         }
 
         // Send password-reset-email request

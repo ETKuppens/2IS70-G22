@@ -17,9 +17,9 @@ public interface ForgotPasswordReceiver {
     void sendForgotPasswordEmailSuccess();
 
     /**
-     * Propagates send-password-reset-mail-failure signals.
+     * Propagates send-password-reset-mail-database-failure signals.
      *
-     * @post password-reset-mail-failure callback function has been called
+     * @post password-reset-mail-database-failure callback function has been called
      */
-    void sendForgotPasswordEmailFailure();
+    void sendForgotPasswordEmailDatabaseFailure();
 }

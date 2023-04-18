@@ -63,10 +63,18 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     }
 
     /**
-     * Takes appropriate action upon the failure of sending the password-reset-email.
+     * Takes appropriate action upon the database-failure of sending the password-reset-email.
      */
-    public void sendForgotPasswordEmailFailure() {
+    public void sendForgotPasswordEmailDatabaseFailure() {
         // Display failure message
-        Toast.makeText(ForgotPasswordActivity.this, "Reset request failed", Toast.LENGTH_LONG).show();
+        Toast.makeText(ForgotPasswordActivity.this, "Failed to send a password reset request", Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * Takes appropriate action upon the email-string-failure of sending the password-reset-email.
+     */
+    public void registrationEmailStringFail() {
+        // Display email-string-failure message
+        Toast.makeText(this, "Fill in an email", Toast.LENGTH_LONG).show();
     }
 }

@@ -63,7 +63,7 @@ public class ForgotPasswordData {
                 receiver.sendForgotPasswordEmailSuccess(); // Propagate success signal
             } else { // Email was not send successfully
                 Log.w(TAG, "sendPasswordResetEmail:failure", task.getException()); // Log failure
-                receiver.sendForgotPasswordEmailFailure(); // Propagate failure signal
+                receiver.sendForgotPasswordEmailDatabaseFailure(); // Propagate database-failure signal
             }
         });
     }
