@@ -43,21 +43,42 @@ public class CardCreationState {
         repository.publishCard(sendableCard);
     }
 
+    /**
+     * Sets the image for the card being currently created.
+     * @param newUri the Uri to the image of the new card
+     */
     public void setSelectedImage(Uri newUri) {
         this.selectedImageUri = newUri;
     }
+
+    /**
+     * Checks whether the card being currently created has a specified image.
+     * @return true when the card has a specified image
+     */
     public boolean hasSelectedImage() {
         return selectedImageUri != null;
     }
 
+    /**
+     * Sets the name of the card being currently created.
+     * @param currentName the new name of the card
+     */
     public void setCurrentName(String currentName) {
         this.currentName = currentName;
     }
 
+    /**
+     * Sets the description of the card being currently created.
+     * @param currentDescription the new description of the card
+     */
     public void setCurrentDescription(String currentDescription) {
         this.currentDescription = currentDescription;
     }
 
+    /**
+     * Sets the rarity of the card being currently created.
+     * @param rarity the new rarity of the card.
+     */
     public void setRarity(Card.Rarity rarity) {
         this.rarity = rarity;
     }
