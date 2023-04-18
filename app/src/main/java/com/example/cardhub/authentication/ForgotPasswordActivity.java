@@ -32,7 +32,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         // Sign-in variables
         ForgotPasswordState state = new ForgotPasswordState(this);
 
-        // Forgot password link was clicked
+        // Forgot password button was pressed
         btn_forgot_password.setOnClickListener(view -> {
             // Variables
             String emailAddress = et_forgot_password.getText().toString();
