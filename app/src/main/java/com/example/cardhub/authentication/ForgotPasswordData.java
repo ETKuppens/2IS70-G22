@@ -21,7 +21,7 @@ public class ForgotPasswordData {
     public static final String TAG = "ForgotPasswordData";
 
     // Variables
-    private ForgotPasswordReceiver receiver;
+    private final ForgotPasswordReceiver receiver;
 
     /**
      * Constructs a new ForgotPasswordData instance using the given {@code receiver}
