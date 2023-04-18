@@ -28,8 +28,8 @@ import com.example.cardhub.user_profile.ProfileActivity;
  */
 public class RegistrationActivity extends AppCompatActivity {
     // Constants
-    private static final  Class<?> START_ACTIVITY_COLLECTOR = ProfileActivity.class;
-    private static final  Class<?> START_ACTIVITY_CREATOR = CreatorProfileActivity.class;
+    static final  Class<?> START_ACTIVITY_COLLECTOR = ProfileActivity.class;
+    static final  Class<?> START_ACTIVITY_CREATOR = CreatorProfileActivity.class;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +97,7 @@ public class RegistrationActivity extends AppCompatActivity {
         // Precondition testing
         // Cls testing
         if (cls == null) {
-            throw new NullPointerException("RegistrationActivity.register.pre violated: cls == null");
+            throw new NullPointerException("RegistrationActivity.openStartActivity.pre violated: cls == null");
         }
 
         // Variables

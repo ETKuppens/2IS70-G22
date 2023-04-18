@@ -1,5 +1,8 @@
 package com.example.cardhub.authentication;
 
+import static com.example.cardhub.authentication.RegistrationActivity.START_ACTIVITY_COLLECTOR;
+import static com.example.cardhub.authentication.RegistrationActivity.START_ACTIVITY_CREATOR;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -39,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
             String email = et_email.getText().toString();
             String password = et_password.getText().toString();
 
-            state.signIn(email, password); // Pass sign in request
+            state.signIn(email, password); // Pass sign-in request
         });
 
         // Registration link was clicked
@@ -58,15 +61,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        state.checkCurrentUser(); // Pass user check
-    }
-
-    /**
-     * Takes appropriate action upon succeeding with signing-in.
-     */
-    public void signInSuccess() {
-        // Display success message
-        Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
+        state.signInSignedInUsers(); // Pass session-check request
     }
 
     /**
@@ -74,6 +69,47 @@ public class LoginActivity extends AppCompatActivity {
      */
     public void signInFail() {
         // Display failure message
-        Toast.makeText(this, "Login failed", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Failed to sign-in", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Takes appropriate action upon signing-in as a Card Collector.
+     */
+    public void signInSuccessCollector() {
+        openStartActivity(START_ACTIVITY_COLLECTOR); // Open the appropriate activity
+        // Display collector-success message
+        Toast.makeText(this, "Signed-in as Card Collector", Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * Takes appropriate action upon signing-in as a Card Creator.
+     */
+    public void signInSuccessCreator() {
+        openStartActivity(START_ACTIVITY_CREATOR); // Open the appropriate activity
+        // Display creator-success message
+        Toast.makeText(this, "Signed-in as Card Creator", Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * Open the correct start activity for the user depending on the {@code role}.
+     *
+     * @param cls component class that is used to decide which activity to open
+     * @throws NullPointerException if {@code cls == null}
+     * @pre {@code cls != null}
+     * @post the given {@code cls} specified activity has been opened and the activity memory has been wiped
+     */
+    private void openStartActivity(Class<?> cls) throws NullPointerException {
+        // Precondition testing
+        // Cls testing
+        if (cls == null) {
+            throw new NullPointerException("LoginActivity.openStartActivity.pre violated: cls == null");
+        }
+
+        // Variables
+        Intent intent = new Intent(this, cls);
+
+        // Empty activity memory
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent); // Open activity
     }
 }

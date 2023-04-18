@@ -53,7 +53,7 @@ public class ForgotPasswordState implements ForgotPasswordReceiver {
      */
     public void sendForgotPasswordEmail(String emailAddress) {
         // Precondition testing
-        // Email precondition test
+        // EmailAddress precondition test
         if (emailAddress == null) {
             throw new NullPointerException("ForgotPasswordState.sendForgotPasswordEmail.pre violated: emailAddress == null");
         }

@@ -1,18 +1,13 @@
 package com.example.cardhub.authentication;
 
 import android.util.Log;
-import androidx.annotation.NonNull;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
- * Data Design Pattern implementation for the signing in of users.
+ * Data Design Pattern implementation for signing in users.
  *
  * @author  Vladislav Budiak, Sevket Tulgar Dinc, Etienne Kuppens,
  *          Aqiel Oostenbrug, Marios Papalouka, Rijkman Pilaar
@@ -24,22 +19,20 @@ public class LoginData {
     public static final String TAG = "LoginData";
 
     // Variables
-    private static FirebaseAuth mAuth = FirebaseAuth.getInstance(); // Firebase authentication instance
-    private static FirebaseFirestore db = FirebaseFirestore.getInstance();; // Firebase firestore instance
-    private FirebaseUser user; // Firebase user instance
-    private LoginReceiver receiver; // Receiver to be used after task execution
+    private final LoginReceiver receiver;
 
     /**
      * Constructs a new LoginData instance using the given {@code receiver}
      * instance.
      *
      * @param receiver given receiver instance
-     *
      * @pre {@code receiver != null}
-     *
      * @throws NullPointerException if {@code receiver == null}
+     * @post instance is initialized
      */
     public LoginData(LoginReceiver receiver) throws NullPointerException {
+        // Precondition testing
+        // Receiver precondition test
         if (receiver == null) {
             throw new NullPointerException(
                     "LoginData.LoginData.pre violated: receiver == null"
@@ -50,116 +43,98 @@ public class LoginData {
     }
 
     /**
-     * Signs in the client using the given {@code email} and {@code password}.
+     * Signs in the client using the given {@code emailAddress} and {@code password}.
      *
-     * @pre {@code email != null && password != null}
-     *
-     * @param email email used to sign in
+     * @pre {@code emailAddress != null && password != null}
+     * @param emailAddress emailAddress used to sign in
      * @param password password used to sign in
-     *
-     * @throws NullPointerException if {@code email == null || password == null}
+     * @throws NullPointerException if {@code emailAddress == null || password == null}
+     * @post an account has been signed-in to
      */
-    public void signIn(String email, String password) throws NullPointerException {
-        if (email == null) {
-            throw new NullPointerException("LoginData.signIn.pre violated: email == null");
+    public void signIn(String emailAddress, String password) throws NullPointerException {
+        // Precondition testing
+        // Email precondition test
+        if (emailAddress == null) {
+            throw new NullPointerException("LoginData.signIn.pre violated: emailAddress == null");
         }
 
+        // Password precondition test
         if (password == null) {
             throw new NullPointerException("LoginData.signIn.pre violated: password == null");
         }
 
-        // Attempt to sign in using the given credential
-        mAuth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    // Authentication request has been completed
-                    if (task.isSuccessful()) {  // Sign in attempt was
-                                                // successful
-                        // Log success
-                        Log.d(TAG, "signInWithEmail:success");
+        // Variables
+        final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-                        user = mAuth.getCurrentUser(); // Update user
+        // Attempt to sign in
+        mAuth.signInWithEmailAndPassword(emailAddress, password)
+            .addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {  // Signed-in successfully
+                    Log.d(TAG, "signInWithEmail:success"); // Log success
 
-                        receiver.signInSuccess(user); // Update UI
-                    } else { // Sign in attempt was unsuccessful
-                        Log.w(TAG, "signInWithEmail:failure",
-                                task.getException()); // Log failure
-                        receiver.signInFail(); // Display error message
-                    }
+                    // Variables
+                    FirebaseUser user = mAuth.getCurrentUser();
+
+                    getRole(user); // Get user role
+                } else { // Sign in attempt was unsuccessful
+                    Log.w(TAG, "signInWithEmail:failure", task.getException()); // Log failure
+                    receiver.signInFail(); // Propagate failure signal
                 }
             });
     }
 
     /**
-     * Retrieves the user account that has been logged in.
+     * Retrieves the role of the given {@code user}.
      *
-     * @pre {@code user != null}
-     *
+     * @param user user which has been signed-in
      * @throws NullPointerException if {@code user == null}
+     * @pre {@code role != null}
+     * @post role has retrieved
      */
-    public void checkCurrentUser() throws NullPointerException {
+    private void getRole(FirebaseUser user) throws NullPointerException {
+        // Precondition testing
+        // User precondition test
         if (user == null) {
-            throw new NullPointerException("LoginData.checkCurrentUser.pre violated: user == null");
+            throw new NullPointerException("LoginData.getRole.pre violated: user == null");
         }
 
-        receiver.receiveCurrentUser(user); // State callback
-    }
-
-    /**
-     * Retrieves the role of the {@code user}.
-     *
-     * @param currentUser current user account that has been logged in
-     *
-     * @pre {@code currentUser != null && currentUser in Firestore database}
-     *
-     * @throws NullPointerException if {@code currentUser == null}
-     * @throws IllegalArgumentException if {@code currentUser is not in Firestore
-     *                                      Database}
-     *
-     */
-    public void getUserRole(FirebaseUser currentUser) throws NullPointerException, IllegalArgumentException {
-        if (currentUser == null) {
-            throw new NullPointerException("LoginData.getUserRole.pre violated: currentUser == null");
-        }
-
-        // Local variables
-        String uid = currentUser.getUid();
-        DocumentReference docRef = db.collection("users").document(uid);
-
-        // Attempt to get user info
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                // Read request has been completed
-                if (task.isSuccessful()) { // Read attempt was successful
-                    DocumentSnapshot document = task.getResult();
+        // Attempt to retrieve role
+        FirebaseFirestore.getInstance()
+            .collection("users").document(user.getUid())
+            .get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) { // Database read attempt was successful
+                    // Variables
+                    final DocumentSnapshot document = task.getResult();
 
                     if (document.exists()) { // User document was found
                         Log.d(TAG, "getUserRole:success"); // Log success
 
-                        // Read role
-                        String role = (String) document.get("role");
+                        final String role = (String) document.get("role"); // Read role
 
-                        receiver.userRoleCallback(role); // Update UI
-                    } else { // User document could not be found or empty
-                        // Initialize exception
-                        IllegalArgumentException exception =
-                                new IllegalArgumentException(
-                                        "LoginData.getUserRole.pre violated:" +
-                                                "currentUser not in database"
-                                );
-
-                        // Log failure
-                        Log.e(TAG, "getUserRole:failure-", exception);
-
-                        throw exception;
+                        receiver.signInSuccess(role); // Propagate success signal
+                    } else { // User document could not be found or is empty
+                        Log.w(TAG, "sendRole:document-failure", task.getException()); // Log failure
+                        receiver.signInFail(); // Propagate document-failure signal
                     }
-                } else { // Read attempt failed
-                    // Log failure
-                    Log.w(TAG, "getUserRole:failure+", task.getException());
+                } else { // Database read attempt failed
+                    Log.w(TAG, "sendRole:database-read-failure", task.getException()); // Log failure
+                    receiver.signInFail(); // Propagate database-read-failure signal
                 }
-            }
-        });
+            });
+    }
+
+    /**
+     * Signs in users which are in an existing session.
+     *
+     * @post users which are in an existing session are signed in
+     */
+    public void signInSignedInUsers() {
+        // Variables
+        final FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        final FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if (currentUser != null) { // User is still signed in
+            getRole(currentUser); // Get user role
+        }
     }
 }

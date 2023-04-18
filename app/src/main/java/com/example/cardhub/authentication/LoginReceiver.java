@@ -1,10 +1,7 @@
 package com.example.cardhub.authentication;
 
-import com.google.firebase.auth.FirebaseUser;
-
 /**
- * Interface for the State Design Pattern implementation of the signing in
- * of users.
+ * Interface for the State Design Pattern implementation for signing in users.
  *
  * @author  Vladislav Budiak, Sevket Tulgar Dinc, Etienne Kuppens,
  *          Aqiel Oostenbrug, Marios Papalouka, Rijkman Pilaar
@@ -13,30 +10,20 @@ import com.google.firebase.auth.FirebaseUser;
  */
 public interface LoginReceiver {
     /**
-     * Takes appropriate action upon the successful signing in of the
-     * {@code user}.
+     * Propagates sign-in-success signals to the function associated with {@code role}.
      *
-     * @param user user account that has been signed in to successfully
+     * @param role role of the the user that has been successfully registered
+     * @pre {@code (role.equals("Card Collector") ^ role.equals("Card Creator"))}
+     * @throws NullPointerException if {@code role == null}
+     * @throws IllegalArgumentException if {@code !((role.equals("Card Collector") ^ role.equals("Card Creator"))))}
+     * @post correct registration-success callback function has been called
      */
-    public void signInSuccess(FirebaseUser user);
+    void signInSuccess(String role);
 
     /**
-     * Takes appropriate action upon the unsuccessful signing in of the
-     * {@code user}.
-     */
-    public void signInFail();
-
-    /**
-     * Launches the appropriate start activity for the given {@code role}.
+     * Propagates sign-in-failure signals.
      *
-     * @param role role of the user
+     * @post sign-in-failure function has been called
      */
-    public void userRoleCallback(String role);
-
-    /**
-     * Receives the {@code user} account upon signing in.
-     *
-     * @param user given user account
-     */
-    public void receiveCurrentUser(FirebaseUser user);
+    void signInFail();
 }
