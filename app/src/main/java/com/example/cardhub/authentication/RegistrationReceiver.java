@@ -17,7 +17,7 @@ public interface RegistrationReceiver {
      * @pre {@code (role.equals("Card Collector") ^ role.equals("Card Creator"))}
      * @throws NullPointerException if {@code role == null}
      * @throws IllegalArgumentException if {@code !((role.equals("Card Collector") ^ role.equals("Card Creator"))))}
-     * @post correct registration-success callback function has been called
+     * @post registration-success callback function has been called
      */
     void registrationSuccess(String role) throws NullPointerException, IllegalArgumentException;
 

@@ -11,12 +11,16 @@ package com.example.cardhub.authentication;
  */
 public interface ForgotPasswordReceiver {
     /**
-     * Propagates send-reset-email-success signal.
+     * Propagates send-password-reset-mail-success signals.
+     *
+     * @post password-reset-mail-success callback function has been called
      */
-    public void sendForgotPasswordEmailSuccess();
+    void sendForgotPasswordEmailSuccess();
 
     /**
-     * Propagates send-reset-email-failure signal.
+     * Propagates send-password-reset-mail-failure signals.
+     *
+     * @post password-reset-mail-failure callback function has been called
      */
-    public void sendForgotPasswordEmailFailure();
+    void sendForgotPasswordEmailFailure();
 }
