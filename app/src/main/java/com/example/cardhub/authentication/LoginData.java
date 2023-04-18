@@ -75,7 +75,7 @@ public class LoginData {
                     // Variables
                     FirebaseUser user = mAuth.getCurrentUser();
 
-                    getRole(user); // Get user role
+                    sendRole(user); // Get user role
                 } else { // Sign in attempt was unsuccessful
                     Log.w(TAG, "signInWithEmail:failure", task.getException()); // Log failure
                     receiver.signInFail(); // Propagate failure signal
@@ -84,18 +84,18 @@ public class LoginData {
     }
 
     /**
-     * Retrieves the role of the given {@code user}.
+     * Propagates the role of the given {@code user}.
      *
      * @param user user which has been signed-in
      * @throws NullPointerException if {@code user == null}
      * @pre {@code role != null}
      * @post role has retrieved
      */
-    private void getRole(FirebaseUser user) throws NullPointerException {
+    private void sendRole(FirebaseUser user) throws NullPointerException {
         // Precondition testing
         // User precondition test
         if (user == null) {
-            throw new NullPointerException("LoginData.getRole.pre violated: user == null");
+            throw new NullPointerException("LoginData.sendRole.pre violated: user == null");
         }
 
         // Attempt to retrieve role
@@ -134,7 +134,7 @@ public class LoginData {
         final FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if (currentUser != null) { // User is still signed in
-            getRole(currentUser); // Get user role
+            sendRole(currentUser); // Get user role
         }
     }
 }
