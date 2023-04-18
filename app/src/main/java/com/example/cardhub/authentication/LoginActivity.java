@@ -55,36 +55,22 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-
         state.checkCurrentUser(); // Pass user check
-    }
-
-    /**
-     * Displays the given {@code msg} as a toast.
-     *
-     * @param msg message to be displayed on the toast
-     * @pre {@code msg != null}
-     * @throws NullPointerException if {@code msg == null}
-     */
-    private void makeToast(String msg) {
-        if (msg == null) {
-            throw new NullPointerException("LoginActivity.makeToast.pre violated: msg == null");
-        }
-
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     /**
      * Displays a success toast.
      */
     public void signInSuccess() {
-        makeToast( "Login successful");
+        // Display success message
+        Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
     }
 
     /**
      * Displays a failure toast.
      */
     public void signInFail() {
-        makeToast( "Login Fail");
+        // Display failure message
+        Toast.makeText(this, "Login failed", Toast.LENGTH_SHORT).show();
     }
 }
