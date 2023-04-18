@@ -147,12 +147,6 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         super.onCreate(savedInstanceState);
         setupNav();
 
-        state = new MapState(this);
-        mAuth = FirebaseAuth.getInstance();
-
-        state.requestPacks();
-
-
         // Construct a PlacesClient
         Places.initialize(getApplicationContext(), BuildConfig.MAPS_API_KEY);
         placesClient = Places.createClient(this);
@@ -164,6 +158,11 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        state = new MapState(this);
+        mAuth = FirebaseAuth.getInstance();
+
+        state.requestPacks();
 
     }
 
@@ -185,6 +184,10 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
      */
     @Override
     public void onMapReady(GoogleMap map) {
+        if (!locationPermissionGranted) {
+            // Prompt the user for permission.
+            getLocationPermission();
+        }
         this.map = map;
         // Use a custom info window adapter to handle multiple lines of text in the
         // info window contents.
@@ -221,9 +224,6 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
             }
         });
 
-        // Prompt the user for permission.
-        getLocationPermission();
-
         // Turn on the My Location layer and the related control on the map.
         updateLocationUI();
 
@@ -232,6 +232,10 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
     }
 
     public void addPointsOnTheMap() {
+        if (!locationPermissionGranted) {
+            // Prompt the user for permission.
+            getLocationPermission();
+        }
         if (!locationPermissionGranted) {
             return;
         }
@@ -362,6 +366,7 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
             locationPermissionGranted = false;
+            recreate();
         }
     }
 
@@ -461,8 +466,10 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
                     .position(defaultLocation)
                     .snippet(getString(R.string.default_info_snippet)));
 
-            // Prompt the user for permission.
-            getLocationPermission();
+            if (!locationPermissionGranted) {
+                // Prompt the user for permission.
+                getLocationPermission();
+            }
         }
     }
 
