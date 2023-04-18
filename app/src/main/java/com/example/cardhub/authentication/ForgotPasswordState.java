@@ -11,7 +11,7 @@ package com.example.cardhub.authentication;
  */
 public class ForgotPasswordState implements ForgotPasswordReceiver {
     // Variables
-    private ForgotPasswordActivity activity;
+    private final ForgotPasswordActivity activity;
 
     /**
      * Constructs a new ForgotPasswordState instance using the given {@code activity}
