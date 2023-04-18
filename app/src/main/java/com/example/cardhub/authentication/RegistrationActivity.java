@@ -3,6 +3,7 @@ package com.example.cardhub.authentication;
 import static com.example.cardhub.authentication.LoginActivity.START_ACTIVITY_COLLECTOR;
 import static com.example.cardhub.authentication.LoginActivity.START_ACTIVITY_CREATOR;
 import static com.example.cardhub.authentication.RegistrationState.PASSWORD_LENGTH;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
@@ -17,8 +18,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.text.HtmlCompat;
 import com.example.cardhub.R;
-import com.example.cardhub.user_profile.CreatorProfileActivity;
-import com.example.cardhub.user_profile.ProfileActivity;
 
 /**
  * Displays the Login View, and manages interactions.
