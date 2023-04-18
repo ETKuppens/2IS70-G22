@@ -45,7 +45,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     }
 
     /**
-     * Takes appropriate action upon the success of sending the password-reset-mail.
+     * Takes appropriate action upon the success of sending the password-reset-email.
      */
     public void sendForgotPasswordEmailSuccess() {
         // Start Login Activity
@@ -60,7 +60,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     }
 
     /**
-     * Takes appropriate action upon the failure of sending the password-reset-mail.
+     * Takes appropriate action upon the failure of sending the password-reset-email.
      */
     public void sendForgotPasswordEmailFailure() {
         // Display failure message
