@@ -41,7 +41,10 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         });
 
         // Login link was clicked
-        tv_login_referral.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), LoginActivity.class)));
+        tv_login_referral.setOnClickListener(view -> {
+            // Open Login View
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+        });
     }
 
     /**

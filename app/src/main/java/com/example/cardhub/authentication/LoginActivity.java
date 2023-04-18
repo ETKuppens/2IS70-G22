@@ -44,13 +44,13 @@ public class LoginActivity extends AppCompatActivity {
 
         // Registration link was clicked
         tv_register.setOnClickListener(view -> {
-            // Open RegistrationActivity
+            // Open Registration View
             startActivity(new Intent(getApplicationContext(), RegistrationActivity.class));
         });
 
         // Forgot password link was clicked
         tv_forgot.setOnClickListener(view -> {
-            // Open ForgotPasswordActivity
+            // Open ForgotPassword View
             startActivity(new Intent(getApplicationContext(), ForgotPasswordActivity.class));
         });
     }
