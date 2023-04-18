@@ -25,17 +25,17 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_forgot_password);
 
         // Instantiate layout components
-        EditText et_forgot_password = findViewById(R.id.editText_email_forgot);
-        Button btn_forgot_password = findViewById(R.id.button_email_forgotten);
-        TextView tv_login_referral = findViewById(R.id.textView_loginreferral_forgot);
+        final EditText et_forgot_password = findViewById(R.id.editText_email_forgot);
+        final Button btn_forgot_password = findViewById(R.id.button_email_forgotten);
+        final TextView tv_login_referral = findViewById(R.id.textView_loginreferral_forgot);
 
         // Sign-in variables
-        ForgotPasswordState state = new ForgotPasswordState(this);
+        final ForgotPasswordState state = new ForgotPasswordState(this);
 
         // Forgot password button was pressed
         btn_forgot_password.setOnClickListener(view -> {
             // Variables
-            String emailAddress = et_forgot_password.getText().toString();
+            final String emailAddress = et_forgot_password.getText().toString();
 
             state.sendForgotPasswordEmail(emailAddress); // Pass password-reset-mail request
         });
@@ -53,7 +53,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     public void sendForgotPasswordEmailSuccess() {
         // Start Login Activity
         // Variables
-        Intent intent = new Intent(this.getApplicationContext(), ProfileActivity.class);
+        final Intent intent = new Intent(this.getApplicationContext(), ProfileActivity.class);
         // Remove activities from memory
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent); // Open activity

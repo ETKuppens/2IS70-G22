@@ -73,7 +73,7 @@ public class LoginData {
                     Log.d(TAG, "signInWithEmail:success"); // Log success
 
                     // Variables
-                    FirebaseUser user = mAuth.getCurrentUser();
+                    final FirebaseUser user = mAuth.getCurrentUser();
 
                     sendRole(user); // Get user role
                 } else { // Sign in attempt was unsuccessful

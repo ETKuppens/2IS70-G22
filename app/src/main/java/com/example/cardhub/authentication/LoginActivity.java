@@ -1,8 +1,5 @@
 package com.example.cardhub.authentication;
 
-import static com.example.cardhub.authentication.RegistrationActivity.START_ACTIVITY_COLLECTOR;
-import static com.example.cardhub.authentication.RegistrationActivity.START_ACTIVITY_CREATOR;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -11,6 +8,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.cardhub.R;
+import com.example.cardhub.user_profile.CreatorProfileActivity;
+import com.example.cardhub.user_profile.ProfileActivity;
 
 /**
  * Displays the Login View, and manages interactions.
@@ -21,8 +20,9 @@ import com.example.cardhub.R;
  * @date 16-04-2023
  */
 public class LoginActivity extends AppCompatActivity {
-    // Variables
-    private final LoginState state = new LoginState(this);
+    // Constants
+    static final Class<?> START_ACTIVITY_COLLECTOR = ProfileActivity.class;
+    static final Class<?> START_ACTIVITY_CREATOR = CreatorProfileActivity.class;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,17 +30,18 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         // Instantiate layout components
-        EditText et_email = findViewById(R.id.editText_email);
-        EditText et_password = findViewById(R.id.editText_password);
-        TextView tv_forgot = findViewById(R.id.textView_forgot);
-        TextView tv_register = findViewById(R.id.textView_registerreferral);
-        Button btn_login = findViewById(R.id.button_login);
+        final EditText et_email = findViewById(R.id.editText_email);
+        final EditText et_password = findViewById(R.id.editText_password);
+        final TextView tv_forgot = findViewById(R.id.textView_forgot);
+        final TextView tv_register = findViewById(R.id.textView_registerreferral);
+        final Button btn_login = findViewById(R.id.button_login);
 
         // Login button was pressed
         btn_login.setOnClickListener(view -> {
             // Variables
-            String email = et_email.getText().toString();
-            String password = et_password.getText().toString();
+            final String email = et_email.getText().toString();
+            final String password = et_password.getText().toString();
+            final LoginState state = new LoginState(this);
 
             state.signIn(email, password); // Pass sign-in request
         });
@@ -61,6 +62,11 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+
+        // Attempt to sign-in in signed in users
+        // Variables
+        final LoginState state = new LoginState(this);
+
         state.signInSignedInUsers(); // Pass session-check request
     }
 
@@ -106,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         // Variables
-        Intent intent = new Intent(this, cls);
+        final Intent intent = new Intent(this, cls);
 
         // Empty activity memory
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

@@ -1,5 +1,7 @@
 package com.example.cardhub.authentication;
 
+import static com.example.cardhub.authentication.LoginActivity.START_ACTIVITY_COLLECTOR;
+import static com.example.cardhub.authentication.LoginActivity.START_ACTIVITY_CREATOR;
 import static com.example.cardhub.authentication.RegistrationState.PASSWORD_LENGTH;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,31 +29,27 @@ import com.example.cardhub.user_profile.ProfileActivity;
  * @date 16-04-2023
  */
 public class RegistrationActivity extends AppCompatActivity {
-    // Constants
-    static final  Class<?> START_ACTIVITY_COLLECTOR = ProfileActivity.class;
-    static final  Class<?> START_ACTIVITY_CREATOR = CreatorProfileActivity.class;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
         // Instantiate layout components
-        EditText et_register_email = findViewById(R.id.editText_registeremail);
-        EditText et_register_password = findViewById(R.id.editText_registerpassword);
-        EditText et_confirm = findViewById(R.id.editText_confirm);
-        CheckBox cb_tos = findViewById(R.id.checkBox_tos);
-        TextView tv_login_referral = findViewById(R.id.textView_signinreferral);
-        Button btn_register = findViewById(R.id.button_register);
-        TextView tv_tos = findViewById(R.id.textView_tos);
-        Spinner spr_role = findViewById(R.id.spinner_role);
+        final EditText et_register_email = findViewById(R.id.editText_registeremail);
+        final EditText et_register_password = findViewById(R.id.editText_registerpassword);
+        final EditText et_confirm = findViewById(R.id.editText_confirm);
+        final CheckBox cb_tos = findViewById(R.id.checkBox_tos);
+        final TextView tv_login_referral = findViewById(R.id.textView_signinreferral);
+        final Button btn_register = findViewById(R.id.button_register);
+        final TextView tv_tos = findViewById(R.id.textView_tos);
+        final Spinner spr_role = findViewById(R.id.spinner_role);
 
         // Registration variables
-        RegistrationState state = new RegistrationState(this);
+        final RegistrationState state = new RegistrationState(this);
 
         // Create dropdown variables
-        String[] roles = new String[]{"Card Collector", "Card Creator"};
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, roles);
+        final String[] roles = new String[]{"Card Collector", "Card Creator"};
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, roles);
 
         // Set dropdown adapter
         spr_role.setAdapter(arrayAdapter);
@@ -70,10 +68,10 @@ public class RegistrationActivity extends AppCompatActivity {
         // Register button was pressed
         btn_register.setOnClickListener(view -> {
             // Variables
-            String email = et_register_email.getText().toString();
-            String password = et_register_password.getText().toString();
-            String confirm = et_confirm.getText().toString();
-            String role = spr_role.getSelectedItem().toString();
+            final String email = et_register_email.getText().toString();
+            final String password = et_register_password.getText().toString();
+            final String confirm = et_confirm.getText().toString();
+            final String role = spr_role.getSelectedItem().toString();
 
             state.register(email, password, confirm, role); // Pass login request
         });
@@ -101,7 +99,7 @@ public class RegistrationActivity extends AppCompatActivity {
         }
 
         // Variables
-        Intent intent = new Intent(this, cls);
+        final Intent intent = new Intent(this, cls);
 
         // Empty activity memory
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

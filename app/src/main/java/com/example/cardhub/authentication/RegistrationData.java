@@ -80,8 +80,8 @@ public class RegistrationData {
                    Log.d(TAG, "signUpWithEmail:success"); // Log success
 
                    // Variables
-                   FirebaseUser user = mAuth.getCurrentUser();
-                   Map<String, Object> userEntry = createNewUserEntry(role);
+                   final FirebaseUser user = mAuth.getCurrentUser();
+                   final Map<String, Object> userEntry = createNewUserEntry(role);
 
                    uploadUserEntry(user, userEntry, role); // Add the userEntry to the database
                } else { // Registration failed
