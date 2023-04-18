@@ -28,12 +28,13 @@ public class ForgotPasswordData {
      * instance.
      *
      * @param receiver given receiver instance
-     *
      * @pre {@code receiver != null}
-     *
      * @throws NullPointerException if {@code receiver == null}
+     * @post instance is initialized
      */
     public ForgotPasswordData(ForgotPasswordReceiver receiver) {
+        // Precondition testing
+        // Receiver precondition test
         if (receiver == null) {
             throw new NullPointerException(
                     "ForgotPasswordData.ForgotPasswordData.pre violated: receiver == null"
@@ -44,15 +45,16 @@ public class ForgotPasswordData {
     }
 
     /**
-     * Sends password-reset request to {@code emailAddress}.
+     * Sends password-reset-email to {@code emailAddress}.
      *
      * @pre {@code emailAddress != null}
-     *
      * @param emailAddress emailAddress which the password-reset request shall be send to
-     *
      * @throws NullPointerException if {@code emailAddress == null}
+     * @post password-reset email has been send
      */
     public void sendForgotPasswordEmail(String emailAddress) {
+        // Precondition testing
+        // EmailAddress precondition test
         if (emailAddress == null) {
             throw new NullPointerException("ForgotPasswordData.ForgotPasswordData.pre violated: emailAddress == null");
         }
