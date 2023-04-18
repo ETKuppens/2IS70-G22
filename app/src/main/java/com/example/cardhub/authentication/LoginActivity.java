@@ -6,9 +6,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.cardhub.R;
 
 /**
@@ -59,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Takes appropriate action upon succeeding with signing in.
+     * Takes appropriate action upon succeeding with signing-in.
      */
     public void signInSuccess() {
         // Display success message
@@ -67,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Takes appropriate action upon failing to sign in.
+     * Takes appropriate action upon failing to sign-in.
      */
     public void signInFail() {
         // Display failure message
