@@ -30,22 +30,22 @@ public class LoginActivity extends AppCompatActivity {
         TextView tv_register = findViewById(R.id.textView_registerreferral);
         Button btn_login = findViewById(R.id.button_login);
 
-        // Login button is pressed
+        // Login button was pressed
         btn_login.setOnClickListener(view -> {
-            // Instantiate variables
+            // Variables
             String email = et_email.getText().toString();
             String password = et_password.getText().toString();
 
-            state.signIn(email, password); // Pass authentication request
+            state.signIn(email, password); // Pass sign in request
         });
 
-        // Registration link is pressed
+        // Registration link was clicked
         tv_register.setOnClickListener(view -> {
             // Open RegistrationActivity
             startActivity(new Intent(getApplicationContext(), RegistrationActivity.class));
         });
 
-        // Forgotten password link is pressed
+        // Forgot password link was clicked
         tv_forgot.setOnClickListener(view -> {
             // Open ForgotPasswordActivity
             startActivity(new Intent(getApplicationContext(), ForgotPasswordActivity.class));
