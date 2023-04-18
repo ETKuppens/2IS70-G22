@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,9 +28,9 @@ public class InventoryData {
     /**
      * Get the database instance
      */
-    public InventoryData(InventoryRepository repository) {
-        db = FirebaseFirestore.getInstance();
-        auth = FirebaseAuth.getInstance();
+    public InventoryData(InventoryRepository repository, FirebaseAuth auth, FirebaseFirestore db) {
+        this.db = db;
+        this.auth = auth;
         this.repository = repository;
     }
 
@@ -83,23 +84,4 @@ public class InventoryData {
                     }
                 });
     }
-
-    /**
-     * Remove a card from the inventory of a user int the database
-     *
-     * @param card the card to remove
-     */
-    public void removeCard(Card card) {
-
-    }
-
-    /**
-     * Add a card to the inventory of a user int the database
-     *
-     * @param card the card to add
-     */
-    public void addCard(Card card) {
-
-    }
-
 }

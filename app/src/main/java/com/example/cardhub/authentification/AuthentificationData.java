@@ -22,10 +22,13 @@ public class AuthentificationData {
     private FirebaseFirestore db;
     private FirebaseUser user;
 
-    public AuthentificationData(AuthentificationReciever receiver) {
+    public AuthentificationData(AuthentificationReciever receiver,
+                                FirebaseAuth auth,
+                                FirebaseFirestore db
+                              ) {
         this.receiver = receiver;
-        this.mAuth = FirebaseAuth.getInstance();
-
+        this.mAuth = auth;
+        this.db = db;
     }
 
     public void signIn(String email, String password) {
@@ -52,7 +55,6 @@ public class AuthentificationData {
     }
 
     public void getUserRole(FirebaseUser currentUser) {
-        db = FirebaseFirestore.getInstance();
         currentUser = mAuth.getCurrentUser();
         String uid = currentUser.getUid();
         DocumentReference docRef = db.collection("users").document(uid);

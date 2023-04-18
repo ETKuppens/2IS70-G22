@@ -4,6 +4,8 @@ import android.util.Log;
 
 import com.example.cardhub.inventory.Card;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 
 import java.util.List;
@@ -15,7 +17,7 @@ public class MapRepositoryImpl implements MapRepository {
     MapData data;
     MapRepositoryImpl(MapState state) {
         this.state = state;
-        this.data = new MapData(this);
+        this.data = new MapData(this, FirebaseFirestore.getInstance(), FirebaseAuth.getInstance());
     }
 
     @Override
@@ -45,8 +47,13 @@ public class MapRepositoryImpl implements MapRepository {
         data.acquireRandomCard(rarity);
     }
 
-    @Override
-    public void acquireRandomCardCallback(Card acquiredCard) {
-        state.acquireRandomCardCallback(acquiredCard);
+    public void acquireRandomCardCallback(Map<String,Object> acquiredCard) {
+        Card decodedCard = new Card(
+                (String) acquiredCard.get("name"),
+                (String) acquiredCard.get("description"),
+                Card.Rarity.valueOf((String) acquiredCard.get("rarity")),
+                (String) acquiredCard.get("imageurl"));
+
+        state.acquireRandomCardCallback(decodedCard);
     }
 }

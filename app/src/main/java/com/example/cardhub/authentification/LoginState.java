@@ -17,7 +17,7 @@ public class LoginState implements AuthentificationReciever {
     private LoginActivity activity;
 
     public LoginState(LoginActivity activity) {
-        data = new AuthentificationData(this);
+        data = new AuthentificationData(this, FirebaseAuth.getInstance(), FirebaseFirestore.getInstance());
         this.activity = activity;
     }
 
