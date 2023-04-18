@@ -15,14 +15,12 @@ import com.example.cardhub.R;
  */
 public class LoginActivity extends AppCompatActivity {
     // Variables
-    private LoginState state;
+    private final LoginState state = new LoginState(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        state = new LoginState(this);
 
         // Instantiate layout components
         EditText et_email = findViewById(R.id.editText_email);
