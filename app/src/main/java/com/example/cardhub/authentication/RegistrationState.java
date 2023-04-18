@@ -70,7 +70,7 @@ public class RegistrationState implements RegistrationReceiver {
         
         // Credential testing
         // Variables
-        final boolean isProperEmail = emailAddress != null && !emailAddress.isEmpty();
+        final boolean isProperEmail = !emailAddress.isEmpty();
         final boolean hasAdequatePasswordLength = password.length() >= PASSWORD_LENGTH;
         final boolean isPasswordMatching = password.equals(confirm);
 
