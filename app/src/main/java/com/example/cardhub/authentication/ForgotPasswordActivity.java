@@ -11,7 +11,7 @@ import com.example.cardhub.R;
 import com.example.cardhub.user_profile.ProfileActivity;
 
 /**
- * Display the ForgotPassword View, and manages interactions.
+ * Displays the ForgotPassword View, and manages interactions.
  *
  * @author  Vladislav Budiak, Sevket Tulgar Dinc, Etienne Kuppens,
  *          Aqiel Oostenbrug, Marios Papalouka, Rijkman Pilaar
