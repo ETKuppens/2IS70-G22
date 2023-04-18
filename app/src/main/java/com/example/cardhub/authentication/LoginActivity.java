@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Displays a success toast.
+     * Takes appropriate action upon succeeding with signing in.
      */
     public void signInSuccess() {
         // Display success message
@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Displays a failure toast.
+     * Takes appropriate action upon failing to sign in.
      */
     public void signInFail() {
         // Display failure message
