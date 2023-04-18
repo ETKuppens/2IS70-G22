@@ -73,23 +73,20 @@ public class RegistrationData {
         // Variables
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-        // Create account
+        // Attempt to create an account
         mAuth.createUserWithEmailAndPassword(email, password)
            .addOnCompleteListener(task -> {
                if (task.isSuccessful()) { // Registration succeeded
-                   // Log success
-                   Log.d(TAG, "signUpWithEmail:success");
+                   Log.d(TAG, "signUpWithEmail:success"); // Log success
 
                    // Variables
                    FirebaseUser user = mAuth.getCurrentUser();
                    Map<String, Object> userEntry = createNewUserEntry(role);
 
-                   // Add the userEntry to the database
-                   uploadUserEntry(user, userEntry, role);
+                   uploadUserEntry(user, userEntry, role); // Add the userEntry to the database
                } else { // Registration failed
-                   // Log failure
-                   Log.w(TAG, "signUpWithEmail:failure", task.getException());
-                   receiver.registrationDatabaseFail(); // Propagate database-failure
+                   Log.w(TAG, "signUpWithEmail:failure", task.getException()); // Log failure
+                   receiver.registrationDatabaseFail(); // Propagate database-failure signal
                }
            });
     }
@@ -116,13 +113,11 @@ public class RegistrationData {
             .collection("users").document(user.getUid())
             .set(userEntry)
             .addOnSuccessListener(aVoid -> { // Upload succeeded
-                // Log success
-                Log.d(TAG, "userEntryUpload:success");
+                Log.d(TAG, "userEntryUpload:success"); // Log success
                 receiver.registrationSuccess(role); // Propagate success signal
             })
             .addOnFailureListener(e -> { // Upload failed
-                // Log failure
-                Log.e(TAG, "userEntryUpload:failure", e);
+                Log.e(TAG, "userEntryUpload:failure", e); // Log failure
                 receiver.registrationDatabaseFail(); // Propagate database-failure signal
             });
     }

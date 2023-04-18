@@ -59,6 +59,7 @@ public class ForgotPasswordData {
             throw new NullPointerException("ForgotPasswordData.ForgotPasswordData.pre violated: emailAddress == null");
         }
 
+        // Variables
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
         // Attempt to send a password-reset request
@@ -66,14 +67,10 @@ public class ForgotPasswordData {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) { // Email was send successfully
-                    // Log success
-                    Log.d(TAG, "sendPasswordResetEmail:success");
-
+                    Log.d(TAG, "sendPasswordResetEmail:success"); // Log success
                     receiver.sendForgotPasswordEmailSuccess(); // Propagate success signal
                 } else { // Email was not send successfully
-                    Log.w(TAG, "sendPasswordResetEmail:failure",
-                            task.getException()); // Log failure
-
+                    Log.w(TAG, "sendPasswordResetEmail:failure", task.getException()); // Log failure
                     receiver.sendForgotPasswordEmailFailure(); // Propagate failure signal
                 }
             }
