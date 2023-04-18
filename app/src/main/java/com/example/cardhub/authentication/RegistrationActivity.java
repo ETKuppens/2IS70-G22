@@ -76,7 +76,7 @@ public class RegistrationActivity extends AppCompatActivity {
         // Login link was clicked
         tv_login_referral.setOnClickListener(view -> {
             // Open Login View
-            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
         });
     }
 
@@ -96,7 +96,7 @@ public class RegistrationActivity extends AppCompatActivity {
         }
 
         // Variables
-        Intent intent = new Intent(getApplicationContext(), cls);
+        Intent intent = new Intent(this, cls);
 
         // Empty activity memory
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -109,7 +109,7 @@ public class RegistrationActivity extends AppCompatActivity {
     public void registrationSuccessCollector() {
         openStartActivity(START_ACTIVITY_COLLECTOR); // Open the appropriate activity
         // Display collector-success message
-        Toast.makeText(getApplicationContext(), "Registered as Card Collector", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Registered as Card Collector", Toast.LENGTH_LONG).show();
     }
 
     /**
@@ -118,7 +118,7 @@ public class RegistrationActivity extends AppCompatActivity {
     public void registrationSuccessCreator() {
         openStartActivity(START_ACTIVITY_CREATOR); // Open the appropriate activity
         // Display creator-success message
-        Toast.makeText(getApplicationContext(), "Registered as Card Creator", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Registered as Card Creator", Toast.LENGTH_LONG).show();
     }
 
     /**
@@ -126,7 +126,7 @@ public class RegistrationActivity extends AppCompatActivity {
      */
     public void registrationDatabaseFail() {
         // Display database-failure message
-        Toast.makeText(getApplicationContext(), "Registration has failed, please try again later", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Registration has failed, please try again later", Toast.LENGTH_LONG).show();
     }
 
     /**
@@ -134,7 +134,7 @@ public class RegistrationActivity extends AppCompatActivity {
      */
     public void registrationConfirmationFail() {
         // Display confirmation-failure message
-        Toast.makeText(getApplicationContext(), "Passwords do not match", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Passwords do not match", Toast.LENGTH_LONG).show();
     }
 
     /**
@@ -142,6 +142,6 @@ public class RegistrationActivity extends AppCompatActivity {
      */
     public void registrationPasswordLengthFail() {
         // Display password-failure message
-        Toast.makeText(getApplicationContext(), "Password length must be at least " + PASSWORD_LENGTH + " characters", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Password length must be at least " + PASSWORD_LENGTH + " characters", Toast.LENGTH_LONG).show();
     }
 }
