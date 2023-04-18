@@ -24,20 +24,20 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
 
-        // Firebase Authentication
-        ForgotPasswordState state = new ForgotPasswordState(this);
-
         // Instantiate layout components
         EditText et_forgot_password = findViewById(R.id.editText_email_forgot);
         Button btn_forgot_password = findViewById(R.id.button_email_forgotten);
         TextView tv_login_referral = findViewById(R.id.textView_loginreferral_forgot);
 
-        // Reset pressed
+        // Sign-in variables
+        ForgotPasswordState state = new ForgotPasswordState(this);
+
+        // Forgot password link was clicked
         btn_forgot_password.setOnClickListener(view -> {
             // Variables
             String emailAddress = et_forgot_password.getText().toString();
 
-            state.sendForgotPasswordEmail(emailAddress); // Pass password reset request
+            state.sendForgotPasswordEmail(emailAddress); // Pass password-reset request
         });
 
         // Login link was clicked

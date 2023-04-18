@@ -64,7 +64,7 @@ public class RegistrationActivity extends AppCompatActivity {
         tv_tos.setClickable(true);
         tv_tos.setMovementMethod(LinkMovementMethod.getInstance());
 
-        // TOS has been clicked
+        // TOS link was clicked
         cb_tos.setOnCheckedChangeListener((compoundButton, isChecked) -> btn_register.setEnabled(isChecked));
 
         // Register button was pressed
