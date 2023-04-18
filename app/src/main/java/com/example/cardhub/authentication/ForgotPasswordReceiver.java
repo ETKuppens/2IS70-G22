@@ -1,8 +1,7 @@
 package com.example.cardhub.authentication;
 
 /**
- * Interface for the State Design Pattern implementation of the password retrieval
- * for users.
+ * Interface for the State Design Pattern implementation for sending password-reset-emails to users.
  *
  * @author  Vladislav Budiak, Sevket Tulgar Dinc, Etienne Kuppens,
  *          Aqiel Oostenbrug, Marios Papalouka, Rijkman Pilaar

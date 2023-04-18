@@ -9,8 +9,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 /**
- * Data Design Pattern implementation of the password retrieval
- * for users.
+ * Data Design Pattern implementation for sending password-reset-emails to users.
  *
  * @author  Vladislav Budiak, Sevket Tulgar Dinc, Etienne Kuppens,
  *          Aqiel Oostenbrug, Marios Papalouka, Rijkman Pilaar
