@@ -37,7 +37,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             // Variables
             String emailAddress = et_forgot_password.getText().toString();
 
-            state.sendForgotPasswordEmail(emailAddress); // Pass password-reset request
+            state.sendForgotPasswordEmail(emailAddress); // Pass password-reset-mail request
         });
 
         // Login link was clicked
@@ -45,21 +45,22 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     }
 
     /**
-     * Takes appropriate action upon the success of the password-reset request.
+     * Takes appropriate action upon the success of sending the password-reset-mail.
      */
     public void sendForgotPasswordEmailSuccess() {
         // Start Login Activity
+        // Variables
         Intent intent = new Intent(this.getApplicationContext(), ProfileActivity.class);
         // Remove activities from memory
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent); // Update UI
+        startActivity(intent); // Open activity
 
         // Display success message
         Toast.makeText(ForgotPasswordActivity.this, "Reset request was send successfully", Toast.LENGTH_LONG).show();
     }
 
     /**
-     * Takes appropriate action upon the failure of the password-reset request.
+     * Takes appropriate action upon the failure of sending the password-reset-mail.
      */
     public void sendForgotPasswordEmailFailure() {
         // Display failure message
