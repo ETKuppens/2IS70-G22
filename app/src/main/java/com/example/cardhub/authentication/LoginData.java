@@ -10,7 +10,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 
 /**
  * Data Design Pattern implementation for the signing in of users.
@@ -99,9 +98,9 @@ public class LoginData {
      *
      * @throws NullPointerException if {@code user == null}
      */
-    public void getCurrentUser() throws NullPointerException {
+    public void checkCurrentUser() throws NullPointerException {
         if (user == null) {
-            throw new NullPointerException("LoginData.getCurrentUser.pre violated: user == null");
+            throw new NullPointerException("LoginData.checkCurrentUser.pre violated: user == null");
         }
 
         receiver.receiveCurrentUser(user); // State callback

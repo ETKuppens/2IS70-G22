@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
 
         // Check if user is signed in (non-null) and update UI accordingly.
-        state.getCurrentUser();
+        state.checkCurrentUser();
     }
 
     /**

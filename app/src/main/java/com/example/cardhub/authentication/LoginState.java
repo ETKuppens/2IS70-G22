@@ -4,7 +4,6 @@ import android.content.Intent;
 
 import com.example.cardhub.user_profile.CreatorProfileActivity;
 import com.example.cardhub.user_profile.ProfileActivity;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -98,12 +97,12 @@ public class LoginState implements LoginReceiver {
      *
      * @throws if {@code data == null}
      */
-    public void getCurrentUser() throws NullPointerException {
+    public void checkCurrentUser() throws NullPointerException {
         if (data == null) {
-            throw new NullPointerException("LoginState.getCurrentUser.pre violated: data == null");
+            throw new NullPointerException("LoginState.checkCurrentUser.pre violated: data == null");
         }
 
-        data.getCurrentUser(); // User retrieval
+        data.checkCurrentUser(); // User retrieval
     }
 
     /**
