@@ -71,9 +71,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Takes appropriate action upon failing to sign-in.
+     * Takes appropriate action upon failing to sign-in due to database issues.
      */
-    public void signInFail() {
+    public void signInDatabaseFail() {
         // Display failure message
         Toast.makeText(this, "Failed to sign-in", Toast.LENGTH_SHORT).show();
     }
@@ -117,5 +117,21 @@ public class LoginActivity extends AppCompatActivity {
         // Empty activity memory
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent); // Open activity
+    }
+
+    /**
+     * Takes appropriate action upon failing to sign-in due to password-string issues.
+     */
+    public void signInPasswordStringFail() {
+        // Display password-string-failure message
+        Toast.makeText(this, "Fill in a password", Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * Takes appropriate action upon failing to sign-in due to email-string issues.
+     */
+    public void signInEmailStringFail() {
+        // Display email-string-failure message
+        Toast.makeText(this, "Fill in an email", Toast.LENGTH_LONG).show();
     }
 }

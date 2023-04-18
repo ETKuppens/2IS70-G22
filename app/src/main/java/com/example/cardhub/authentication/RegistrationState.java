@@ -74,7 +74,7 @@ public class RegistrationState implements RegistrationReceiver {
         final boolean hasAdequatePasswordLength = password.length() >= PASSWORD_LENGTH;
         final boolean isPasswordMatching = password.equals(confirm);
 
-        // Check if the emailAddress is not empty or null.
+        // Check if the emailAddress is not empty
         if (!isProperEmail) {
             activity.registrationEmailStringFail();
             return;

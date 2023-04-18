@@ -67,6 +67,23 @@ public class LoginState implements LoginReceiver {
             throw new NullPointerException("LoginState.signIn.pre violated: password == null");
         }
 
+        // Credential testing
+        // Variables
+        final boolean isProperPassword = !password.isEmpty();
+        final boolean isProperEmail = !emailAddress.isEmpty();
+
+        // Check if the emailAddress is not empty.
+        if (!isProperEmail) {
+            activity.signInEmailStringFail();
+            return;
+        }
+
+        // Check if the password is not empty
+        if (!isProperPassword) {
+            activity.signInPasswordStringFail();
+            return;
+        }
+
         // Attempt to sign-in
         // Variables
         final LoginData data = new LoginData(this);
@@ -75,8 +92,8 @@ public class LoginState implements LoginReceiver {
     }
 
     @Override
-    public void signInFail() {
-        activity.signInFail();
+    public void signInDatabaseFail() {
+        activity.signInDatabaseFail();
     }
 
     /**

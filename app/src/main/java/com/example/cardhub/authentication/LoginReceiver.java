@@ -25,5 +25,5 @@ public interface LoginReceiver {
      *
      * @post sign-in-failure function has been called
      */
-    void signInFail();
+    void signInDatabaseFail();
 }
