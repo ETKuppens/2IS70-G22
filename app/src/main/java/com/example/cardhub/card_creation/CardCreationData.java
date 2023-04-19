@@ -17,6 +17,10 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 
+/**
+ * Class responsible for uploading a new card to the card pool in the database.
+ * @author Tulgar
+ */
 public class CardCreationData {
     FirebaseFirestore db;
     FirebaseAuth auth;
@@ -28,6 +32,11 @@ public class CardCreationData {
         this.storage = storage;
     }
 
+    /**
+     * Publishes a given card to the database pool.
+     * @pre The card is valid
+     * @param c The card that needs to be published
+     */
     public void publishCard(Card c) {
         final StorageReference ref = storage.getReference("card_images/");
 

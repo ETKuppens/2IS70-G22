@@ -69,6 +69,20 @@
 
             <!--Button for creating a QR code-->
 
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Card Trading"
+                android:textAllCaps="false"
+                android:textColor="#6200ED"
+                android:textSize="28sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

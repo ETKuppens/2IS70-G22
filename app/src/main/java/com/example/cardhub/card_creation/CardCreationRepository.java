@@ -5,6 +5,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 
+
+/**
+ * Interface between Data and State class for the CardCreation
+ * @author Rijkman
+ */
 public class CardCreationRepository {
     CardCreationData data;
 
@@ -14,6 +19,10 @@ public class CardCreationRepository {
                 FirebaseStorage.getInstance());
     }
 
+    /**
+     * Publishes card c to the Card Pool
+     * @param c the card to publish
+     */
     public void publishCard(Card c) {
         data.publishCard(c);
     }

@@ -19,6 +19,10 @@ import com.example.cardhub.map.MapActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+/**
+ * Activity that is responsible for showing the user it's profile.
+ * @Author Tulgar and Rijkman
+ */
 public class CreatorProfileActivity extends CreatorBaseActivity implements ProfileBaseActivity {
     private FirebaseAuth mAuth;
     ProfileState state;
@@ -55,7 +59,7 @@ public class CreatorProfileActivity extends CreatorBaseActivity implements Profi
         trades.setVisibility(View.INVISIBLE);
 
 
-        //Bind functionality to Buttons
+        //Bind functionality to Logout Button
         Button logoutButton = (Button)findViewById(R.id.logoutButton);
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override

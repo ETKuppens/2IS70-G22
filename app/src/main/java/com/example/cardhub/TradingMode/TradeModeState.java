@@ -111,6 +111,7 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
 
         this.repository.cancelAcceptTrade(this.clientid);
         cancelTradeMode();
+
     }
 
     /**
