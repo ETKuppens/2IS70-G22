@@ -14,6 +14,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Interact with Firebase to get profile information.
+ */
 public class ProfileData {
     FirebaseFirestore db;
     FirebaseAuth auth;
@@ -25,10 +28,16 @@ public class ProfileData {
         this.repo = repo;
     }
 
+    /**
+     * Log the current user out.
+     */
     public void logOut() {
         auth.signOut();
     }
 
+    /**
+     * Get profile information from the current user.
+     */
     public void requestProfile() {
         db.collection("users/" + auth.getUid() + "/cards").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override

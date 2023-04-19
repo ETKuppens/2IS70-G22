@@ -18,7 +18,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.text.HtmlCompat;
 
 import com.example.cardhub.R;
-import com.example.cardhub.card_creation.CardCreationActivity;
 import com.example.cardhub.user_profile.CreatorProfileActivity;
 import com.example.cardhub.user_profile.ProfileActivity;
 
@@ -77,7 +76,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 String role = spr_role.getSelectedItem().toString();
 
                 if (password.equals(confirm)) {
-                    state.register(email, password, confirm, role);
+                    state.register(email, password, role);
                 } else {
                     Toast.makeText(RegistrationActivity.this, "Passwords don't match.", Toast.LENGTH_SHORT).show();
                 }

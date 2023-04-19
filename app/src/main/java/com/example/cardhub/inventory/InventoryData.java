@@ -18,16 +18,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Interact with the database with information related to the database
+ * Interact with Firebase to get information related to the inventory
  */
 public class InventoryData {
     FirebaseFirestore db;
     InventoryRepository repository;
     FirebaseAuth auth;
 
-    /**
-     * Get the database instance
-     */
     public InventoryData(InventoryRepository repository, FirebaseAuth auth, FirebaseFirestore db) {
         this.db = db;
         this.auth = auth;
@@ -36,9 +33,7 @@ public class InventoryData {
 
 
     /**
-     * Request the cards that belong to a specific user from the database
-     *
-     * @return list of cards
+     * Request all available cards in the database.
      */
     public void requestAllCards() {
         final List<Map<String, Object>> cards = new ArrayList<>();
@@ -62,6 +57,9 @@ public class InventoryData {
             });
     }
 
+    /**
+     * Return all cards that belong to the current, logged in, user.
+     */
     public void requestUserCards() {
         final List<Map<String, Object>> cards = new ArrayList<>();
         cards.add(new HashMap<>());

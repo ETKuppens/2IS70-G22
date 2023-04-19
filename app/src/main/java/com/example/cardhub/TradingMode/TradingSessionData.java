@@ -34,6 +34,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Communicate with firebase to facilitate card trading.
+ */
 public class TradingSessionData {
     TradingSessionRepository repository;
     private FirebaseFirestore db;
@@ -183,7 +186,6 @@ public class TradingSessionData {
 
     /**
      * Request the server to accept the currently proposed trade.
-     *
      */
     public void acceptProposedTrade() {
         Map<String, Object> data = new HashMap<>();
@@ -207,7 +209,6 @@ public class TradingSessionData {
     /**
      * Send a confirmation message to the server that the current trade acceptance has been
      * canceled correctly.
-     *
      */
     void cancelAcceptTrade() {
         Map<String, Object> data = new HashMap<>();
@@ -261,6 +262,11 @@ public class TradingSessionData {
 
     }
 
+    /**
+     * Remove the proposed cards from the inventories of the players that proposed them.
+     * Add the cards the to the other players inventory.
+     * Increment the amount of trades performed by players.
+     */
     public void doTrade() {
         Log.d("TRADING", "doTrade: Starting trade");
         docRef.collection("cardDiffs_" + currentPlayer).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

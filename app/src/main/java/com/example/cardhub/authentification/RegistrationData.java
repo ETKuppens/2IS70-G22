@@ -18,6 +18,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Handle registration related interactions with Firebase.
+ */
 public class RegistrationData {
     FirebaseAuth mAuth;
     RegisterReceiver receiver;
@@ -30,7 +33,13 @@ public class RegistrationData {
         this.db = FirebaseFirestore.getInstance();
     }
 
-    public void register(String email, String password, String confirm, String role) {
+    /**
+     * Register a new user to firebase.
+     * @param email the email of the new user
+     * @param password the password of the new user
+     * @param role the role of the new user
+     */
+    public void register(String email, String password, String role) {
             // Create account
             mAuth.createUserWithEmailAndPassword(email, password)
                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
