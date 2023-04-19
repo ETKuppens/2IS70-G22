@@ -11,6 +11,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
@@ -35,24 +36,26 @@ import java.util.stream.Collectors;
 
 public class TradingSessionData {
     TradingSessionRepository repository;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseFirestore db;
     private DocumentReference docRef;
-    private String lid;
     private String clientid;
     private String currentPlayer;
     private String otherPlayer;
     private ListenerRegistration listenerRegistration;
 
-    public TradingSessionData(TradingSessionRepository repository, String lid, String clientid) {
+    public TradingSessionData(TradingSessionRepository repository,
+                              FirebaseFirestore db,
+                              String lobbyId,
+                              String clientId) {
         this.repository = repository;
-        this.lid = lid;
-        this.clientid = clientid;
-        this.docRef = db.collection("lobbies").document(lid);
+        this.clientid = clientId;
+        this.docRef = db.collection("lobbies").document(lobbyId);
+        this.db = db;
 
         getInfo();
     }
 
-    public void startCardDiffListener() {
+    private void startCardDiffListener() {
         // Run card diff listener
         docRef.collection("cardDiffs_" + otherPlayer).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -86,7 +89,7 @@ public class TradingSessionData {
         });
     }
 
-    public void getInfo() {
+    private void getInfo() {
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -160,7 +163,7 @@ public class TradingSessionData {
      * @param clientID the ID of the application instance that will be used by the server to
      *                 identify which side of the trading session has requested the trading session to be cancelled.
      */
-    void cancelTradingSession(String clientID) {
+    public void cancelTradingSession(String clientID) {
         docRef.delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -181,10 +184,8 @@ public class TradingSessionData {
     /**
      * Request the server to accept the currently proposed trade.
      *
-     * @param clientID the ID of the application instance that will be used by the server to
-     *                 identify which side of the trading session has requested to accept the proposed trade.
      */
-    void acceptProposedTrade(String clientID) {
+    public void acceptProposedTrade() {
         Map<String, Object> data = new HashMap<>();
         data.put("acceptance_" + currentPlayer, true);
 
@@ -207,10 +208,8 @@ public class TradingSessionData {
      * Send a confirmation message to the server that the current trade acceptance has been
      * canceled correctly.
      *
-     * @param clientID the ID of the application instance that will be used by the server to
-     *                 identify which side of the trading session has requested to cancel the trade accept request.
      */
-    void cancelAcceptTrade(String clientID) {
+    void cancelAcceptTrade() {
         Map<String, Object> data = new HashMap<>();
         data.put("acceptance_" + currentPlayer, false);
 
@@ -305,7 +304,6 @@ public class TradingSessionData {
                                                                     }
 
                                                                     deletePlayerBOffers(playerAOfferedCards, playerBOfferedCards, playerBName, playerAName, batch);
-                                                                    incrementTradeCounters();
                                                                 }
                                                             }
                                                         });
@@ -330,28 +328,6 @@ public class TradingSessionData {
         });
     }
 
-    private void incrementTradeCounters() {
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-
-                        String playerAName = document.getString("playerAName");
-                        String playerBName = document.getString("playerBName");
-
-
-                    } else {
-                        Log.d(TAG, "No such document");
-                    }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
-            }
-        });
-    }
 
     private void deletePlayerBOffers(List<Map<String,Object>> playerAOfferedCards, List<Map<String,Object>> playerBOfferedCards, String playerBName, String playerAName, WriteBatch batch) {
         if (playerBOfferedCards.size() > 0) {
@@ -393,16 +369,7 @@ public class TradingSessionData {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    db.collection("users").document(playerAName).update("tradesmade", FieldValue.increment(1)).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Log.d("INCREMENT", "incremented value");
-                            } else {
-                                Log.d("INCREMENT", "failed increment value: " + task.getException());
-                            }
-                        }
-                    });
+                    db.collection("users").document(playerAName).update("tradesmade", FieldValue.increment(1));
                     db.collection("users").document(playerBName).update("tradesmade", FieldValue.increment(1));
                     docRef.update("finished", true);
                     listenerRegistration.remove();
