@@ -6,11 +6,11 @@ import com.example.cardhub.inventory.Card;
  * Repository Class for creating cards.
  * @author Rijkman
  */
-public class CardCreationRepository {
+public class CardCreationRepositoryImpl implements CardCreationRepository {
     //Database instance
     CardCreationData data;
     //Constructor
-    CardCreationRepository() {
+    CardCreationRepositoryImpl() {
         data = new CardCreationData();
     }
 
@@ -20,6 +20,7 @@ public class CardCreationRepository {
      * @pre The card is valid
      * @param c The card that needs to be published
      */
+    @Override
     public void publishCard(Card c) {
         data.publishCard(c);
     }

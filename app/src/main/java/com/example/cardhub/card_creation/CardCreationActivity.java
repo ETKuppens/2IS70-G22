@@ -50,7 +50,7 @@ public class CardCreationActivity extends CreatorBaseActivity {
 
         //Set up the navigation bar on the bottom of the screen
         setupNav();
-        state = new CardCreationState();
+        state = new CardCreationState(new CardCreationRepositoryImpl());
         mAuth = FirebaseAuth.getInstance();
 
         //Object to prompt the user to pick an image

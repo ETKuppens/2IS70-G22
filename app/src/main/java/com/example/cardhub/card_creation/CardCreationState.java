@@ -1,8 +1,12 @@
 package com.example.cardhub.card_creation;
 
 import android.net.Uri;
+import android.util.Log;
+import android.widget.RadioGroup;
 
+import com.example.cardhub.R;
 import com.example.cardhub.inventory.Card;
+import com.google.android.material.textfield.TextInputEditText;
 
 /**
  * Keeps track of the card that is currently being created.
@@ -21,8 +25,8 @@ public class CardCreationState {
     //Repository for this class
     private CardCreationRepository repository;
 
-    public CardCreationState() {
-        repository = new CardCreationRepository();
+    public CardCreationState(CardCreationRepository repo) {
+        repository = repo;
     }
 
     /**
@@ -36,11 +40,17 @@ public class CardCreationState {
 
     /**
      * Method that publishes the current card to the card pool.
+     * @pre isCardValid(getCard())
      */
     public void publishCard() {
         //Hook database
         Card sendableCard = getCard();
-        repository.publishCard(sendableCard);
+        if (isCardValid(sendableCard)) {
+            repository.publishCard(sendableCard);
+        } else {
+            throw new IllegalArgumentException("Can't publish a card without specifying" +
+                    "all properties first");
+        }
     }
 
     /**
@@ -76,10 +86,37 @@ public class CardCreationState {
     }
 
     /**
-     * Sets the rarity of the card being currently created.
-     * @param rarity the new rarity of the card.
+     * Sets a new rarity to the current card.
+     * @param rarity
      */
-    public void setRarity(Card.Rarity rarity) {
+    public void setRarity(Card.Rarity rarity)
+    {
         this.rarity = rarity;
+    }
+
+    /**
+     * Checks the validity of a given card
+     * @param c the card to check
+     * @return true when card is valid
+     */
+    public boolean isCardValid(Card c)
+    {
+        if (c.IMAGE_URL == null)
+        {
+            return false;
+        }
+        if (c.NAME == null || c.NAME == "")
+        {
+            return false;
+        }
+        if (c.DESCRIPTION == null || c.DESCRIPTION == "")
+        {
+            return false;
+        }
+        if (c.RARITY == null)
+        {
+            return false;
+        }
+        return true;
     }
 }
