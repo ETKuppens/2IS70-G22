@@ -250,6 +250,8 @@ public class CardSorterTest {
      */
     private boolean RaritySmallerEquals(Card.Rarity leftRarity, Card.Rarity rightRarity) {
         switch(leftRarity) {
+            case COMMON:
+                return true;
             case RARE:
                 return rightRarity.equals(Card.Rarity.RARE)
                         || rightRarity.equals(Card.Rarity.LEGENDARY);

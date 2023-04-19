@@ -19,14 +19,14 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 public class MapData {
-    MapRepository receiver;
+    MapRepository repo;
     FirebaseFirestore db;
     FirebaseAuth auth;
 
-    public MapData(MapRepository receiver) {
-        this.receiver = receiver;
-        this.db = FirebaseFirestore.getInstance();
-        this.auth = FirebaseAuth.getInstance();
+    public MapData(MapRepository repo, FirebaseFirestore db, FirebaseAuth auth) {
+        this.repo = repo;
+        this.db = db;
+        this.auth = auth;
     }
 
     public void requestPacks() {
@@ -39,7 +39,7 @@ public class MapData {
                             .collect(Collectors.toList());
 
 
-                    receiver.receivePacks(packs);
+                    repo.receivePacks(packs);
 
 
                 } else {
@@ -65,13 +65,8 @@ public class MapData {
                         @Override
                         public void onComplete(@NonNull Task<DocumentReference> task) {
                             if (task.isSuccessful()) {
-                                Card decodedCard = new Card(
-                                        (String) acquiredCard.get("name"),
-                                        (String) acquiredCard.get("description"),
-                                        Card.Rarity.valueOf((String) acquiredCard.get("rarity")),
-                                        (String) acquiredCard.get("imageurl"));
 
-                                receiver.acquireRandomCardCallback(decodedCard);
+                                repo.acquireRandomCardCallback(acquiredCard);
                                 Log.d("ACQUISITION", "added card successfully");
                             } else {
                                 Log.d("ACQUISITION", "failed to add card: " + task.getException());

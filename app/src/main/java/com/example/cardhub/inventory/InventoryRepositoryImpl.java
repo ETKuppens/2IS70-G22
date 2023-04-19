@@ -2,6 +2,9 @@ package com.example.cardhub.inventory;
 
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +14,7 @@ public class InventoryRepositoryImpl implements InventoryRepository {
     InventoryRepositoryReceiver receiver;
 
     public InventoryRepositoryImpl(InventoryRepositoryReceiver receiver) {
-        data = new InventoryData(this);
+        data = new InventoryData(this, FirebaseAuth.getInstance(), FirebaseFirestore.getInstance());
         this.receiver = receiver;
     }
 

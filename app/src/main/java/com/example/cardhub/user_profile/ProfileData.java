@@ -19,10 +19,9 @@ public class ProfileData {
     FirebaseAuth auth;
     ProfileRepository repo;
 
-
-    public ProfileData(ProfileRepository repo) {
-        this.db = FirebaseFirestore.getInstance();
-        this.auth = FirebaseAuth.getInstance();
+    public ProfileData(ProfileRepository repo, FirebaseAuth auth, FirebaseFirestore db) {
+        this.db = db;
+        this.auth = auth;
         this.repo = repo;
     }
 
@@ -46,9 +45,6 @@ public class ProfileData {
                                 profile.put("email", auth.getCurrentUser().getEmail());
                                 profile.put("cardamount", cardAmount);
                                 profile.put("tradesmade", (int)(long)task.getResult().get("tradesmade"));
-
-                                Log.d("PROFILE", "profile: " + profile.toString());
-
                                 repo.receiverProfile(profile);
                             }
                         }

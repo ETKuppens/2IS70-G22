@@ -1,6 +1,9 @@
 package com.example.cardhub.card_creation;
 
 import com.example.cardhub.inventory.Card;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 
 /**
  * Repository Class for creating cards.
@@ -11,7 +14,9 @@ public class CardCreationRepositoryImpl implements CardCreationRepository {
     CardCreationData data;
     //Constructor
     CardCreationRepositoryImpl() {
-        data = new CardCreationData();
+        data = new CardCreationData(FirebaseFirestore.getInstance(),
+                FirebaseAuth.getInstance(),
+                FirebaseStorage.getInstance());
     }
 
 

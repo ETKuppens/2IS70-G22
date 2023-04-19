@@ -25,13 +25,11 @@ public class CardCreationData {
     FirebaseFirestore db;
     FirebaseAuth auth;
     FirebaseStorage storage;
-    StorageReference ref;
 
-    CardCreationData() {
-        this.db = FirebaseFirestore.getInstance();
-        this.auth = FirebaseAuth.getInstance();
-        this.storage = FirebaseStorage.getInstance();
-        this.ref = storage.getReference("card_images/");
+    CardCreationData(FirebaseFirestore db, FirebaseAuth auth, FirebaseStorage storage) {
+        this.db = db;
+        this.auth = auth;
+        this.storage = storage;
     }
 
     /**
@@ -40,6 +38,8 @@ public class CardCreationData {
      * @param c The card that needs to be published
      */
     public void publishCard(Card c) {
+        final StorageReference ref = storage.getReference("card_images/");
+
         StorageReference imageRef = ref.child(c.NAME + ".png");
         imageRef.putFile(Uri.parse(c.IMAGE_URL)).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override

@@ -1,6 +1,7 @@
 package com.example.cardhub.TradingMode;
 
 import com.example.cardhub.inventory.Card;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,7 @@ public class TradingSessionRepositoryImpl implements TradingSessionRepository {
     TradingSessionRepositoryReceiver receiver;
 
     public TradingSessionRepositoryImpl (TradingSessionRepositoryReceiver receiver, String lid, String clientid) {
-        data = new TradingSessionData(this, lid, clientid);
+        data = new TradingSessionData(this, FirebaseFirestore.getInstance(), lid, clientid);
         this.receiver = receiver;
     }
 
@@ -31,12 +32,12 @@ public class TradingSessionRepositoryImpl implements TradingSessionRepository {
 
     @Override
     public void acceptProposedTrade(String clientID) {
-        data.acceptProposedTrade(clientID);
+        data.acceptProposedTrade();
     }
 
     @Override
     public void cancelAcceptTrade(String clientID) {
-        data.cancelAcceptTrade(clientID);
+        data.cancelAcceptTrade();
     }
 
     @Override
