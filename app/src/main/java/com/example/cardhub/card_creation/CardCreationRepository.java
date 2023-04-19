@@ -10,20 +10,11 @@ import com.google.firebase.storage.FirebaseStorage;
  * Interface between Data and State class for the CardCreation
  * @author Rijkman
  */
-public class CardCreationRepository {
-    CardCreationData data;
-
-    CardCreationRepository() {
-        data = new CardCreationData(FirebaseFirestore.getInstance(),
-                FirebaseAuth.getInstance(),
-                FirebaseStorage.getInstance());
-    }
+public interface CardCreationRepository {
 
     /**
      * Publishes card c to the Card Pool
      * @param c the card to publish
      */
-    public void publishCard(Card c) {
-        data.publishCard(c);
-    }
+    public void publishCard(Card c);
 }
