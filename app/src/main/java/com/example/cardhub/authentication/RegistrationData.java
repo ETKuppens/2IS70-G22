@@ -130,7 +130,7 @@ public class RegistrationData {
      * @throws IllegalArgumentException if {@code !(role.equals("Card Collector") ^ role.equals("Card Creator"))}
      * @return HashMap with the appropriate user characteristics for Firestore
      */
-    private Map<String, Object> createNewUserEntry(String role) throws NullPointerException, IllegalArgumentException {
+    private Map<String, Object> createNewUserEntry(String role) throws IllegalArgumentException {
         // Variables
         Map<String, Object> userEntry = new HashMap<>();
 

@@ -47,7 +47,7 @@ public class ForgotPasswordData {
      * @throws NullPointerException if {@code emailAddress == null}
      * @post password-reset email has been send
      */
-    public void sendForgotPasswordEmail(String emailAddress) {
+    public void sendForgotPasswordEmail(String emailAddress) throws NullPointerException {
         // Precondition testing
         // EmailAddress precondition test
         if (emailAddress == null) {

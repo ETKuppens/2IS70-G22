@@ -18,7 +18,7 @@ public interface LoginReceiver {
      * @throws IllegalArgumentException if {@code !((role.equals("Card Collector") ^ role.equals("Card Creator"))))}
      * @post correct registration-success callback function has been called
      */
-    void signInSuccess(String role);
+    void signInSuccess(String role) throws NullPointerException, IllegalArgumentException;
 
     /**
      * Propagates sign-in-database-failure signals.

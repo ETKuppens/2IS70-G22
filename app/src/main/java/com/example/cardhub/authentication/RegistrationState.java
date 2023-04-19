@@ -47,7 +47,7 @@ public class RegistrationState implements RegistrationReceiver {
      * @pre {@code emailAddress != null && password != null && (role.equals('Card Creator') ^ role.equals('Card Collector'))}
      * @post parameters have been passed for registration
      */
-    public void register(String emailAddress, String password, String confirm, String role) throws IllegalArgumentException {
+    public void register(String emailAddress, String password, String confirm, String role) throws NullPointerException, IllegalArgumentException {
         // Precondition testing
         // Email precondition test
         if (emailAddress == null) {

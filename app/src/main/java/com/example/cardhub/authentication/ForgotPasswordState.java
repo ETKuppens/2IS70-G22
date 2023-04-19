@@ -51,7 +51,7 @@ public class ForgotPasswordState implements ForgotPasswordReceiver {
      * @throws NullPointerException if {@code emailAddress == null}
      * @post parameters have been passed for sending the password-reset-email
      */
-    public void sendForgotPasswordEmail(String emailAddress) {
+    public void sendForgotPasswordEmail(String emailAddress) throws NullPointerException {
         // Precondition testing
         // EmailAddress precondition test
         if (emailAddress == null) {
