@@ -10,6 +10,13 @@ import java.util.Set;
  */
 public interface TradingSessionRepository {
     /**
+     * Set the data this TradingSessionRepository should be interacting with.
+     * @param data the TradingSessionData that this TradingSessionRepository should be interacting
+     *             with.
+     */
+    void setData(TradingSessionData data);
+
+    /**
      * Set the receiver this TradingSessionRepository should be interacting with.
      * @param receiver the TradingSessionRepositoryReceiver that this TradingSessionRepository
      *                 should be interacting with.

@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 
 public class TradingSessionData {
     TradingSessionRepository repository;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    protected FirebaseFirestore db;
     private DocumentReference docRef;
     private String lid;
     private String clientid;
@@ -43,7 +43,17 @@ public class TradingSessionData {
     private String otherPlayer;
     private ListenerRegistration listenerRegistration;
 
+    /**
+     * Constructor for the TradingSessionData that should never be used, except for when
+     * instantiating child classes that do not require access to the FirebaseFirestore instance,
+     * e.g. DummyTradingSessionData.
+     */
+    public TradingSessionData() {
+
+    }
+
     public TradingSessionData(TradingSessionRepository repository, String lid, String clientid) {
+        this.db =  FirebaseFirestore.getInstance();
         this.repository = repository;
         this.lid = lid;
         this.clientid = clientid;
@@ -160,7 +170,7 @@ public class TradingSessionData {
      * @param clientID the ID of the application instance that will be used by the server to
      *                 identify which side of the trading session has requested the trading session to be cancelled.
      */
-    void cancelTradingSession(String clientID) {
+    public void cancelTradingSession(String clientID) {
         docRef.delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -184,7 +194,7 @@ public class TradingSessionData {
      * @param clientID the ID of the application instance that will be used by the server to
      *                 identify which side of the trading session has requested to accept the proposed trade.
      */
-    void acceptProposedTrade(String clientID) {
+    public void acceptProposedTrade(String clientID) {
         Map<String, Object> data = new HashMap<>();
         data.put("acceptance_" + currentPlayer, true);
 
@@ -210,7 +220,7 @@ public class TradingSessionData {
      * @param clientID the ID of the application instance that will be used by the server to
      *                 identify which side of the trading session has requested to cancel the trade accept request.
      */
-    void cancelAcceptTrade(String clientID) {
+    public void cancelAcceptTrade(String clientID) {
         Map<String, Object> data = new HashMap<>();
         data.put("acceptance_" + currentPlayer, false);
 
@@ -237,7 +247,7 @@ public class TradingSessionData {
      * @param diffs    a set of CardDiffs that should be applied to the other clients' instance of
      *                 TradingSession.
      */
-    void changeProposedCards(String clientID, Set<CardDiff> diffs) {
+    public void changeProposedCards(String clientID, Set<CardDiff> diffs) {
         List<Map<String, Object>> data = diffs.stream().map(diff  -> diff.serialize()).collect(Collectors.toList());
 
 //        Log.d(TAG, "DocumentSnapshot written with ID: " + db.collection("lobbies").document(lid).document.getId());

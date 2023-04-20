@@ -14,8 +14,11 @@ public class TradingSessionRepositoryImpl implements TradingSessionRepository {
     TradingSessionData data;
     TradingSessionRepositoryReceiver receiver;
 
-    public TradingSessionRepositoryImpl (String lid, String clientid) {
-        data = new TradingSessionData(this, lid, clientid);
+    public TradingSessionRepositoryImpl () {}
+
+    @Override
+    public void setData(TradingSessionData data) {
+        this.data = data;
     }
 
     @Override

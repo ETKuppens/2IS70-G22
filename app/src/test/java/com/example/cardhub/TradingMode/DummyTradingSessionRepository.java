@@ -7,6 +7,18 @@ import java.util.Set;
 public class DummyTradingSessionRepository implements TradingSessionRepository {
     boolean setReceiverWasCalled = false;
 
+    private boolean setDataWasCalled = false;
+
+    @Override
+    public void setData(TradingSessionData data) {
+        this.setDataWasCalled = true;
+    }
+
+    public boolean getSetDataWasCalled() {
+        return this.setDataWasCalled;
+    }
+
+
     /**
      * Set the receiver this TradingSessionRepository should be interacting with.
      * @param receiver the TradingSessionRepositoryReceiver that this TradingSessionRepository
