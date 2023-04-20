@@ -5,6 +5,14 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+/**
+ * Tests ForgotPasswordState.
+ *
+ * @author  Vladislav Budiak, Sevket Tulgar Dinc, Etienne Kuppens,
+ *          Aqiel Oostenbrug, Marios Papalouka, Rijkman Pilaar
+ * @groupname Group 22
+ * @date 20-04-2023
+ */
 public class ForgotPasswordStateTest {
     // Variables
     @Mock
