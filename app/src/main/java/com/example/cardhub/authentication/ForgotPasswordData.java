@@ -27,7 +27,7 @@ public class ForgotPasswordData {
      * @throws NullPointerException if {@code receiver == null}
      * @post instance is initialized
      */
-    public ForgotPasswordData(ForgotPasswordReceiver receiver) {
+    public ForgotPasswordData(ForgotPasswordReceiver receiver) throws NullPointerException {
         // Precondition testing
         // Receiver precondition test
         if (receiver == null) {

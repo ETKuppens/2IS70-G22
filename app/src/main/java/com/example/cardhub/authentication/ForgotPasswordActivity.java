@@ -43,7 +43,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         // Login link was clicked
         tv_login_referral.setOnClickListener(view -> {
             // Open Login View
-            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
         });
     }
 
@@ -53,7 +53,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     public void sendForgotPasswordEmailSuccess() {
         // Start Login Activity
         // Variables
-        final Intent intent = new Intent(this.getApplicationContext(), ProfileActivity.class);
+        final Intent intent = new Intent(this, ProfileActivity.class);
         // Remove activities from memory
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent); // Open activity
