@@ -11,6 +11,7 @@ package com.example.cardhub.authentication;
 public class ForgotPasswordState implements ForgotPasswordReceiver {
     // Variables
     private final ForgotPasswordActivity activity;
+    private final ForgotPasswordData data;
 
     /**
      * Constructs new ForgotPasswordState instance using the given {@code activity}
@@ -31,6 +32,37 @@ public class ForgotPasswordState implements ForgotPasswordReceiver {
         }
 
         this.activity = activity;
+        this.data = new ForgotPasswordData(this);
+    }
+
+    /**
+     * Constructs new ForgotPasswordState instance using the given {@code activity},
+     * and {@code data} instances.
+     *
+     * @param activity ForgotPasswordActivity instance to be referenced in the code
+     * @param data ForgotPasswordData instance to be referenced in the code
+     * @pre {@code activity != null && data != null}
+     * @throws NullPointerException if {@code activity == null || data == null}
+     * @post instance is initialized
+     */
+    public ForgotPasswordState(ForgotPasswordActivity activity, ForgotPasswordData data) throws NullPointerException {
+        // Precondition testing
+        // Activity precondition test
+        if (activity == null) {
+            throw new NullPointerException(
+                    "ForgotPasswordState.ForgotPasswordState.pre violated: activity == null"
+            );
+        }
+
+        // Data precondition test
+        if (data == null) {
+            throw new NullPointerException(
+                    "ForgotPasswordState.ForgotPasswordState.pre violated: data == null"
+            );
+        }
+
+        this.activity = activity;
+        this.data = data;
     }
 
     @Override
@@ -69,9 +101,6 @@ public class ForgotPasswordState implements ForgotPasswordReceiver {
         }
 
         // Send password-reset-email request
-        // Variables
-        final ForgotPasswordData data = new ForgotPasswordData(this);
-
         data.sendForgotPasswordEmail(emailAddress); // Pass password-reset request
     }
 }
