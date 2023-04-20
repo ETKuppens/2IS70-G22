@@ -14,9 +14,10 @@ public class RegistrationState implements RegistrationReceiver {
 
     // Variables
     private final RegistrationActivity activity;
+    private final RegistrationData data;
 
     /**
-     * Constructs new RegistrationState instance using the given {@code activity}.
+     * Constructs new RegistrationState instance using the given {@code activity} instance.
      *
      * @param activity RegistrationActivity instance to be referenced in the code
      * @pre {@code activity != null}
@@ -33,6 +34,36 @@ public class RegistrationState implements RegistrationReceiver {
         }
 
         this.activity = activity;
+        this.data = new RegistrationData(this);
+    }
+
+    /**
+     * Constructs new RegistrationState instance using the given {@code activity},
+     * and {@code data} instances.
+     *
+     * @param activity RegistrationActivity instance to be referenced in the code
+     * @param data RegistrationData instance to be referenced in the code
+     * @pre {@code activity != null && data != null}
+     * @throws NullPointerException if {@code activity == null || data == null}
+     * @post instance is initialized
+     */
+    public RegistrationState(RegistrationActivity activity, RegistrationData data) throws NullPointerException {
+        // Precondition testing
+        // Activity precondition test
+        if (activity == null) {
+            throw new NullPointerException(
+                    "RegistrationState.RegistrationState.pre violated: activity == null"
+            );
+        }
+
+        if (data == null) {
+            throw new NullPointerException(
+                    "RegistrationState.RegistrationState.pre violated: data == null"
+            );
+        }
+
+        this.activity = activity;
+        this.data = data;
     }
 
     /**
@@ -93,9 +124,6 @@ public class RegistrationState implements RegistrationReceiver {
         }
 
         // Send registration request
-        // Variables
-        final RegistrationData data = new RegistrationData(this);
-
         data.register(emailAddress, password, role); // Passes registration request
     }
 
