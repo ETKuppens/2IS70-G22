@@ -17,6 +17,7 @@ public class ForgotPasswordData {
 
     // Variables
     private final ForgotPasswordReceiver receiver;
+    private final FirebaseAuth mAuth;
 
     /**
      * Constructs a new ForgotPasswordData instance using the given {@code receiver}
@@ -37,6 +38,37 @@ public class ForgotPasswordData {
         }
 
         this.receiver = receiver;
+        this.mAuth = FirebaseAuth.getInstance();
+    }
+
+    /**
+     * Constructs a new ForgotPasswordData instance using the given {@code receiver},
+     * and {@code mAuth} instances.
+     *
+     * @param receiver given receiver instance
+     * @param mAuth given mAuth instance
+     * @pre {@code receiver != null && mAuth != null}
+     * @throws NullPointerException if {@code receiver == null || mAuth == null}
+     * @post instance is initialized
+     */
+    public ForgotPasswordData(ForgotPasswordReceiver receiver, FirebaseAuth mAuth) throws NullPointerException {
+        // Precondition testing
+        // Receiver precondition test
+        if (receiver == null) {
+            throw new NullPointerException(
+                    "ForgotPasswordData.ForgotPasswordData.pre violated: receiver == null"
+            );
+        }
+
+        // MAuth precondition test
+        if (mAuth == null) {
+            throw new NullPointerException(
+                    "ForgotPasswordData.ForgotPasswordData.pre violated: mAuth == null"
+            );
+        }
+
+        this.receiver = receiver;
+        this.mAuth = mAuth;
     }
 
     /**
@@ -55,8 +87,7 @@ public class ForgotPasswordData {
         }
 
         // Attempt to send a password-reset request
-        FirebaseAuth.getInstance()
-                .sendPasswordResetEmail(emailAddress)
+        mAuth.sendPasswordResetEmail(emailAddress)
                 .addOnCompleteListener(task -> {
             if (task.isSuccessful()) { // Email was send successfully
                 Log.d(TAG, "sendPasswordResetEmail:success"); // Log success
