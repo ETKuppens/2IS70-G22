@@ -20,6 +20,8 @@ public class LoginData {
 
     // Variables
     private final LoginReceiver receiver;
+    private final FirebaseAuth mAuth;
+    private final FirebaseFirestore db;
 
     /**
      * Constructs a new LoginData instance using the given {@code receiver}
@@ -40,6 +42,47 @@ public class LoginData {
         }
 
         this.receiver = receiver;
+        this.mAuth = FirebaseAuth.getInstance();
+        this.db = FirebaseFirestore.getInstance();
+    }
+
+    /**
+     * Constructs a new LoginData instance using the given {@code receiver},
+     * {@code mAuth}, and {@code db} instances.
+     *
+     * @param receiver given receiver instance
+     * @param mAuth given mAuth instance
+     * @param db given db instance
+     * @pre {@code receiver != null && mAuth != null && db != null}
+     * @throws NullPointerException if {@code receiver == null || mAuth == null || db == null}
+     * @post instance is initialized
+     */
+    public LoginData(LoginReceiver receiver, FirebaseAuth mAuth, FirebaseFirestore db) throws NullPointerException {
+        // Precondition testing
+        // Receiver precondition test
+        if (receiver == null) {
+            throw new NullPointerException(
+                    "LoginData.LoginData.pre violated: receiver == null"
+            );
+        }
+
+        // MAuth precondition test
+        if (mAuth == null) {
+            throw new NullPointerException(
+                    "LoginData.LoginData.pre violated: mAuth == null"
+            );
+        }
+
+        // Db precondition test
+        if (db == null) {
+            throw new NullPointerException(
+                    "LoginData.LoginData.pre violated: db == null"
+            );
+        }
+
+        this.receiver = receiver;
+        this.mAuth = mAuth;
+        this.db = db;
     }
 
     /**
