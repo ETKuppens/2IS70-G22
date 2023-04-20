@@ -11,6 +11,7 @@ package com.example.cardhub.authentication;
 public class LoginState implements LoginReceiver {
     // Variables
     private final LoginActivity activity;
+    private final LoginData data;
 
     /**
      * Constructs new LoginState instance using the given {@code activity}
@@ -31,7 +32,31 @@ public class LoginState implements LoginReceiver {
         }
 
         this.activity = activity;
+        data = new LoginData(this);;
     }
+
+//    /**
+//     * Constructs new LoginState instance using the given {@code activity},
+//     * and {@code data} instances.
+//     *
+//     * @param activity LoginActivity instance to be referenced in the code
+//     * @param data Login
+//     * @pre {@code activity != null}
+//     * @throws NullPointerException if {@code activity == null}
+//     * @post instance is initialized
+//     */
+//    public LoginState(LoginActivity activity) throws NullPointerException {
+//        // Precondition testing
+//        // Activity precondition test
+//        if (activity == null) {
+//            throw new NullPointerException(
+//                    "LoginState.LoginState.pre violated: activity == null"
+//            );
+//        }
+//
+//        this.activity = activity;
+//        data = new LoginData(this);;
+//    }
 
     @Override
     public void signInSuccess(String role) throws NullPointerException, IllegalArgumentException {
