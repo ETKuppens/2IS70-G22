@@ -63,7 +63,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MapActivity extends CollectorBaseActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class MapActivity extends CollectorBaseActivity implements OnMapReadyCallback,
+        GoogleMap.OnMarkerClickListener {
     private FirebaseAuth mAuth;
 
     // Navigation part
@@ -135,6 +136,8 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
     PopupWindow cardpackPreviewWindow = null;
 
     MapState state;
+
+    public static final double AVERAGE_RADIUS_OF_EARTH_KM = 6371;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -261,8 +264,8 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
 
     /**
      * Gets the current location of the device, and positions the map's camera.
+     * Called when the user clicks a marker.
      */
-    /** Called when the user clicks a marker. */
     @Override
     public boolean onMarkerClick(final Marker marker) {
 
@@ -272,7 +275,6 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
 
         getLayoutInflater().inflate(R.layout.card_banner, findViewById(R.id.root), true);
         cardBanner = findViewById(R.id.card_banner);
-
 
         ImageView imageView = cardBanner.findViewById(R.id.card_image);
         TextView titleView = cardBanner.findViewById(R.id.card_title);
@@ -306,7 +308,6 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
                 buttonCollectCardPackClicked(pack.rarity);
             }
         });
-
         // Return false to indicate that we have not consumed the event and that we wish
         // for the default behavior to occur (which is for the camera to move such that the
         // marker is centered and for the marker's info window to open, if it has one).
@@ -378,8 +379,8 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         locationPermissionGranted = false;
-        if (requestCode
-                == PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION) {// If request is cancelled, the result arrays are empty.
+        // If request is cancelled, the result arrays are empty.
+        if (requestCode == PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION) {
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 locationPermissionGranted = true;
@@ -446,7 +447,6 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
                                 break;
                             }
                         }
-
                         // Show a dialog offering the user the list of likely places, and add a
                         // marker at the selected place.
                         MapActivity.this.openPlacesDialog();
@@ -555,8 +555,8 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         Double distance =
                 distanceBetween(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude(),
                         MarkerLatLng.latitude, MarkerLatLng.longitude);
-        //Toast.makeText(getApplicationContext(),Double.toString(distance),Toast.LENGTH_SHORT).show();
-        // Init card collection
+        // Initialize card collection
+        // !!! 300 set only for testing! In application requirements it is 30meters!
         if (distance <= 300) {
             state.acquireRandomCard(rarity);
         } else {
@@ -566,10 +566,10 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         }
     }
 
-    public static final double AVERAGE_RADIUS_OF_EARTH_KM = 6371;
-
-    public static double distanceBetween(double startLat, double startLng, double endLat, double endLng) {
+    public static double distanceBetween(double startLat, double startLng,
+                                         double endLat, double endLng) {
         double latDistance = Math.toRadians(endLat - startLat);
+
         double lngDistance = Math.toRadians(endLng - startLng);
 
         double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
@@ -606,7 +606,6 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
     @Override
     public void onDestroy() {
         super.onDestroy();
-
         destroyCardpackPreviewWindow();
     }
 
@@ -645,11 +644,10 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
                 LinearLayoutManager.HORIZONTAL,
                 false);
         cardpackRecyclerView.setLayoutManager(layoutManager);
-        CardRecyclerViewAdapter adapter = new CardRecyclerViewAdapter(cardpackRecyclerView.getContext(),
-                cardPackCards);
+        CardRecyclerViewAdapter adapter =
+                new CardRecyclerViewAdapter(cardpackRecyclerView.getContext(), cardPackCards);
         cardpackRecyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-
         cardpackPreviewWindow.showAtLocation(findViewById(R.id.map), Gravity.CENTER, 0, 0);
     }
 

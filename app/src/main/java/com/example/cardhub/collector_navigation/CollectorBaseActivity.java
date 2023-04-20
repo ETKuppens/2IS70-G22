@@ -15,7 +15,8 @@ import com.example.cardhub.user_profile.ProfileActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-public abstract class CollectorBaseActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
+public abstract class CollectorBaseActivity extends AppCompatActivity
+        implements NavigationBarView.OnItemSelectedListener {
 
     protected BottomNavigationView navigationView;
 
@@ -37,7 +38,8 @@ public abstract class CollectorBaseActivity extends AppCompatActivity implements
                     } else if (itemId == R.id.action_map) {
                         startActivity(new Intent(getApplicationContext(), MapActivity.class));
                     } else if (itemId == R.id.action_trading) {
-                        startActivity(new Intent(getApplicationContext(), PairingModeActivity.class));
+                        startActivity(new Intent(getApplicationContext(),
+                                PairingModeActivity.class));
                     } else if (itemId == R.id.action_profile) {
                         startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
                     }
@@ -75,7 +77,9 @@ public abstract class CollectorBaseActivity extends AppCompatActivity implements
         item.setChecked(true);
     }
 
-    abstract public int getLayoutId(); // this is to return which layout(activity) needs to display when clicked on tabs.
+    // this is to return which layout(activity) needs to display when clicked on tabs.
+    abstract public int getLayoutId();
 
-    abstract public int getBottomNavigationMenuItemId();//Which menu item selected and change the state of that menu item
+    //Which menu item selected and change the state of that menu item
+    abstract public int getBottomNavigationMenuItemId();
 }
