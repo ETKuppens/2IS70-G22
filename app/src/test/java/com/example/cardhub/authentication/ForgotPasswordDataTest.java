@@ -11,6 +11,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
+/**
+ * Tests ForgotPasswordData.
+ *
+ * @author  Vladislav Budiak, Sevket Tulgar Dinc, Etienne Kuppens,
+ *          Aqiel Oostenbrug, Marios Papalouka, Rijkman Pilaar
+ * @groupname Group 22
+ * @date 20-04-2023
+ */
 public class ForgotPasswordDataTest {
     // Variables
     @Mock
@@ -18,9 +26,8 @@ public class ForgotPasswordDataTest {
     @Mock
     private ForgotPasswordReceiver receiver;
     private final ForgotPasswordData data;
-
     @Captor
-    ArgumentCaptor<OnCompleteListener> onCompleteListenerArgumentCaptor;
+    private ArgumentCaptor<OnCompleteListener> onCompleteListenerArgumentCaptor;
 
     public ForgotPasswordDataTest() {
         MockitoAnnotations.openMocks(this);
@@ -34,9 +41,9 @@ public class ForgotPasswordDataTest {
     public void testSendForgotPasswordEmailSuccess() {
         // Variables
         String emailAddress = "rebuilded2.0@gmail.com";
+        Task sendPasswordResetEmailTask = Mockito.mock(Task.class);
 
         // Adjust mock
-        Task sendPasswordResetEmailTask = Mockito.mock(Task.class);
         Mockito.when(sendPasswordResetEmailTask.isSuccessful()).thenReturn(true);
 
         Mockito.when(mAuth.sendPasswordResetEmail(emailAddress))
@@ -63,10 +70,9 @@ public class ForgotPasswordDataTest {
     public void testSendForgotPasswordEmailFailure() {
         // Variables
         String emailAddress = "rebuilded2.0@gmail.com";
-
-        // Adjust mock
         Task sendPasswordResetEmailTask = Mockito.mock(Task.class);
 
+        // Adjust mock
         Mockito.when(sendPasswordResetEmailTask.isSuccessful()).thenReturn(false);
         Mockito.when(mAuth.sendPasswordResetEmail(emailAddress))
                 .thenReturn(sendPasswordResetEmailTask);
@@ -85,7 +91,7 @@ public class ForgotPasswordDataTest {
     }
 
     /**
-     * Test that {@code ForgotPasswordData} propagates a NullPointerException when {@code receiver == null || mAuth == null}.
+     * Test that {@code ForgotPasswordData} propagates a NullPointerException when {@code receiver == null}.
      */
     @Test(expected = NullPointerException.class)
     public void testForgotPasswordDataNull0() {
@@ -93,7 +99,7 @@ public class ForgotPasswordDataTest {
     }
 
     /**
-     * Test that {@code ForgotPasswordData} propagates a NullPointerException when {@code receiver == null || mAuth == null}.
+     * Test that {@code ForgotPasswordData} propagates a NullPointerException when {@code receiver == null && mAuth == null}.
      */
     @Test(expected = NullPointerException.class)
     public void testForgotPasswordDataNull1() {
@@ -101,7 +107,7 @@ public class ForgotPasswordDataTest {
     }
 
     /**
-     * Test that {@code ForgotPasswordData} propagates a NullPointerException when {@code receiver == null || mAuth == null}.
+     * Test that {@code ForgotPasswordData} propagates a NullPointerException when {@code receiver != null && mAuth == null}.
      */
     @Test(expected = NullPointerException.class)
     public void testForgotPasswordDataNull2() {
@@ -109,13 +115,16 @@ public class ForgotPasswordDataTest {
     }
 
     /**
-     * Test that {@code ForgotPasswordData} propagates a NullPointerException when {@code receiver == null || mAuth == null}.
+     * Test that {@code ForgotPasswordData} propagates a NullPointerException when {@code receiver == null && mAuth != null}.
      */
     @Test(expected = NullPointerException.class)
     public void testForgotPasswordDataNull3() {
         new ForgotPasswordData(null, mAuth);
     }
 
+    /**
+     * Test that {@code sendForgotPasswordEmail} propagates a NullPointerException when {@code emailAddress == null}.
+     */
     @Test(expected = NullPointerException.class)
     public void testSendForgotPasswordEmailNull() {
         data.sendForgotPasswordEmail(null);
