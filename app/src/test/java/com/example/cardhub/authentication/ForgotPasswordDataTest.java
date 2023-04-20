@@ -12,6 +12,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class ForgotPasswordDataTest {
+    // Variables
     @Mock
     private FirebaseAuth mAuth;
     @Mock
@@ -27,7 +28,7 @@ public class ForgotPasswordDataTest {
     }
 
     /**
-     * Test that {@code sendForgotPasswordEmail} calls {@code sendForgotPasswordSuccess} when it succeeds.
+     * Test that {@code sendForgotPasswordEmail} calls {@code sendForgotPasswordSuccess} on {@code receiver} when it succeeds.
      */
     @Test
     public void testSendForgotPasswordEmailSuccess() {
@@ -87,10 +88,36 @@ public class ForgotPasswordDataTest {
      * Test that {@code ForgotPasswordData} propagates a NullPointerException when {@code receiver == null || mAuth == null}.
      */
     @Test(expected = NullPointerException.class)
-    public void testForgotPasswordDataNull() {
+    public void testForgotPasswordDataNull0() {
         new ForgotPasswordData(null);
+    }
+
+    /**
+     * Test that {@code ForgotPasswordData} propagates a NullPointerException when {@code receiver == null || mAuth == null}.
+     */
+    @Test(expected = NullPointerException.class)
+    public void testForgotPasswordDataNull1() {
         new ForgotPasswordData(null, null);
+    }
+
+    /**
+     * Test that {@code ForgotPasswordData} propagates a NullPointerException when {@code receiver == null || mAuth == null}.
+     */
+    @Test(expected = NullPointerException.class)
+    public void testForgotPasswordDataNull2() {
         new ForgotPasswordData(receiver, null);
+    }
+
+    /**
+     * Test that {@code ForgotPasswordData} propagates a NullPointerException when {@code receiver == null || mAuth == null}.
+     */
+    @Test(expected = NullPointerException.class)
+    public void testForgotPasswordDataNull3() {
         new ForgotPasswordData(null, mAuth);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testSendForgotPasswordEmailNull() {
+        data.sendForgotPasswordEmail(null);
     }
 }
