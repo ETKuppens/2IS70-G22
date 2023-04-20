@@ -21,6 +21,8 @@ public class RegistrationData {
 
     // Variables
     private final RegistrationReceiver receiver;
+    private final FirebaseAuth mAuth;
+    private final FirebaseFirestore db;
 
     /**
      * Constructs a new RegistrationData instance using the given {@code receiver}
@@ -41,6 +43,45 @@ public class RegistrationData {
         }
 
         this.receiver = receiver;
+        this.mAuth = FirebaseAuth.getInstance();
+        this.db = FirebaseFirestore.getInstance();
+    }
+
+    /**
+     * Constructs a new RegistrationData instance using the given {@code receiver},
+     * {@code mAuth}, and {@code db} instances.
+     *
+     * @param receiver given receiver instance
+     * @pre {@code receiver != null && mAuth != null && db != null}
+     * @throws NullPointerException if {@code receiver == null || receiver == null || db == null}
+     * @post instance is initialized
+     */
+    public RegistrationData(RegistrationReceiver receiver, FirebaseAuth mAuth, FirebaseFirestore db) throws NullPointerException {
+        // Precondition testing
+        // Receiver precondition test
+        if (receiver == null) {
+            throw new NullPointerException(
+                    "RegistrationData.RegistrationData.pre violated: receiver == null"
+            );
+        }
+
+        // MAuth precondition test
+        if (mAuth == null) {
+            throw new NullPointerException(
+                    "RegistrationData.RegistrationData.pre violated: mAuth == null"
+            );
+        }
+
+        // Db precondition test
+        if (db == null) {
+            throw new NullPointerException(
+                    "RegistrationData.RegistrationData.pre violated: db == null"
+            );
+        }
+
+        this.receiver = receiver;
+        this.mAuth = mAuth;
+        this.db = db;
     }
 
     /**
@@ -69,9 +110,6 @@ public class RegistrationData {
         if (role == null) {
             throw new NullPointerException("RegistrationData.signIn.pre violated: role == null");
         }
-
-        // Variables
-        final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
         // Attempt to create an account
         mAuth.createUserWithEmailAndPassword(emailAddress, password)
@@ -109,9 +147,8 @@ public class RegistrationData {
         }
 
         // Attempt to upload the userEntry
-        FirebaseFirestore.getInstance()
-            .collection("users").document(user.getUid())
-            .set(userEntry)
+        db.collection("users").document(user.getUid())
+                .set(userEntry)
             .addOnSuccessListener(aVoid -> { // Upload succeeded
                 Log.d(TAG, "userEntryUpload:success"); // Log success
                 receiver.registrationSuccess(role); // Propagate success signal
