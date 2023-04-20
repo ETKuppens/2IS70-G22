@@ -32,31 +32,37 @@ public class LoginState implements LoginReceiver {
         }
 
         this.activity = activity;
-        data = new LoginData(this);;
+        this.data = new LoginData(this);
     }
 
-//    /**
-//     * Constructs new LoginState instance using the given {@code activity},
-//     * and {@code data} instances.
-//     *
-//     * @param activity LoginActivity instance to be referenced in the code
-//     * @param data Login
-//     * @pre {@code activity != null}
-//     * @throws NullPointerException if {@code activity == null}
-//     * @post instance is initialized
-//     */
-//    public LoginState(LoginActivity activity) throws NullPointerException {
-//        // Precondition testing
-//        // Activity precondition test
-//        if (activity == null) {
-//            throw new NullPointerException(
-//                    "LoginState.LoginState.pre violated: activity == null"
-//            );
-//        }
-//
-//        this.activity = activity;
-//        data = new LoginData(this);;
-//    }
+    /** Constructs new LoginState instance using the given {@code activity},
+     *  and {@code data} instances.
+     *
+     * @param activity LoginActivity instance to be referenced in the code
+     * @param data LoginData instance to be referenced in the code
+     * @pre {@code activity != null && data != null}
+     * @throws NullPointerException if {@code activity == null || data == null}
+     * @post instance is initialized
+     */
+    public LoginState(LoginActivity activity, LoginData data) throws NullPointerException {
+        // Precondition testing
+        // Activity precondition test
+        if (activity == null) {
+            throw new NullPointerException(
+                    "LoginState.LoginState.pre violated: activity == null"
+            );
+        }
+
+        // Data precondition test
+        if (data == null) {
+            throw new NullPointerException(
+                    "LoginState.LoginState.pre violated: data == null"
+            );
+        }
+
+        this.activity = activity;
+        this.data = data;
+    }
 
     @Override
     public void signInSuccess(String role) throws NullPointerException, IllegalArgumentException {
@@ -110,9 +116,6 @@ public class LoginState implements LoginReceiver {
         }
 
         // Attempt to sign-in
-        // Variables
-        final LoginData data = new LoginData(this);
-
         data.signIn(emailAddress, password); // Pass sign-in request
     }
 
@@ -126,9 +129,6 @@ public class LoginState implements LoginReceiver {
      * @post session-check function has been called
      */
     public void signInSignedInUsers() {
-        // Variables
-        final LoginData data = new LoginData(this);
-
         data.signInSignedInUsers(); // Pass session-check request
     }
 }
