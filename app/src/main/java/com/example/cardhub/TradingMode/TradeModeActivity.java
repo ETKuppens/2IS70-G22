@@ -8,10 +8,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,41 +16,54 @@ import com.example.cardhub.CardRecyclerViewAdapter;
 import com.example.cardhub.R;
 import com.example.cardhub.authentication.LoginActivity;
 import com.example.cardhub.inventory.Card;
-import com.example.cardhub.inventory.CardActivity;
 import com.example.cardhub.inventory.InventoryActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 public class TradeModeActivity extends AppCompatActivity implements View.OnClickListener, OnRecyclerViewItemClickListener {
 
-    private TradeModeState state;
+    private TradeModeState state; // Instance of this Trading session State
 
-    private Button readyButton;
-    private Button cancelButton;
-    private Button cardSelectButton;
+    private Button readyButton; // Button that is used to indicate that this player is ready to trade.
+    private Button cancelButton; // Button that is used to indicate that this player wants to cancel
+                                 // the trade.
+    private Button cardSelectButton; // Button that is used to allow this player to select cards from
+                                     // their inventory to propose in the trade.
 
-    private TextView otherPlayerReadyText;
+    private TextView otherPlayerReadyText; // Text that is used to show that the other player is ready
+                                           // to trade.
 
-    private RecyclerView otherPlayerProposedCardsRecyclerView;
-    private RecyclerView thisPlayerProposedCardsRecyclerView;
+    private RecyclerView otherPlayerProposedCardsRecyclerView; // Representation of a list of cards
+                                                               // proposed by the other player.
+    private RecyclerView thisPlayerProposedCardsRecyclerView; // Representation of a list of cards
+                                                              // proposed by this player.
 
-    private CardRecyclerViewAdapter otherPlayerRecyclerViewAdapter;
-    private CardRecyclerViewAdapter thisPlayerRecyclerViewAdapter;
+    private CardRecyclerViewAdapter otherPlayerRecyclerViewAdapter; // Adapter to the RecyclerView
+                                                                    // of the other player.
+    private CardRecyclerViewAdapter thisPlayerRecyclerViewAdapter; // Adapter to the RecyclerView
+                                                                   // of this player.
 
-    private List<Card> otherPlayerProposedCards = new ArrayList<>();
-    private List<Card> thisPlayerProposedCards = new ArrayList<>();
-
-    private Card clickedCard = null; // Card that was clicked to be removed
+    private List<Card> otherPlayerProposedCards = new ArrayList<>(); // List of cards proposed by
+                                                                     // the other player.
+    private List<Card> thisPlayerProposedCards = new ArrayList<>(); // List of cards proposed by
+                                                                    // this player.
     private String lid; // Lobby id
-    private String clientid;
-    private FirebaseAuth mAuth;
+    private String clientid; // ID of this client
+    private FirebaseAuth mAuth; // Entry point for the Firebase Authentication SDK.
 
+    /**
+     * Create the TradeModeActivity; inflate the view, find all relevant views, set adapters for
+     * the two RecyclerViews, set this class as a listener for all buttons in the activity, initialize
+     * communication with Firebase.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -90,18 +99,24 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
         thisPlayerRecyclerViewAdapter.setOnRecyclerViewItemClickListener(this);
     }
 
+    /**
+     * Get the ID of the client that instantiated this TradeModeActivity.
+     * @return the ID of the client that instantiated this TradeModeActivity.
+     */
     private String getClientID() {
         return getIntent().getStringExtra("clientid");
     }
 
     /**
-     * Returns the lobby id that was passed when starting this activity.
+     * Get the lobby ID that was passed when starting this TradeModeActivity.
+     * @return the lobby ID that was passed when starting this TradeModeActivity.
      */
     private String getLobbyID() { return getIntent().getStringExtra("lobbyid"); }
 
     /**
      * Update the UI in activity using the data from the TradingSession instance.
-     * TODO: implement this method
+     * @param tradingSession the TradingSession instance that stores which cards are proposed by both
+     *                       players in the trade.
      */
     public void updateUI(TradingSession tradingSession) {
         if (otherPlayerProposedCards == null) {
@@ -125,81 +140,94 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
         this.thisPlayerRecyclerViewAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Cancel the Trading Session.
+     */
     public void cancelTradeMode() {
         finish();
     }
 
+    /**
+     * Disallow this player to change their proposed trade.
+     */
     public void disableChangeTradeProposal() {
         this.cardSelectButton.setEnabled(false);
     }
 
+    /**
+     * Allow this player to change their proposed trade.
+     */
     public void enableChangeTradeProposal() {
         this.cardSelectButton.setEnabled(true);
     }
 
+    /**
+     * Disallow this player to accept the currently proposed trade.
+     */
     public void disableAcceptTrade() {
         this.readyButton.setEnabled(false);
     }
 
+    /**
+     * Allow this player to accept the currently proposed trade.
+     */
     public void enableAcceptTrade() {
         this.readyButton.setEnabled(true);
     }
 
+    /**
+     * Disallow this player to cancel the trading session.
+     */
     public void disableCancelTrade() {
         this.cancelButton.setEnabled(false);
     }
 
+    /**
+     * Allow this player to cancel the trading session.
+     */
     public void enableCancelTrade() {
         this.cancelButton.setEnabled(true);
     }
 
+    /**
+     * Hide the message indicating that the other player is ready to trade.
+     */
     public void disableOtherPlayerReadyMessage() {
         this.otherPlayerReadyText.setVisibility(View.GONE);
     }
 
+    /**
+     * Show the message indicating that the other player is ready to trade.
+     */
     public void enableOtherPlayerReadyMessage() {
         this.otherPlayerReadyText.setVisibility(View.VISIBLE);
     }
 
-
+    /**
+     * Handle the event where the cancel button is clicked from the current state.
+     */
     private void cancelButtonClicked() {
         state.cancelTradingSessionFromUI();
     }
 
+    /**
+     * Handle the event where the ready button is clicked from the current state.
+     */
     private void readyButtonClicked() {
         state.readyFromUI();
     }
 
+    /**
+     * Handle the event where the card select button is clicked from the current state.
+     */
     private void cardSelectButtonClicked() {
-        // CardDiff diff;
-
-        Intent intent = new Intent(TradeModeActivity.this, InventoryActivity.class);
-        intent.putExtra("origin","TradeModeActivity"); // Show that the inventory activity is
-                                                                  // started from a TradeModeActivity.
-
-        cardSelectResultLauncher.launch(intent);
+        state.cardSelectFromUI();
     }
 
-    ActivityResultLauncher<Intent> cardSelectResultLauncher = registerForActivityResult(
-        new ActivityResultContracts.StartActivityForResult(),
-        new ActivityResultCallback<ActivityResult>() {
-            @Override
-            public void onActivityResult(ActivityResult result) {
-                if (result.getResultCode() != RESULT_OK) {
-                    return;
-                }
-                // result.getResultCode() == RESULT_OK
-
-                String encodedCardDiff = result.getData().getStringExtra("CardDiff");
-
-                Gson converter = new Gson();
-                CardDiff decodedCardDiff = converter.fromJson(encodedCardDiff, CardDiff.class);
-
-                state.changeProposedCardsFromUI(new HashSet<>(Arrays.asList(decodedCardDiff)));
-            }
-        }
-    );
-
+    /**
+     * Handle the event when one of the views that this activity is listening to was clicked.
+     * @param view The view that was clicked.
+     */
     @Override
     public void onClick(View view) {
         // Change functionality depending on which button was clicked.
@@ -221,50 +249,26 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    private ActivityResultLauncher<Intent> proposedCardRemoveResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() != RESULT_OK) {
-                        clickedCard = null;
-                        return;
-                    }
-                    // result.getResultCode() == RESULT_OK
-                    CardDiff decodedCardDiff = new CardDiff(clickedCard, CardDiff.DiffOption.REMOVE);
-
-                    state.changeProposedCardsFromUI(new HashSet<>(Arrays.asList(decodedCardDiff)));
-
-                    clickedCard = null;
-                }
-            }
-    );
-
+    /**
+     * Handle the event when one of the cards proposed by this player was clicked.
+     * @param clickedCard Card in the RecyclerView that was clicked.
+     */
     @Override
     public void OnRecyclerViewItemClick(Card clickedCard) {
-        if (!state.getCardMayBeRemoved()) {
-            return;
-        }
-
-        this.clickedCard = clickedCard;
-
-        Intent intent = new Intent(TradeModeActivity.this, CardActivity.class);
-        intent.putExtra("origin","TradeModeActivity"); // Show that the inventory activity is
-                                                                  // started from a TradeModeActivity.
-        Gson converter = new Gson();
-        String encodedCard = converter.toJson(clickedCard);
-
-        intent.putExtra("card", encodedCard);
-        intent.putExtra("ShouldSupportChoosingACard", true);
-
-        proposedCardRemoveResultLauncher.launch(intent);
+        state.proposedCardClickedFromUI(clickedCard);
     }
 
+    /**
+     * Handle the event when the back button gets pressed.
+     */
     @Override
     public void onBackPressed() {
-        this.state.backPressedFromUI();
+        state.backPressedFromUI();
     }
 
+    /**
+     * Show a toast notifying the user that the trading session cannot currently be canceled.
+     */
     public void showCancelByBackPressedToast() {
         Toast toast = Toast.makeText(TradeModeActivity.this,
                                  "Cannot currently cancel",
@@ -272,11 +276,17 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
         toast.show();
     }
 
+    /**
+     * Finish the trading session.
+     */
     public void finishTrade() {
         Intent finishTradeIntent = new Intent(this, InventoryActivity.class);
         startActivity(finishTradeIntent);
     }
 
+    /**
+     * Start the activity according to whether current player is logged in correctly.
+     */
     @Override
     public void onStart() {
         super.onStart();

@@ -12,5 +12,5 @@ public interface MapRepository {
 
     public void acquireRandomCard(Card.Rarity rarity);
 
-    void acquireRandomCardCallback(Card acquiredCard);
+    public void acquireRandomCardCallback(Map<String,Object> acquiredCard);
 }

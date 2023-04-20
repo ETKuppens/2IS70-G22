@@ -52,7 +52,13 @@ public interface TradingSessionRepositoryReceiver {
      */
     void changeProposedCardsResponse();
 
+    /**
+     * Start the trade timer.
+     */
     void startTradeTimer();
 
+    /**
+     * Finish the trade.
+     */
     void finishTrade();
 }
