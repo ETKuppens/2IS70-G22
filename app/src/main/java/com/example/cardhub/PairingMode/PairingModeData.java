@@ -9,6 +9,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Map;
+
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 
@@ -20,6 +22,10 @@ public class PairingModeData {
     Bitmap bitmap;
 
     QRGEncoder qrgEncoder;
+
+    String lobby;
+
+    Map<String, Object> lobbyMap;
 
     public PairingModeData(PairingModeRepository repository, FirebaseAuth mAuth, FirebaseFirestore db) {
         this.repository = repository;
@@ -63,4 +69,6 @@ public class PairingModeData {
 
         return bitmap;
     }
+
+
 }
