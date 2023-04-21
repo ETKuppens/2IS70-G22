@@ -113,7 +113,7 @@ public class RegistrationStateTest {
     }
 
     /**
-     * Test that {@code register} calls {@code register} on {@code data}.
+     * Test that {@code register} calls {@code register} on {@code data} when given proper parameters.
      */
     @Test
     public void testRegister() {
