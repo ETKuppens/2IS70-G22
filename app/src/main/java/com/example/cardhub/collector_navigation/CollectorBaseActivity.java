@@ -7,7 +7,7 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.cardhub.PairingModeActivity;
+import com.example.cardhub.PairingMode.PairingModeActivity;
 import com.example.cardhub.R;
 import com.example.cardhub.inventory.InventoryActivity;
 import com.example.cardhub.map.MapActivity;

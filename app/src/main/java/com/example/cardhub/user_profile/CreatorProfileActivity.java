@@ -5,12 +5,11 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.example.cardhub.PairingModeActivity;
+import com.example.cardhub.PairingMode.PairingModeActivity;
 import com.example.cardhub.R;
 import com.example.cardhub.authentification.LoginActivity;
 import com.example.cardhub.creator_navigation.CreatorBaseActivity;

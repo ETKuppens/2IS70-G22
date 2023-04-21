@@ -29,7 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cardhub.BuildConfig;
 import com.example.cardhub.CardRecyclerViewAdapter;
-import com.example.cardhub.PairingModeActivity;
+import com.example.cardhub.PairingMode.PairingModeActivity;
 import com.example.cardhub.R;
 import com.example.cardhub.authentification.LoginActivity;
 import com.example.cardhub.collector_navigation.CollectorBaseActivity;

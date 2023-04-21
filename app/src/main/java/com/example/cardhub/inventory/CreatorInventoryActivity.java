@@ -15,7 +15,6 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 
-import com.example.cardhub.PairingModeActivity;
 import com.example.cardhub.R;
 import com.example.cardhub.TradingMode.CardDiff;
 import com.example.cardhub.authentification.LoginActivity;

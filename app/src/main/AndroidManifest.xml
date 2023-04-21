@@ -51,7 +51,7 @@
             android:screenOrientation="portrait"
             android:exported="false" />
         <activity
-            android:name=".PairingModeActivity"
+            android:name=".PairingMode.PairingModeActivity"
             android:exported="false" />
         <activity
             android:name="com.example.cardhub.MainActivity"
