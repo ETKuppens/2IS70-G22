@@ -28,6 +28,11 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
     private Button cancelButton;
     private Button confirmButton;
 
+    /**
+     * This method sets up the Card activity by initializing various UI elements,
+     * checking if the activity should support choosing a card, and loading the details of the card.
+     * @param savedInstanceState the saved instance state of the activity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +80,12 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         Glide.with(getApplicationContext()).load(card.IMAGE_URL).into(imageView);
     }
 
+    /**
+     * This method handles the selection of an item in the options menu.
+     * If the selected item is the home button, the activity is finished.
+     * @param item the selected menu item
+     * @return true if the item selection is handled, false otherwise
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -86,6 +97,13 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         return true;
     }
 
+    /**
+     * This method handles click events for the cancel and confirm buttons in the Card activity.
+     * If the activity should not support choosing a card, the method does nothing.
+     * Otherwise, it sets the result of the activity based on which button was clicked and
+     * finishes the activity.
+     * @param view the view that was clicked
+     */
     @Override
     public void onClick(View view) {
         if (!this.shouldSupportChoosingACard) {
@@ -109,6 +127,12 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    /**
+     * This method is called when the activity is becoming visible to the user.
+     * It checks if the user is signed in and updates the UI accordingly.
+     * If the user is not signed in, the method launches the LoginActivity and clears
+     * the task stack.
+     */
     @Override
     public void onStart() {
         super.onStart();

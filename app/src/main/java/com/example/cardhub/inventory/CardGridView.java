@@ -16,6 +16,10 @@ public class CardGridView extends GridView {
 
     private static final String TAG = CardGridView.class.getName();
 
+    /**
+     * Constructs a new instance of the CardGridView class with the specified Context.
+     * @param context the context in which this view will be displayed
+     */
     @SuppressWarnings("unused")
     public CardGridView(Context context) {
         super(context);
@@ -31,6 +35,10 @@ public class CardGridView extends GridView {
         super(context, attrs, defStyle);
     }
 
+    /**
+     * An implementation of DataSetObserver that receives callbacks when the underlying data
+     * set for an adapter has changed.
+     */
     class AdapterDataSetObserver extends DataSetObserver {
         @Override
         public void onChanged() {
@@ -50,6 +58,10 @@ public class CardGridView extends GridView {
     private DataSetObserver mDataSetObserver = new AdapterDataSetObserver();
     private ListAdapter mAdapter;
 
+    /**
+     * Sets the adapter that provides data to this view.
+     * @param adapter The adapter to set.
+     */
     @Override
     public void setAdapter(ListAdapter adapter) {
         super.setAdapter(adapter);
@@ -62,6 +74,10 @@ public class CardGridView extends GridView {
         mAdapter.registerDataSetObserver(mDataSetObserver);
     }
 
+    /**
+     * Refreshes the visible views by calling getView() on the adapter for each visible child.
+     * If the adapter is null or any visible view is null, no action is taken for that child.
+     */
     void refreshVisibleViews() {
         if (mAdapter != null) {
             for (int i = getFirstVisiblePosition(); i <= getLastVisiblePosition(); i ++) {
@@ -76,11 +92,22 @@ public class CardGridView extends GridView {
         }
     }
 
+    /**
+     * Returns whether this item is currently expanded or collapsed.
+     * @return true if this item is expanded, false otherwise.
+     */
     public boolean isExpanded()
     {
         return expanded;
     }
 
+    /**
+     * Measures the view and sets its size based on the measurement parameters.
+     * Overrides the default behavior to expand the view's height if it is currently expanded.
+     * If it is not expanded, the view's height is set according to the heightMeasureSpec parameter.
+     * @param widthMeasureSpec The width measurement specification.
+     * @param heightMeasureSpec The height measurement specification.
+     */
     @Override
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
     {
@@ -102,6 +129,10 @@ public class CardGridView extends GridView {
         }
     }
 
+    /**
+     * Sets the expanded state of this item.
+     * @param expanded true if this item should be expanded, false if it should be collapsed.
+     */
     public void setExpanded(boolean expanded)
     {
         this.expanded = expanded;
