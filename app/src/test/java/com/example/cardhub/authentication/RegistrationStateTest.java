@@ -30,7 +30,7 @@ public class RegistrationStateTest {
      * Test that {@code RegistrationState} propagates a NullPointerException when {@code activity == null}.
      */
     @Test(expected = NullPointerException.class)
-    public void testRegistrationStateNull0() {
+    public void testRegistrationStateNullException0() {
         new RegistrationState(null);
     }
 
@@ -38,7 +38,7 @@ public class RegistrationStateTest {
      * Test that {@code RegistrationState} propagates a NullPointerException when {@code activity == null && data == null}.
      */
     @Test(expected = NullPointerException.class)
-    public void testRegistrationStateNull1() {
+    public void testRegistrationStateNullException1() {
         new RegistrationState(null, null);
     }
 
@@ -46,7 +46,7 @@ public class RegistrationStateTest {
      * Test that {@code RegistrationState} propagates a NullPointerException when {@code activity != null && data == null}.
      */
     @Test(expected = NullPointerException.class)
-    public void testRegistrationStateNull2() {
+    public void testRegistrationStateNullException2() {
         new RegistrationState(activity, null);
     }
 
@@ -54,7 +54,7 @@ public class RegistrationStateTest {
      * Test that {@code RegistrationState} propagates a NullPointerException when {@code activity == null && data != null}.
      */
     @Test(expected = NullPointerException.class)
-    public void testRegistrationStateNull3() {
+    public void testRegistrationStateNullException3() {
         new RegistrationState(null, data);
     }
 
@@ -100,7 +100,7 @@ public class RegistrationStateTest {
      * Test that {@code registrationSuccess} propagates a NullException when {@code role == null}.
      */
     @Test(expected = NullPointerException.class)
-    public void testRegistrationSuccessNull() {
+    public void testRegistrationSuccessNullException() {
         state.registrationSuccess(null);
     }
 
