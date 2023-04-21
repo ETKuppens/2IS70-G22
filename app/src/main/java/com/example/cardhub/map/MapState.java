@@ -16,6 +16,11 @@ public class MapState implements MapRepositoryReceiver {
         this.repository = new MapRepositoryImpl(this);
     }
 
+    public MapState(MapActivity activity, MapRepository repository) {
+        this.activity = activity;
+        this.repository = repository;
+    }
+
     public void requestPacks() {
         repository.requestPacks();
     }
