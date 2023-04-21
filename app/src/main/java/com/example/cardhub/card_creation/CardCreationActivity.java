@@ -76,21 +76,6 @@ public class CardCreationActivity extends CreatorBaseActivity {
             }
         });
 
-        //Button that allows to preview Card
-        Button previewCardButton = (Button) findViewById(R.id.previewCardButton);
-        previewCardButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                checkCardValidity();
-
-                Intent intent = new Intent(getApplicationContext(), CardActivity.class);
-                Card c = state.getCard();
-                Gson converter = new Gson();
-                String encodedCard = converter.toJson(c);
-                intent.putExtra("card", encodedCard);
-                startActivity(intent);
-            }
-        });
-
         //Button that allows a creator to add the current card to the card pool
         Button cardCreateButton = (Button) findViewById(R.id.createCardButton);
         cardCreateButton.setOnClickListener(new View.OnClickListener() {

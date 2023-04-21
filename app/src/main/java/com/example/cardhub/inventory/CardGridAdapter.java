@@ -21,12 +21,24 @@ public class CardGridAdapter extends BaseAdapter {
 
     LayoutInflater inflater;
 
+    /**
+     * This is the constructor for the CardGridAdapter class.
+     * It initializes the adapter with a given context and list of Card objects.
+     * @param context the context of the adapter
+     * @param cards a list of Card objects to be displayed in the adapter
+     */
     public CardGridAdapter(Context context, List<Card> cards) {
         this.context = context;
         this.cards = cards;
         inflater = LayoutInflater.from(context);
     }
 
+    /**
+     * This method updates the data in the CardGridAdapter with a new list of Card objects.
+     * If the new list is not the same as the old list, the method clears the old list and adds
+     * all the new Cards.
+     * @param newCards the new list of Card objects to be displayed in the adapter
+     */
     public void updateData(List<Card> newCards) {
         if (newCards != cards) {
             cards.clear();
@@ -34,21 +46,44 @@ public class CardGridAdapter extends BaseAdapter {
         }
     }
 
+    /**
+     * This method returns the number of Card objects in the CardGridAdapter.
+     * @return the number of Card objects in the adapter
+     */
     @Override
     public int getCount() {
         return cards.size();
     }
 
+    /**
+     * This method returns the Card object at the specified position in the CardGridAdapter.
+     * @param i the position of the Card object to return
+     * @return the Card object at the specified position
+     */
     @Override
     public Object getItem(int i) {
         return cards.get(i);
     }
 
+    /**
+     * This method returns the ID of the Card object at the specified position
+     * in the CardGridAdapter.
+     * @param i the position of the Card object whose ID is to be returned
+     * @return the ID of the Card object at the specified position
+     */
     @Override
     public long getItemId(int i) {
         return i;
     }
 
+    /**
+     * This method returns a View that displays the Card object at the specified position
+     * in the CardGridAdapter.
+     * @param i the position of the Card object to display
+     * @param view the old view to reuse, if possible
+     * @param viewGroup the parent view that the returned view will be attached to
+     * @return a View that displays the Card object at the specified position
+     */
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         if (view == null) {

@@ -32,6 +32,8 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
     private TradingSession tradingSession = new TradingSession();
 
     private Card clickedCard = null; // Card that was clicked to be removed
+    private ActivityResultLauncher<Intent> cardSelectResultLauncher;
+    private ActivityResultLauncher<Intent> proposedCardRemoveResultLauncher;
 
     /**
      * Construct a new TradeModeState that is linked to an existing TradeModeActivity.
@@ -44,6 +46,8 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
         this.activity = activity;
         this.clientid = clientid;
         this.repository = new TradingSessionRepositoryImpl(this, lid, clientid);
+        this.cardSelectResultLauncher = getCardSelectResultLauncher();
+        this.proposedCardRemoveResultLauncher = getProposedCardRemoveResultLauncher();
     }
 
     // List of flags that are used to check when certain functionality can be called.
@@ -147,7 +151,7 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
      * Intent launcher used to create a new activity to select cards from the players inventory
      * to propose in the trade.
      */
-    private ActivityResultLauncher<Intent> cardSelectResultLauncher = activity.registerForActivityResult(
+    private ActivityResultLauncher<Intent> getCardSelectResultLauncher() { return activity.registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
@@ -165,7 +169,7 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
                     changeProposedCardsFromUI(new HashSet<>(Arrays.asList(decodedCardDiff)));
                 }
             }
-    );
+    );}
 
     /**
      * Receive a message that one of the cards proposed by this player was clicked in the UI.
@@ -194,7 +198,7 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
      * Intent launcher used to create a new activity to remove a card from this players proposed
      * trade.
      */
-    private ActivityResultLauncher<Intent> proposedCardRemoveResultLauncher = activity.registerForActivityResult(
+    private ActivityResultLauncher<Intent> getProposedCardRemoveResultLauncher() { return activity.registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
@@ -211,7 +215,7 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
                     clickedCard = null;
                 }
             }
-    );
+    );}
 
     /**
      * Update the UI in activity using the data from the TradingSession instance.
