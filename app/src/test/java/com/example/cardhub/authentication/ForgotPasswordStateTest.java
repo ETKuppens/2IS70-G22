@@ -92,11 +92,14 @@ public class ForgotPasswordStateTest {
     }
 
     /**
-     * Test that {@code sendForgotPasswordEmail} propagates a NullPointerException when {@code emailAddress.equals("")}.
+     * Test that {@code sendForgotPasswordEmail} calls {@code sendForgotPasswordEmailStringFailure} when {@code emailAddress.equals("")}.
      */
-    @Test(expected = NullPointerException.class)
-    public void testSendForgotPasswordEmailNull1() {
+    @Test
+    public void testSendForgotPasswordEmailStringFailure() {
         state.sendForgotPasswordEmail("");
+
+        // Verify
+        Mockito.verify(activity).sendForgotPasswordEmailStringFailure();
     }
 
     /**

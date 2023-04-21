@@ -73,7 +73,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     /**
      * Takes appropriate action upon the email-string-failure of sending the password-reset-email.
      */
-    public void registrationEmailStringFail() {
+    public void sendForgotPasswordEmailStringFailure() {
         // Display email-string-failure message
         Toast.makeText(this, "Fill in an email", Toast.LENGTH_LONG).show();
     }

@@ -96,7 +96,7 @@ public class ForgotPasswordState implements ForgotPasswordReceiver {
 
         // Check if the emailAddress is not empty
         if (!isProperEmail) {
-            activity.registrationEmailStringFail();
+            activity.sendForgotPasswordEmailStringFailure();
             return;
         }
 
