@@ -6,14 +6,13 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
 import com.example.cardhub.PairingModeActivity;
 import com.example.cardhub.R;
-import com.example.cardhub.authentification.LoginActivity;
+import com.example.cardhub.authentication.LoginActivity;
 import com.example.cardhub.collector_navigation.CollectorBaseActivity;
 import com.example.cardhub.inventory.InventoryActivity;
 import com.example.cardhub.map.MapActivity;

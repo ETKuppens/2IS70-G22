@@ -18,4 +18,5 @@
     <string name="option_get_place">Distance to nearest point</string>
     <string name="pick_place">Choose a place</string>
     <string name="compass">Compass</string>
+    <string name="terms_of_service_link"><![CDATA[I have read and agree to the <br> <a href=\'https://www.youtube.com/watch?v=xvFZjo5PgG0\'>Terms and Conditions</a>]]></string>
 </resources>

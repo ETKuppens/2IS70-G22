@@ -25,10 +25,10 @@
 >>>>>>> feature/Navigation
             android:exported="false" />
         <activity
-            android:name="com.example.cardhub.authentification.ForgotPasswordActivity"
+            android:name="com.example.cardhub.authentication.ForgotPasswordActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.cardhub.authentification.RegistrationActivity"
+            android:name="com.example.cardhub.authentication.RegistrationActivity"
             android:exported="false" />
         <activity
             android:name="com.example.cardhub.map.MapActivity"
