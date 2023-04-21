@@ -11,7 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import com.example.cardhub.R;
 import com.example.cardhub.TradingMode.TradeModeActivity;
-import com.example.cardhub.authentification.LoginActivity;
+import com.example.cardhub.authentication.LoginActivity;
 import com.example.cardhub.collector_navigation.CollectorBaseActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

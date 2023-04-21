@@ -38,7 +38,7 @@ public class Card implements Serializable {
     /**
      * Instantiate a card without a description
      */
-    Card(String name, Rarity rarity, String imageUrl) {
+    public Card(String name, Rarity rarity, String imageUrl) {
         this.NAME = name;
         this.DESCRIPTION = "";
         this.RARITY = rarity;

@@ -12,6 +12,10 @@ public class PairingModeRepositoryImpl implements PairingModeRepository{
         data = new PairingModeData(this, FirebaseAuth.getInstance(), FirebaseFirestore.getInstance());
         this.receiver = receiver;
     }
+    public PairingModeRepositoryImpl(PairingModeRepositoryReceiver receiver, PairingModeData data) {
+        this.data = data;
+        this.receiver = receiver;
+    }
 
     public PairingModeRepositoryImpl() {
         this.data = null;

@@ -1,4 +1,4 @@
-package com.example.inventory;
+package com.example.cardhub.inventory;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.any;
