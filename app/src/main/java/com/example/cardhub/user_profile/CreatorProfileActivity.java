@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 
 import com.example.cardhub.PairingMode.PairingModeActivity;
 import com.example.cardhub.R;
-import com.example.cardhub.authentification.LoginActivity;
+import com.example.cardhub.authentication.LoginActivity;
 import com.example.cardhub.creator_navigation.CreatorBaseActivity;
 import com.example.cardhub.inventory.InventoryActivity;
 import com.example.cardhub.map.MapActivity;

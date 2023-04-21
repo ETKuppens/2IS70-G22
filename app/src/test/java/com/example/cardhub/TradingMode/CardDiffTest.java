@@ -55,13 +55,14 @@ public class CardDiffTest {
                                CardDiff.DiffOption expectedDiffOption) {
         Map<String, Object> serialization = cardDiffToTest.serialize();
 
+        @SuppressWarnings("unchecked")
         Map<String, Object> trueCardSerialized = (Map<String, Object>)serialization.get("card");
         CardDiff.DiffOption trueDiffOption = (CardDiff.DiffOption)serialization.get("diff");
 
         assertEquals(expectedCard.DESCRIPTION, (String)trueCardSerialized.get("description"));
         assertEquals(expectedCard.IMAGE_URL, (String)trueCardSerialized.get("imageurl"));
         assertEquals(expectedCard.NAME, (String)trueCardSerialized.get("name"));
-        assertEquals(expectedCard.RARITY, (Card.Rarity)trueCardSerialized.get("rarity"));
+        assertEquals(expectedCard.RARITY, Card.Rarity.valueOf((String)trueCardSerialized.get("rarity")));
 
         assertEquals(expectedDiffOption, trueDiffOption);
     }

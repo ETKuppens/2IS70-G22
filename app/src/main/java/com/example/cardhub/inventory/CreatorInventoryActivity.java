@@ -17,7 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 
 import com.example.cardhub.R;
 import com.example.cardhub.TradingMode.CardDiff;
-import com.example.cardhub.authentification.LoginActivity;
+import com.example.cardhub.authentication.LoginActivity;
 import com.example.cardhub.creator_navigation.CreatorBaseActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

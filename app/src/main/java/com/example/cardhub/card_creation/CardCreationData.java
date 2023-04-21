@@ -54,7 +54,7 @@ public class CardCreationData {
                                 HashMap<String, Object> cardObj = new HashMap<>();
                                 cardObj.put("name", c.NAME);
                                 cardObj.put("description", c.DESCRIPTION);
-                                cardObj.put("rarity", c.RARITY);
+                                cardObj.put("rarity", c.RARITY.toString());
                                 cardObj.put("imageurl", link );
 
                                 db.collection("cards/").add(cardObj).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
