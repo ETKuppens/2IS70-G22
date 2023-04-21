@@ -21,6 +21,9 @@ public class MapState implements MapRepositoryReceiver {
         this.repository = repository;
     }
 
+    /**
+     * Requests all packs from the database
+     */
     public void requestPacks() {
         repository.requestPacks();
     }
@@ -31,10 +34,20 @@ public class MapState implements MapRepositoryReceiver {
         activity.cardsResponse(packs);
     }
 
+    /**
+     * Makes a request to the database to acquire a random card of given rarity.
+     *
+     * @param rarity Rarity of the card to acquire
+     */
     public void acquireRandomCard(Card.Rarity rarity) {
         repository.acquireRandomCard(rarity);
     }
 
+    /**
+     * Receives a random card from the database
+     *
+     * @param acquiredCard acquired card
+     */
     public void acquireRandomCardCallback(Card acquiredCard) {
         activity.showCardpackPreviewWindow(Arrays.asList(acquiredCard));
     }

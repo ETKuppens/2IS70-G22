@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 public class MapRepositoryImpl implements MapRepository {
     MapState state;
     MapData data;
+
     MapRepositoryImpl(MapState state) {
         this.state = state;
         this.data = new MapData(this,
@@ -51,6 +52,11 @@ public class MapRepositoryImpl implements MapRepository {
         data.acquireRandomCard(rarity);
     }
 
+    /**
+     * Receives a random card from the database
+     *
+     * @param acquiredCard Map of the acquired card
+     */
     public void acquireRandomCardCallback(Map<String,Object> acquiredCard) {
         Card decodedCard = new Card(
                 (String) acquiredCard.get("name"),

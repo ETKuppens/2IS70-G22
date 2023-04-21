@@ -49,6 +49,11 @@ public class Card implements Serializable {
         this.IMAGE_URL = imageUrl;
     }
 
+    /**
+     * Serialize the card.
+     *
+     * @return serialized data.
+     */
     public Map<String, Object> serialize () {
         Map<String, Object> data = new HashMap<>();
 
