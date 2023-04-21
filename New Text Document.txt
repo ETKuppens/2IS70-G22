@@ -1,1 +1,0 @@
-dir=C\:\\Users\\AQLOB\\AppData\\Local\\Android\\Sdk

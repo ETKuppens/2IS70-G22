@@ -26,6 +26,7 @@ import java.util.List;
 public class TradeModeActivity extends AppCompatActivity implements View.OnClickListener, OnRecyclerViewItemClickListener {
 
     private TradeModeState state; // Instance of this Trading session State
+    private TradingSessionData data; // Instance of this Trading session Data
 
     private Button readyButton; // Button that is used to indicate that this player is ready to trade.
     private Button cancelButton; // Button that is used to indicate that this player wants to cancel
@@ -84,7 +85,11 @@ public class TradeModeActivity extends AppCompatActivity implements View.OnClick
         lid = getLobbyID();
         clientid = getClientID();
 
-        state = new TradeModeState(this, lid, clientid);
+        TradingSessionRepository repo = new TradingSessionRepositoryImpl();
+        data = new TradingSessionData(repo, lid, clientid);
+        repo.setData(data);
+        state = new TradeModeState(this, repo, clientid);
+        repo.setReceiver(state);
         mAuth = FirebaseAuth.getInstance();
 
         otherPlayerProposedCardsRecyclerView = findViewById(R.id.ProposedCardsOtherPlayer);

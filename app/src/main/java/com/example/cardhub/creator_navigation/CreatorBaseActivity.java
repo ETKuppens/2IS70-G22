@@ -14,7 +14,8 @@ import com.example.cardhub.user_profile.CreatorProfileActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-public abstract class CreatorBaseActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
+public abstract class CreatorBaseActivity extends AppCompatActivity
+        implements NavigationBarView.OnItemSelectedListener {
 
     protected BottomNavigationView navigationView;
 
@@ -32,11 +33,14 @@ public abstract class CreatorBaseActivity extends AppCompatActivity implements N
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemId = item.getItemId();
                 if (itemId == R.id.action_inventory) {
-                    startActivity(new Intent(getApplicationContext(), CreatorInventoryActivity.class));
+                    startActivity(new Intent(getApplicationContext(),
+                            CreatorInventoryActivity.class));
                 } else if (itemId == R.id.action_profile) {
-                    startActivity(new Intent(getApplicationContext(), CreatorProfileActivity.class));
+                    startActivity(new Intent(getApplicationContext(),
+                            CreatorProfileActivity.class));
                 } else if (itemId == R.id.action_create) {
-                    startActivity(new Intent(getApplicationContext(), CardCreationActivity.class));
+                    startActivity(new Intent(getApplicationContext(),
+                            CardCreationActivity.class));
                 }
                 return true;
             }
@@ -72,5 +76,6 @@ public abstract class CreatorBaseActivity extends AppCompatActivity implements N
 
     abstract public int getLayoutId();
 
-    abstract public int getBottomNavigationMenuItemId();//Which menu item selected and change the state of that menu item
+    //Which menu item selected and change the state of that menu item
+    abstract public int getBottomNavigationMenuItemId();
 }

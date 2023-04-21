@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import com.example.cardhub.inventory.Card;
 import com.example.cardhub.inventory.CardActivity;
 import com.example.cardhub.inventory.InventoryActivity;
+import com.google.firebase.FirebaseApp;
 import com.google.gson.Gson;
 
 import java.util.Arrays;
@@ -37,13 +38,51 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
      * Construct a new TradeModeState that is linked to an existing TradeModeActivity.
      *
      * @param activity the TradeModeActivity storing the UI that should be represented by this TradeModeState.
-     * @param lid      lobby id of the trade.
      * @param clientid ID of the client that instantiated this TradeModeState.
      */
-    public TradeModeState(TradeModeActivity activity, String lid, String clientid) {
+    public TradeModeState(TradeModeActivity activity, TradingSessionRepository repo, String clientid) {
         this.activity = activity;
         this.clientid = clientid;
-        this.repository = new TradingSessionRepositoryImpl(this, lid, clientid);
+        this.repository = repo;
+
+        this.cardSelectResultLauncher = activity.registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() != RESULT_OK) {
+                            return;
+                        }
+                        // result.getResultCode() == RESULT_OK
+
+                        String encodedCardDiff = result.getData().getStringExtra("CardDiff");
+
+                        Gson converter = new Gson();
+                        CardDiff decodedCardDiff = converter.fromJson(encodedCardDiff, CardDiff.class);
+
+                        changeProposedCardsFromUI(new HashSet<>(Arrays.asList(decodedCardDiff)));
+                    }
+                }
+        );
+
+        this.proposedCardRemoveResultLauncher = activity.registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() != RESULT_OK) {
+                            clickedCard = null;
+                            return;
+                        }
+                        // result.getResultCode() == RESULT_OK
+                        CardDiff decodedCardDiff = new CardDiff(clickedCard, CardDiff.DiffOption.REMOVE);
+
+                        changeProposedCardsFromUI(new HashSet<>(Arrays.asList(decodedCardDiff)));
+
+                        clickedCard = null;
+                    }
+                }
+        );
     }
 
     // List of flags that are used to check when certain functionality can be called.
@@ -147,31 +186,19 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
      * Intent launcher used to create a new activity to select cards from the players inventory
      * to propose in the trade.
      */
-    private ActivityResultLauncher<Intent> cardSelectResultLauncher = activity.registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() != RESULT_OK) {
-                        return;
-                    }
-                    // result.getResultCode() == RESULT_OK
-
-                    String encodedCardDiff = result.getData().getStringExtra("CardDiff");
-
-                    Gson converter = new Gson();
-                    CardDiff decodedCardDiff = converter.fromJson(encodedCardDiff, CardDiff.class);
-
-                    changeProposedCardsFromUI(new HashSet<>(Arrays.asList(decodedCardDiff)));
-                }
-            }
-    );
+    private ActivityResultLauncher<Intent> cardSelectResultLauncher;
 
     /**
      * Receive a message that one of the cards proposed by this player was clicked in the UI.
      * @param clickedCard the proposed card that was clicked.
+     * @throws NullPointerException when {@code clickedCard == null}
      */
     public void proposedCardClickedFromUI(Card clickedCard) {
+        if (clickedCard == null) {
+            throw new NullPointerException("TradeModeState.proposedCardClickedFromUI: " +
+                    "argument 'clickedCard' may not be null.");
+        }
+
         if (!this.getCardMayBeRemoved()) {
             return;
         }
@@ -194,24 +221,7 @@ public class TradeModeState implements TradingSessionRepositoryReceiver {
      * Intent launcher used to create a new activity to remove a card from this players proposed
      * trade.
      */
-    private ActivityResultLauncher<Intent> proposedCardRemoveResultLauncher = activity.registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() != RESULT_OK) {
-                        clickedCard = null;
-                        return;
-                    }
-                    // result.getResultCode() == RESULT_OK
-                    CardDiff decodedCardDiff = new CardDiff(clickedCard, CardDiff.DiffOption.REMOVE);
-
-                    changeProposedCardsFromUI(new HashSet<>(Arrays.asList(decodedCardDiff)));
-
-                    clickedCard = null;
-                }
-            }
-    );
+    private ActivityResultLauncher<Intent> proposedCardRemoveResultLauncher;
 
     /**
      * Update the UI in activity using the data from the TradingSession instance.

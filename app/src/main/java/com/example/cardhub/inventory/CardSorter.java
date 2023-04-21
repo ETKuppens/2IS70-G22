@@ -55,7 +55,7 @@ public class CardSorter {
      * Sort a list of cards based on their names, alphabetically, in default order.
      * @modifies cards
      */
-    private static void SortOnNameDefaultOrder(List<Card> cards) {
+    protected static void SortOnNameDefaultOrder(List<Card> cards) {
         // Sort the cards on their name alphabetically, ignoring upper/lower case, in default order.
         cards.sort((c1, c2) -> c1.NAME.compareToIgnoreCase(c2.NAME));
     }
@@ -64,7 +64,7 @@ public class CardSorter {
      * Sort a list of cards based on their names, alphabetically, in reverse order.
      * @modifies cards
      */
-    private static void SortOnNameReverseOrder(List<Card> cards) {
+    protected static void SortOnNameReverseOrder(List<Card> cards) {
         // Sort the cards on their name alphabetically, ignoring upper/lower case, in reverse order.
         cards.sort((c1, c2) -> (c1.NAME.compareToIgnoreCase(c2.NAME)) * -1);
     }
@@ -121,7 +121,7 @@ public class CardSorter {
      * ignoring their names.
      * @modifies cards
      */
-    private static void SortOnRarityDefaultOrder(List<Card> cards) {
+    protected static void SortOnRarityDefaultOrder(List<Card> cards) {
         // Sort the cards based on their rarity
         cards.sort((c1, c2) -> CompareRarities(c1.RARITY, c2.RARITY));
     }

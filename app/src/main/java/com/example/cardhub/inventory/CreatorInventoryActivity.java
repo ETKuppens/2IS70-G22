@@ -37,6 +37,14 @@ public class CreatorInventoryActivity extends CreatorBaseActivity implements Bas
     Intent thisIntent;
     Intent displayCardIntent;
 
+    /**
+     * Called when the activity is starting.
+     * Sets up the activity's layout, navigation, and displays the user's inventory of cards.
+     * If the activity is started from the TradeModeActivity and includes the "origin" extra,
+     * the activity will support choosing a card.
+     * @param savedInstanceState The Bundle containing the activity's previously saved state,
+     * if any.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,15 +79,16 @@ public class CreatorInventoryActivity extends CreatorBaseActivity implements Bas
             }
         });
 
-//        Button show_collection = findViewById(R.id.creator_show_collection);
-//        show_collection.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                state.toggleCollection();
-//            }
-//        });
     }
 
+    /**
+     * Shows a dialog box to prompt the user to select a sorting criteria for their inventory.
+     * The dialog box displays a list of sorting criteria and allows the user to select one.
+     * When the user selects a criteria and clicks "Sort", their inventory will be
+     * sorted by that criteria
+     * and the display will be updated.
+     * @param v The View that triggered the dialog box to be displayed.
+     */
     private void showSortingDialog(View v) {
         AlertDialog.Builder sortingDialog = new AlertDialog.Builder(this);
         String[] criteria = {"RARITY", "NAME"};
@@ -120,15 +129,27 @@ public class CreatorInventoryActivity extends CreatorBaseActivity implements Bas
         sortingDialog.show();
     }
 
+    /**
+     * Sets the sorting criteria for the user's inventory.
+     * @param rarity The sorting criteria to set.
+     */
     private void setSortType(CardSorter.SortAttribute rarity) {
         sortType = rarity;
     }
 
+    /**
+     * Returns the layout resource ID for the activity's layout.
+     * @return The layout resource ID for the activity's layout.
+     */
     @Override
     public int getLayoutId() {
         return R.layout.activity_inventory;
     }
 
+    /**
+     * Returns the ID of the bottom navigation menu item corresponding to this activity.
+     * @return The ID of the bottom navigation menu item corresponding to this activity.
+     */
     @Override
     public int getBottomNavigationMenuItemId() {
         return R.id.action_inventory;
@@ -191,12 +212,7 @@ public class CreatorInventoryActivity extends CreatorBaseActivity implements Bas
 
     @Override
     public void updateCollectionButton() {
-//        Button show_collection = findViewById(R.id.creator_show_collection);
-//        if (state.showingInventory) {
-//            show_collection.setText("Progress");
-//        } else {
-//            show_collection.setText("Show Inventory");
-//        }
+
     }
 
     ActivityResultLauncher<Intent> cardPreviewResultLauncher = registerForActivityResult(
@@ -220,12 +236,20 @@ public class CreatorInventoryActivity extends CreatorBaseActivity implements Bas
             }
     );
 
+    /**
+     * Scrolls the activity's card grid view to the top.
+     */
     @Override
     public void scrollBackToTop() {
         CardGridView cardGridView = findViewById(R.id.creator_card_grid);
         cardGridView.scrollTo(1, 1);
     }
 
+    /**
+     * This method is called when the activity is starting.
+     * It checks if the user is signed in (non-null) and updates the UI accordingly.
+     * If the user is not signed in, it starts the LoginActivity.
+     */
     @Override
     public void onStart() {
         super.onStart();

@@ -63,10 +63,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MapActivity extends CollectorBaseActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class MapActivity extends CollectorBaseActivity implements OnMapReadyCallback,
+        GoogleMap.OnMarkerClickListener {
     private FirebaseAuth mAuth;
 
-    // Navigation part
+    /**
+     * Called when a navigation item is selected.
+     * Determines which item is selected based on its ID and starts the corresponding activity.
+     * @param item The selected navigation item.
+     * @return true if the event was handled, false otherwise.
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
@@ -82,11 +88,19 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         return true;
     }
 
+    /**
+     * Gets the layout resource ID for the activity.
+     * @return The layout resource ID for the activity.
+     */
     @Override
     public int getLayoutId() {
         return R.layout.activity_map_l;
     }
 
+    /**
+     * Gets the menu item ID for the bottom navigation item associated with this activity.
+     * @return The menu item ID for the bottom navigation item associated with this activity.
+     */
     @Override
     public int getBottomNavigationMenuItemId() {
         return R.id.action_map;
@@ -136,6 +150,17 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
 
     MapState state;
 
+    public static final double AVERAGE_RADIUS_OF_EARTH_KM = 6371;
+
+    /**
+     * Called when the activity is starting.
+     * Retrieves location and camera position from the saved instance state if available.
+     * Sets up the bottom navigation view and initializes the PlacesClient
+     * and FusedLocationProviderClient.
+     * Builds the map and requests packs for the MapState.
+     * @param savedInstanceState If the activity is being re-initialized after
+     * previously being shut down.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Retrieve location and camera position from saved instance state.
@@ -231,6 +256,10 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         getDeviceLocation();
     }
 
+    /**
+     * Adds markers to the map for each CardPack in the MapState's list of packs.
+     * Also draws a circle around each marker and sets a click listener on the markers.
+     */
     public void addPointsOnTheMap() {
         if (!locationPermissionGranted) {
             // Prompt the user for permission.
@@ -261,8 +290,8 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
 
     /**
      * Gets the current location of the device, and positions the map's camera.
+     * Called when the user clicks a marker.
      */
-    /** Called when the user clicks a marker. */
     @Override
     public boolean onMarkerClick(final Marker marker) {
 
@@ -272,7 +301,6 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
 
         getLayoutInflater().inflate(R.layout.card_banner, findViewById(R.id.root), true);
         cardBanner = findViewById(R.id.card_banner);
-
 
         ImageView imageView = cardBanner.findViewById(R.id.card_image);
         TextView titleView = cardBanner.findViewById(R.id.card_title);
@@ -306,7 +334,6 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
                 buttonCollectCardPackClicked(pack.rarity);
             }
         });
-
         // Return false to indicate that we have not consumed the event and that we wish
         // for the default behavior to occur (which is for the camera to move such that the
         // marker is centered and for the marker's info window to open, if it has one).
@@ -314,6 +341,12 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
     }
 
 
+    /**
+     * Attempts to get the current location of the device and updates the map's camera
+     * position to that location.
+     * If the current location is not available, the default location is used.
+     * The map's My Location button is disabled if the current location is not available.
+     */
     private void getDeviceLocation() {
         /*
          * Get the best and most recent location of the device, which may be null in rare
@@ -378,8 +411,8 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         locationPermissionGranted = false;
-        if (requestCode
-                == PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION) {// If request is cancelled, the result arrays are empty.
+        // If request is cancelled, the result arrays are empty.
+        if (requestCode == PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION) {
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 locationPermissionGranted = true;
@@ -446,7 +479,6 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
                                 break;
                             }
                         }
-
                         // Show a dialog offering the user the list of likely places, and add a
                         // marker at the selected place.
                         MapActivity.this.openPlacesDialog();
@@ -529,6 +561,12 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         }
     }
 
+    /**
+     * Animates the map's camera to a new CameraPosition with a bearing of 0, effectively
+     * resetting the camera's orientation.
+     * Called when the user clicks the compass button.
+     * @param view
+     */
     public void onCompassClicked(View view) {
         float currentBearing = map.getCameraPosition().bearing;
         map.animateCamera(CameraUpdateFactory.newCameraPosition(
@@ -540,12 +578,27 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
                         .build()), 500, null);
     }
 
+    /**
+     * Hides the card banner if it is currently being displayed on the screen.
+     * Removes the cardBanner view from the root ViewGroup.
+     */
     private void hideCardBannerIfActive() {
         if (cardBanner != null) {
             ((ViewGroup)findViewById(R.id.root)).removeView(cardBanner);
         }
     }
 
+    /**
+     * This method is invoked when the user clicks the button to collect a card pack of a
+     * specified rarity.
+     * It retrieves the user's location and the location of a selected marker, calculates the
+     * distance between them,
+     * and checks if the distance is less than 30 meters. If it is, it acquires a random card of
+     * the specified rarity.
+     * If the distance is greater than 30 meters, it displays an error message indicating that the
+     * card cannot be collected.
+     * @param rarity the rarity of the card pack to be collected
+     */
     protected void buttonCollectCardPackClicked(Card.Rarity rarity) {
         // Get user location (update lastKnownLocation)
         getDeviceLocation();
@@ -555,8 +608,8 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         Double distance =
                 distanceBetween(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude(),
                         MarkerLatLng.latitude, MarkerLatLng.longitude);
-        //Toast.makeText(getApplicationContext(),Double.toString(distance),Toast.LENGTH_SHORT).show();
-        // Init card collection
+        // Initialize card collection
+        // !!! 300 set only for testing! In application requirements it is 30meters!
         if (distance <= 300) {
             state.acquireRandomCard(rarity);
         } else {
@@ -566,10 +619,18 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         }
     }
 
-    public static final double AVERAGE_RADIUS_OF_EARTH_KM = 6371;
-
-    public static double distanceBetween(double startLat, double startLng, double endLat, double endLng) {
+    /**
+     * Calculates the distance, in meters, between two points on Earth using the Haversine formula.
+     * @param startLat the latitude of the starting point
+     * @param startLng the longitude of the starting point
+     * @param endLat the latitude of the ending point
+     * @param endLng the longitude of the ending point
+     * @return the distance between the two points, in meters
+     */
+    public static double distanceBetween(double startLat, double startLng,
+                                         double endLat, double endLng) {
         double latDistance = Math.toRadians(endLat - startLat);
+
         double lngDistance = Math.toRadians(endLng - startLng);
 
         double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
@@ -581,6 +642,12 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         return AVERAGE_RADIUS_OF_EARTH_KM * c * 1000;
     }
 
+    /**
+     * This method is called when the server responds with a list of card packs.
+     * It creates a new thread to wait for the map to be ready, and then adds
+     * pinpoints representing the card packs to the map.
+     * @param packs the list of card packs returned by the server
+     */
     public void cardsResponse(List<CardPack> packs) {
         Thread waitForMapToBeReadyThread = new Thread (() -> {
             while (map == null) {
@@ -603,13 +670,19 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         waitForMapToBeReadyThread.start();
     }
 
+    /**
+     * Called when the activity is being destroyed. Calls the method to destroy the
+     * card pack preview window.
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();
-
         destroyCardpackPreviewWindow();
     }
 
+    /**
+     * Destroys the card pack preview window if it exists.
+     */
     private void destroyCardpackPreviewWindow() {
         if (cardpackPreviewWindow != null) {
             cardpackPreviewWindow.dismiss();
@@ -617,6 +690,10 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
         }
     }
 
+    /**
+     * Displays a card pack preview window containing the given list of cards.
+     * @param cardPackCards the list of cards to display in the preview window
+     */
     public void showCardpackPreviewWindow(List<Card> cardPackCards) {
         if (cardpackPreviewWindow != null || cardPackCards == null) {
             return;
@@ -645,14 +722,18 @@ public class MapActivity extends CollectorBaseActivity implements OnMapReadyCall
                 LinearLayoutManager.HORIZONTAL,
                 false);
         cardpackRecyclerView.setLayoutManager(layoutManager);
-        CardRecyclerViewAdapter adapter = new CardRecyclerViewAdapter(cardpackRecyclerView.getContext(),
-                cardPackCards);
+        CardRecyclerViewAdapter adapter =
+                new CardRecyclerViewAdapter(cardpackRecyclerView.getContext(), cardPackCards);
         cardpackRecyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-
         cardpackPreviewWindow.showAtLocation(findViewById(R.id.map), Gravity.CENTER, 0, 0);
     }
 
+    /**
+     * Called when the activity is starting. Checks if the user is signed in
+     * and updates the UI accordingly.
+     * If the user is not signed in, starts the login activity.
+     */
     @Override
     public void onStart() {
         super.onStart();
