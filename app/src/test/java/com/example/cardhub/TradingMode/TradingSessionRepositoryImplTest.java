@@ -2,10 +2,19 @@ package com.example.cardhub.TradingMode;
 
 import static org.junit.Assert.*;
 
+import com.example.cardhub.inventory.Card;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @RunWith(RobolectricTestRunner.class)
 public class TradingSessionRepositoryImplTest {
@@ -87,7 +96,30 @@ public class TradingSessionRepositoryImplTest {
 
     @Test
     public void receiveUpdate() {
+        Card card = new Card("cardName",
+                              "cardDescription",
+                               Card.Rarity.COMMON,
+                              "cardURL");
 
+        Map<String, Object> cardDiffMap = new HashMap<String, Object>();
+        cardDiffMap.put("card", card.serialize());
+        cardDiffMap.put("diff", CardDiff.DiffOption.ADD.toString());
+
+        List<Map<String, Object>> diffList = Arrays.asList(cardDiffMap);
+
+        repository.receiveUpdate(diffList);
+        Set<CardDiff> decodedDiffs = state.getDiffsAfterChangeProposedCards();
+
+        assertTrue(state.getChangeProposedCardsWasCalled());
+        assertTrue(decodedDiffs.size() == 1);
+
+        for (CardDiff diff : decodedDiffs) {
+            assertEquals(CardDiff.DiffOption.ADD, diff.getDiff());
+            assertEquals("cardName", diff.getCard().NAME);
+            assertEquals("cardDescription", diff.getCard().DESCRIPTION);
+            assertEquals(Card.Rarity.COMMON, diff.getCard().RARITY);
+            assertEquals("cardURL", diff.getCard().IMAGE_URL);
+        }
     }
 
     @Test

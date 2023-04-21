@@ -142,14 +142,20 @@ public class DummyTradeModeState extends TradeModeState {
 
 
     private boolean changeProposedCardsWasCalled = false;
+    private Set<CardDiff> diffs = null;
 
     @Override
     public void changeProposedCards(Set<CardDiff> diffs) {
         this.changeProposedCardsWasCalled = true;
+        this.diffs = diffs;
     }
 
     public boolean getChangeProposedCardsWasCalled() {
         return this.changeProposedCardsWasCalled;
+    }
+
+    public Set<CardDiff> getDiffsAfterChangeProposedCards() {
+        return this.diffs;
     }
 
 
