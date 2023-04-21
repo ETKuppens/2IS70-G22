@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,27 +18,22 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Interact with the database with information related to the database
+ * Interact with Firebase to get information related to the inventory
  */
 public class InventoryData {
     FirebaseFirestore db;
     InventoryRepository repository;
     FirebaseAuth auth;
 
-    /**
-     * Get the database instance
-     */
-    public InventoryData(InventoryRepository repository) {
-        db = FirebaseFirestore.getInstance();
-        auth = FirebaseAuth.getInstance();
+    public InventoryData(InventoryRepository repository, FirebaseAuth auth, FirebaseFirestore db) {
+        this.db = db;
+        this.auth = auth;
         this.repository = repository;
     }
 
 
     /**
-     * Request the cards that belong to a specific user from the database
-     *
-     * @return list of cards
+     * Request all available cards in the database.
      */
     public void requestAllCards() {
         final List<Map<String, Object>> cards = new ArrayList<>();
@@ -61,6 +57,9 @@ public class InventoryData {
             });
     }
 
+    /**
+     * Return all cards that belong to the current, logged in, user.
+     */
     public void requestUserCards() {
         final List<Map<String, Object>> cards = new ArrayList<>();
         cards.add(new HashMap<>());
@@ -83,23 +82,4 @@ public class InventoryData {
                     }
                 });
     }
-
-    /**
-     * Remove a card from the inventory of a user int the database
-     *
-     * @param card the card to remove
-     */
-    public void removeCard(Card card) {
-
-    }
-
-    /**
-     * Add a card to the inventory of a user int the database
-     *
-     * @param card the card to add
-     */
-    public void addCard(Card card) {
-
-    }
-
 }

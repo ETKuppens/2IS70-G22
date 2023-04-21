@@ -62,7 +62,7 @@ public class CardDiffTest {
         assertEquals(expectedCard.DESCRIPTION, (String)trueCardSerialized.get("description"));
         assertEquals(expectedCard.IMAGE_URL, (String)trueCardSerialized.get("imageurl"));
         assertEquals(expectedCard.NAME, (String)trueCardSerialized.get("name"));
-        assertEquals(expectedCard.RARITY, (Card.Rarity)trueCardSerialized.get("rarity"));
+        assertEquals(expectedCard.RARITY, Card.Rarity.valueOf((String)trueCardSerialized.get("rarity")));
 
         assertEquals(expectedDiffOption, trueDiffOption);
     }

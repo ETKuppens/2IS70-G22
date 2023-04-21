@@ -7,31 +7,6 @@ public class DummyTradingSessionData extends TradingSessionData {
         super();
     }
 
-
-    boolean startCardDiffListenerWasCalled = false;
-
-    @Override
-    public void startCardDiffListener() {
-        this.startCardDiffListenerWasCalled = true;
-    }
-
-    public boolean getStartCardDiffListenerWasCalled() {
-        return this.startCardDiffListenerWasCalled;
-    }
-
-
-    boolean getInfoWasCalled = false;
-
-    @Override
-    public void getInfo() {
-        this.getInfoWasCalled = true;
-    }
-
-    public boolean getGetInfoWasCalled() {
-        return this.getInfoWasCalled;
-    }
-
-
     private boolean cancelTradingSessionWasCalled = false;
 
     @Override
@@ -47,7 +22,7 @@ public class DummyTradingSessionData extends TradingSessionData {
     private boolean acceptProposedTradeWasCalled = false;
 
     @Override
-    public void acceptProposedTrade(String clientID) {
+    public void acceptProposedTrade() {
         this.acceptProposedTradeWasCalled = true;
     }
 
@@ -59,7 +34,7 @@ public class DummyTradingSessionData extends TradingSessionData {
     private boolean cancelAcceptTradeWasCalled = false;
 
     @Override
-    public void cancelAcceptTrade(String clientID) {
+    public void cancelAcceptTrade() {
         this.cancelAcceptTradeWasCalled = true;
     }
 
