@@ -1,44 +1,18 @@
 package com.example.cardhub.inventory;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.eq;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import android.content.Context;
-import android.graphics.Color;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-
-import androidx.test.core.app.ApplicationProvider;
-
-import com.example.cardhub.R;
-
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class CardGridAdapterTest {
-
+    // Variables
     private CardGridAdapter cardGridAdapter;
-
     private List<Card> testCards;
-
-    @Mock
-    private LayoutInflater mockInflater;
-
     @Mock
     private Context mockContext;
 
