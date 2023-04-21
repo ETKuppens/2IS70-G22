@@ -1,4 +1,4 @@
-package com.example.cardhub.inventory;
+package com.example.inventory;
 
 import com.example.cardhub.inventory.Card;
 import com.example.cardhub.inventory.CardSorter;

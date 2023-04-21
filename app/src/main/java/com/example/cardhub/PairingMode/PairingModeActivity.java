@@ -1,52 +1,30 @@
 package com.example.cardhub.PairingMode;
 
-import static android.content.ContentValues.TAG;
-
-import static androidx.core.content.ContextCompat.getSystemService;
-
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.ColorMatrixColorFilter;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.example.cardhub.R;
 import com.example.cardhub.TradingMode.TradeModeActivity;
 import com.example.cardhub.authentification.LoginActivity;
 import com.example.cardhub.collector_navigation.CollectorBaseActivity;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import androidmads.library.qrgenearator.QRGContents;
-import androidmads.library.qrgenearator.QRGEncoder;
 
 
 public class PairingModeActivity extends CollectorBaseActivity {
     private FirebaseAuth mAuth;
 
     PairingModeState state;
-    String lobby;
-    Map<String, Object> lobbyMap;
+
     public ImageView qrCodeIV;
 
     @Override
@@ -54,17 +32,15 @@ public class PairingModeActivity extends CollectorBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pairingmode);
         setupNav();
-        // initializing all variables.
 
+        // initializing all variables.
         Button generateQrBtn = findViewById(R.id.idBtnGenerateQR);
         Button scanQrBtn = findViewById(R.id.idScanQrCode);
 
         state= new PairingModeState(this);
         qrCodeIV = findViewById(R.id.idIVQrcode);
         mAuth = FirebaseAuth.getInstance();
-        //db = FirebaseFirestore.getInstance();
-        //FirebaseUser user = mAuth.getCurrentUser();
-        //uid = user.getUid();
+
 
         // initializing onclick listener for button.
         generateQrBtn.setOnClickListener(v -> {

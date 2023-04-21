@@ -1,5 +1,7 @@
-package com.example.cardhub.inventory;
+package com.example.inventory;
 
+import com.example.cardhub.inventory.InventoryData;
+import com.example.cardhub.inventory.InventoryRepository;
 import com.example.cardhub.map.MapData;
 import com.example.cardhub.map.MapRepository;
 import com.google.android.gms.tasks.OnCompleteListener;

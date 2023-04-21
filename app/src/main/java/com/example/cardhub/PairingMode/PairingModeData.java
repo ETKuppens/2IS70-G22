@@ -2,18 +2,11 @@ package com.example.cardhub.PairingMode;
 
 import static android.content.ContentValues.TAG;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Point;
-import android.util.Log;
-import android.view.Display;
-import android.view.WindowManager;
-import android.widget.Toast;
 
+import android.graphics.Bitmap;
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import com.example.cardhub.TradingMode.TradeModeActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,21 +16,16 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-
 import java.util.HashMap;
 import java.util.Map;
 
-import androidmads.library.qrgenearator.QRGContents;
-import androidmads.library.qrgenearator.QRGEncoder;
 
 public class PairingModeData {
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
     PairingModeRepository repository;
 
-    Bitmap bitmap;
 
-    QRGEncoder qrgEncoder;
 
     String lobby;
 
@@ -49,13 +37,21 @@ public class PairingModeData {
         this.db = db;
     }
 
+    /**
+     * Get the current user's uid.
+     *
+     * @return The current user's uid.
+     */
     public String getUid() {
         FirebaseUser user = mAuth.getCurrentUser();
         return user.getUid();
     }
 
     /**
-     * Generate a HashMap for a new lobby.
+     * Generate a HashMap for a new lobby and adds the given uid to the playerAName field.
+     *
+     * @param uid The uid of the player that creates the lobby.
+     * @return The HashMap containing the lobby data.
      */
     private HashMap generateLobbyMap(String uid) {
         HashMap lobbyMap = new HashMap();
@@ -67,6 +63,9 @@ public class PairingModeData {
         return lobbyMap;
     }
 
+    /**
+     * Generate a new lobby and add it to the database.
+     */
     public void generateLobby() {
         lobbyMap = generateLobbyMap(mAuth.getUid());
 
@@ -91,7 +90,6 @@ public class PairingModeData {
                                 }
 
                                 if (snapshot != null && snapshot.exists() && !snapshot.getData().get("playerBName").equals("")&&active) {
-                                    //TODO: Deregister listener, instead of using active boolean
                                     repository.lobbyCreated(lobby);
                                     active = false;
                                 }
@@ -107,10 +105,14 @@ public class PairingModeData {
                 });
     }
 
+    /**
+     * Join a lobby. Puts the other player's UID in the lobby.
+     *
+     * @param lobby String of the lobby to join.
+     */
     public void joinLobby(String lobby) {
         // if the intentResult is not null we'll set
         // the content and format of scan message
-
         DocumentReference docRef = db.collection("lobbies").document(lobby);
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {

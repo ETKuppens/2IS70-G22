@@ -1,18 +1,9 @@
 package com.example.cardhub.PairingMode;
 
-import static android.content.Context.WINDOW_SERVICE;
-import static androidx.core.content.ContextCompat.getSystemService;
-
 import android.graphics.Bitmap;
-import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Point;
 import android.view.Display;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.content.Context;
-
-import com.google.firebase.firestore.FirebaseFirestore;
-
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 
@@ -29,11 +20,23 @@ public class PairingModeState implements PairingModeRepositoryReceiver {
         repository = new PairingModeRepositoryImpl(this);
     }
 
+    public PairingModeState(){
+        activity = null;
+        repository = null;
+    }
+
     @Override
     public String getUid() {
         return repository.getUid();
     }
 
+    /**
+     * Generates the bitmap for the QR code.
+     *
+     * @param code the code be encoded in the QR code
+     * @param manager
+     * @return  the bitmap for the QR code
+     */
     public Bitmap generateBitmap(String code, WindowManager manager){
         // initializing a variable for default display.
         Display display = manager.getDefaultDisplay();
@@ -76,10 +79,18 @@ public class PairingModeState implements PairingModeRepositoryReceiver {
         activity.joinedLobby(lobby);
     }
 
+    /**
+     * Generates a lobby from repository.
+     */
     public void generateLobby() {
         repository.generateLobby();
     }
 
+    /**
+     * Joins a lobby from repository.
+     *
+     * @param lobby the lobby to join
+     */
     public void joinLobby(String lobby) {
         repository.joinLobby(lobby);
     }

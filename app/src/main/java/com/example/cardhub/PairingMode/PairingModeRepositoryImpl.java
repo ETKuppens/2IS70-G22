@@ -13,6 +13,11 @@ public class PairingModeRepositoryImpl implements PairingModeRepository{
         this.receiver = receiver;
     }
 
+    public PairingModeRepositoryImpl() {
+        this.data = null;
+        this.receiver = null;
+    }
+
     @Override
     public String getUid() {
         return data.getUid();

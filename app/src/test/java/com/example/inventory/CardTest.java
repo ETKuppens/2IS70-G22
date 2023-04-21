@@ -1,8 +1,10 @@
-package com.example.cardhub.inventory;
+package com.example.inventory;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import com.example.cardhub.inventory.Card;
 
 import java.util.Map;
 

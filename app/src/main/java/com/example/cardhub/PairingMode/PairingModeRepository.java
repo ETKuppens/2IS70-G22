@@ -1,20 +1,44 @@
 package com.example.cardhub.PairingMode;
 
-import android.graphics.Bitmap;
-import android.view.WindowManager;
-
-import com.google.firebase.firestore.FirebaseFirestore;
-
 public interface PairingModeRepository {
-    public String getUid();
 
-    public void generateQR(String lobby);
+    /**
+     * Get the current user's uid.
+     *
+     * @return
+     */
+    String getUid();
 
+    /**
+     * Generates the QR code of the lobby id.
+     *
+     * @param lobby the lobby id
+     */
+    void generateQR(String lobby);
+
+    /**
+     * Checks if lobby with lobby id was created.
+     *
+     * @param lobby the lobby id
+     */
     void lobbyCreated(String lobby);
 
+    /**
+     * Checks if user joined a lobby with lobby id.
+     *
+     * @param lobby the lobby id
+     */
     void joinedLobby(String lobby);
 
+    /**
+     * Generates a lobby id.
+     */
     void generateLobby();
 
+    /**
+     * Joins a lobby.
+     *
+     * @param lobby the lobby id
+     */
     void joinLobby(String lobby);
 }

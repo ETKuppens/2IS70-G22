@@ -1,4 +1,4 @@
-package com.example.cardhub.inventory;
+package com.example.inventory;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.any;
@@ -19,6 +19,8 @@ import android.widget.ImageView;
 import androidx.test.core.app.ApplicationProvider;
 
 import com.example.cardhub.R;
+import com.example.cardhub.inventory.Card;
+import com.example.cardhub.inventory.CardGridAdapter;
 
 import org.junit.Before;
 import org.junit.Test;
