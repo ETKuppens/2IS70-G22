@@ -8,7 +8,6 @@ This project aims to:
 - Promoting social interaction.
 
 ## Team
-Group 22 consists of the following
 ### Team members
 - V. Budiak
 - S.T. Dinç
