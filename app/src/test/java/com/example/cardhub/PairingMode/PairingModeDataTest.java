@@ -1,11 +1,14 @@
 package com.example.cardhub.PairingMode;
 
 import android.graphics.Bitmap;
+import android.graphics.Point;
+import android.view.Display;
 import android.view.WindowManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -17,6 +20,10 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.exceptions.base.MockitoInitializationException;
+
+import androidmads.library.qrgenearator.QRGContents;
+import androidmads.library.qrgenearator.QRGEncoder;
 
 public class PairingModeDataTest extends TestCase {
     @Mock
@@ -31,6 +38,8 @@ public class PairingModeDataTest extends TestCase {
 
     @Captor
     ArgumentCaptor<OnCompleteListener> onCompleteListenerArgumentCaptor;
+    @Captor
+    ArgumentCaptor<Point> pointCaptor;
 
     public PairingModeDataTest() {
         MockitoAnnotations.openMocks(this);
@@ -40,7 +49,10 @@ public class PairingModeDataTest extends TestCase {
     public void testGetUid() {
         // Arrange Mock
         String uid = "test";
-        Mockito.when(auth.getUid()).thenReturn(uid);
+        FirebaseUser firebaseUserMock = Mockito.mock(FirebaseUser.class);
+        Mockito.when(auth.getCurrentUser()).thenReturn(firebaseUserMock);
+
+        Mockito.when(firebaseUserMock.getUid()).thenReturn(uid);
 
         // Act
         String result = data.getUid();
@@ -78,10 +90,14 @@ public class PairingModeDataTest extends TestCase {
     public void testGenerateBitmap() {
         // Arrange Mock
         String code = "test";
-        PairingModeRepositoryReceiver receiver = Mockito.mock(PairingModeRepositoryReceiver.class);
         WindowManager manager = Mockito.mock(WindowManager.class);
-        Bitmap bitmap = Mockito.mock(Bitmap.class);
-        Mockito.when(receiver.generateBitmap(code, manager)).thenReturn(bitmap);
+
+        QRGEncoder qrgEncoder = new QRGEncoder(code, QRGContents.Type.TEXT, 0);
+        // getting our qrcode in the form of bitmap.
+        Bitmap bitmap = qrgEncoder.getBitmap();
+
+        Display displayMock = Mockito.mock(Display.class);
+        Mockito.when(manager.getDefaultDisplay()).thenReturn(displayMock);
 
         // Act
         Bitmap result = data.generateBitmap(code, manager);

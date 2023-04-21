@@ -10,6 +10,13 @@ public interface PairingModeRepository {
 
     public FirebaseFirestore getDb();
 
-    public Bitmap generateBitmap(String code, WindowManager manager);
+    public void generateQR(String lobby);
 
+    void lobbyCreated();
+
+    void joinedLobby();
+
+    void generateLobby();
+
+    void joinLobby(String lobby);
 }

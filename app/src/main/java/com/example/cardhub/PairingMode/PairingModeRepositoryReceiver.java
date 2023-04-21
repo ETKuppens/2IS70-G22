@@ -11,4 +11,10 @@ public interface PairingModeRepositoryReceiver {
     public FirebaseFirestore getDb();
 
     public Bitmap generateBitmap(String code, WindowManager manager);
+
+    void generateQR(String lobby);
+
+    void lobbyCreated();
+
+    void joinedLobby();
 }

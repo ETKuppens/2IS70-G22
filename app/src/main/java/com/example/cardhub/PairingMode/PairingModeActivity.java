@@ -2,10 +2,15 @@ package com.example.cardhub.PairingMode;
 
 import static android.content.ContentValues.TAG;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -32,18 +37,17 @@ import com.google.zxing.integration.android.IntentResult;
 import java.util.HashMap;
 import java.util.Map;
 
+import androidmads.library.qrgenearator.QRGContents;
+import androidmads.library.qrgenearator.QRGEncoder;
+
 
 public class PairingModeActivity extends CollectorBaseActivity {
-    private ImageView qrCodeIV;
-    //private FirebaseFirestore db;
     private FirebaseAuth mAuth;
 
     PairingModeState state;
-    //Bitmap bitmap;
-    //QRGEncoder qrgEncoder;
-    //String uid;
     String lobby;
     Map<String, Object> lobbyMap;
+    public ImageView qrCodeIV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +56,11 @@ public class PairingModeActivity extends CollectorBaseActivity {
         setupNav();
         // initializing all variables.
 
-        qrCodeIV = findViewById(R.id.idIVQrcode);
         Button generateQrBtn = findViewById(R.id.idBtnGenerateQR);
         Button scanQrBtn = findViewById(R.id.idScanQrCode);
 
         state= new PairingModeState(this);
+        qrCodeIV = findViewById(R.id.idIVQrcode);
         mAuth = FirebaseAuth.getInstance();
         //db = FirebaseFirestore.getInstance();
         //FirebaseUser user = mAuth.getCurrentUser();
@@ -64,54 +68,7 @@ public class PairingModeActivity extends CollectorBaseActivity {
 
         // initializing onclick listener for button.
         generateQrBtn.setOnClickListener(v -> {
-            // Initialize variables
-            lobbyMap = generateLobbyMap(state.getUid());
-
-            // Add lobby
-            state.getDb().collection("lobbies").add(lobbyMap)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        boolean active = true;
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            lobby = documentReference.getId();
-                            Log.d(TAG, "DocumentSnapshot written with ID: " + lobby);
-                            // Generate QR code from given string code
-                            generateQRCode(lobby);
-                            Toast.makeText(PairingModeActivity.this, "Generated lobby " + lobby, Toast.LENGTH_SHORT).show();
-                            final DocumentReference docRef = state.getDb().collection("lobbies").document(lobby);
-                            docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                                @Override
-                                public void onEvent(@Nullable DocumentSnapshot snapshot,
-                                                    @Nullable FirebaseFirestoreException e) {
-                                    if (e != null) {
-                                        Log.w(TAG, "Listen failed.", e);
-                                        return;
-                                    }
-
-                                    if (snapshot != null && snapshot.exists() && !snapshot.getData().get("playerBName").equals("")&&active) {
-                                        //TODO: Deregister listener, instead of using active boolean
-                                        Intent intent = new Intent(getApplicationContext(), TradeModeActivity.class);
-                                        intent.putExtra("lobbyid", lobby);
-                                        intent.putExtra("clientid", state.getUid());
-
-                                        // Stop showing the QR code
-                                        qrCodeIV.clearColorFilter();
-                                        qrCodeIV.setImageDrawable(null);
-                                        qrCodeIV.invalidate();
-
-                                        startActivity(intent);
-                                        active =false;
-                                    }
-                                }
-                            });
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.w(TAG, "Error adding document", e);
-                        }
-                    });
+            state.generateLobby();
         });
 
         // Scan for a QR code
@@ -123,38 +80,9 @@ public class PairingModeActivity extends CollectorBaseActivity {
         });
     }
 
-    /**
-     * Generate a QR code describing {@code code}.
-     */
-    private void generateQRCode(String code) {
-        // below line is for getting
-        // the window-manager service.
-        WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
 
-        final float[] NEGATIVE = {
-                -1.0f,     0,     0,    0, 255, // red
-                0, -1.0f,     0,    0, 255, // green
-                0,     0, -1.0f,    0, 255, // blue
-                0,     0,     0, 1.0f,   0  // alpha
-        };
-        qrCodeIV.setColorFilter(new ColorMatrixColorFilter(NEGATIVE));
-        // the bitmap is set inside our image
-        // view using .setimagebitmap method.
-        qrCodeIV.setImageBitmap(state.generateBitmap(code,manager));
-    }
 
-    /**
-     * Generate a HashMap for a new lobby.
-     */
-    private HashMap generateLobbyMap(String uid) {
-        HashMap lobbyMap = new HashMap();
 
-        // Add lobby data
-        lobbyMap.put("playerAName", uid);
-        lobbyMap.put("playerBName", "");
-
-        return lobbyMap;
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -166,41 +94,7 @@ public class PairingModeActivity extends CollectorBaseActivity {
             if (intentResult.getContents() == null) {
                 Toast.makeText(getBaseContext(), "Cancelled", Toast.LENGTH_SHORT).show();
             } else {
-                // if the intentResult is not null we'll set
-                // the content and format of scan message
-                lobby = intentResult.getContents();
-                DocumentReference docRef = state.getDb().collection("lobbies").document(lobby);
-                docRef.get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            // Read data
-                            lobbyMap = document.getData();
-
-                            // Modify data
-                            lobbyMap.put("playerBName", state.getUid());
-
-
-                            // Write data
-                            state.getDb().collection("lobbies").document(lobby)
-                                    .set(lobbyMap)
-                                    .addOnSuccessListener(aVoid -> {
-                                        Toast.makeText(PairingModeActivity.this, "Logged in on " + lobby, Toast.LENGTH_SHORT).show();
-                                        Log.d("WORRY", "DocumentSnapshot successfully written!");
-                                        Intent intent = new Intent(getApplicationContext(), TradeModeActivity.class);
-                                        intent.putExtra("lobbyid", lobby);
-                                        intent.putExtra("clientid", state.getUid());
-                                        startActivity(intent);
-                                    })
-                                    .addOnFailureListener(e -> Log.w("WoRRY", "Error writing document", e));
-                        } else {
-                            Log.d(TAG, "No such document");
-                            Toast.makeText(PairingModeActivity.this, "Expired Lobby", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Log.d(TAG, "get failed with ", task.getException());
-                    }
-                });
+                state.joinLobby(intentResult.getContents());
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -227,5 +121,47 @@ public class PairingModeActivity extends CollectorBaseActivity {
             this.startActivity(intent);
             startActivity(intent);
         }
+    }
+
+    /**
+     * Generate a QR code describing {@code code}.
+     */
+    public void generateQR(String code) {
+        // below line is for getting
+        // the window-manager service.
+        WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
+
+        final float[] NEGATIVE = {
+                -1.0f,     0,     0,    0, 255, // red
+                0, -1.0f,     0,    0, 255, // green
+                0,     0, -1.0f,    0, 255, // blue
+                0,     0,     0, 1.0f,   0  // alpha
+        };
+        qrCodeIV.setColorFilter(new ColorMatrixColorFilter(NEGATIVE));
+        // the bitmap is set inside our image
+        // view using .setimagebitmap method.
+        qrCodeIV.setImageBitmap(state.generateBitmap(code,manager));
+    }
+
+    public void lobbyCreated() {
+        Intent intent = new Intent(getApplicationContext(), TradeModeActivity.class);
+        intent.putExtra("lobbyid", lobby);
+        intent.putExtra("clientid", state.getUid());
+
+        // Stop showing the QR code
+        qrCodeIV.clearColorFilter();
+        qrCodeIV.setImageDrawable(null);
+        qrCodeIV.invalidate();
+
+        startActivity(intent);
+    }
+
+    public void joinedLobby() {
+        Toast.makeText(PairingModeActivity.this, "Logged in on " + lobby, Toast.LENGTH_SHORT).show();
+        Log.d("WORRY", "DocumentSnapshot successfully written!");
+        Intent intent = new Intent(getApplicationContext(), TradeModeActivity.class);
+        intent.putExtra("lobbyid", lobby);
+        intent.putExtra("clientid", state.getUid());
+        startActivity(intent);
     }
 }

@@ -1,8 +1,5 @@
 package com.example.cardhub.PairingMode;
 
-import android.graphics.Bitmap;
-import android.view.WindowManager;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -25,7 +22,28 @@ public class PairingModeRepositoryImpl implements PairingModeRepository{
         return data.getDb();
     }
 
-    public Bitmap generateBitmap(String code, WindowManager manager){
-        return data.generateBitmap(code, manager);
+    @Override
+    public void generateQR(String lobby) {
+        receiver.generateQR(lobby);
+    }
+
+    @Override
+    public void lobbyCreated() {
+        receiver.lobbyCreated();
+    }
+
+    @Override
+    public void joinedLobby() {
+        receiver.joinedLobby();
+    }
+
+    @Override
+    public void generateLobby() {
+        data.generateLobby();
+    }
+
+    @Override
+    public void joinLobby(String lobby) {
+        data.joinLobby(lobby);
     }
 }
