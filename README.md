@@ -18,9 +18,6 @@ CardHub is an Android app for trading and creating cards. <br/>
 ### Tutor
 - Djordje Momčilović
 
-## Installation
-As the app is not yet published on the Google Play Store you can install it by downloading the apk file provided.
-
 ## User Scenario
 ### Both user types
 - A user can create an account by pressing the "sign up" button on the login page.
