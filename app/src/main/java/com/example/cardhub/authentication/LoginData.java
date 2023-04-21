@@ -106,9 +106,6 @@ public class LoginData {
             throw new NullPointerException("LoginData.signIn.pre violated: password == null");
         }
 
-        // Variables
-        final FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
         // Attempt to sign in
         mAuth.signInWithEmailAndPassword(emailAddress, password)
             .addOnCompleteListener(task -> {
@@ -142,8 +139,7 @@ public class LoginData {
         }
 
         // Attempt to retrieve role
-        FirebaseFirestore.getInstance()
-            .collection("users").document(user.getUid())
+        db.collection("users").document(user.getUid())
             .get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) { // Database read attempt was successful
                     // Variables
@@ -173,7 +169,6 @@ public class LoginData {
      */
     public void signInSignedInUsers() {
         // Variables
-        final FirebaseAuth mAuth = FirebaseAuth.getInstance();
         final FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if (currentUser != null) { // User is still signed in
