@@ -73,9 +73,9 @@ public class RegistrationState implements RegistrationReceiver {
      * @param emailAddress emailAddress to be registered with
      * @param password password to register with
      * @param role role to register with
-     * @throws IllegalArgumentException if {@code !(role.equals("Card Creator") ^ role.equals("Card Collector"))}
-     * @throws NullPointerException if {@code emailAddress == null && password == null && role == null}
-     * @pre {@code emailAddress != null && password != null && (role.equals('Card Creator') ^ role.equals('Card Collector'))}
+     * @throws IllegalArgumentException if {@code role != null && !(role.equals("Card Creator") ^ role.equals("Card Collector"))}
+     * @throws NullPointerException if {@code emailAddress == null || password == null || confirm == null || role == null}
+     * @pre {@code emailAddress != null && password != null && confirm != null && role != null & (role.equals('Card Creator') ^ role.equals('Card Collector'))}
      * @post parameters have been passed for registration
      */
     public void register(String emailAddress, String password, String confirm, String role) throws NullPointerException, IllegalArgumentException {
@@ -88,6 +88,11 @@ public class RegistrationState implements RegistrationReceiver {
         // Password precondition test
         if (password == null) {
             throw new NullPointerException("RegistrationState.register.pre violated: password == null");
+        }
+
+        // Confirm precondition test
+        if (confirm == null) {
+            throw new NullPointerException("RegistrationState.register.pre violated: confirm == null");
         }
 
         // Role precondition tests
