@@ -1,7 +1,4 @@
-package com.example.cardhub;
-
-import android.content.Context;
-import android.net.Uri;
+package com.example.cardhub.card_creation;
 
 import com.example.cardhub.card_creation.CardCreationRepository;
 import com.example.cardhub.card_creation.CardCreationState;
@@ -10,7 +7,7 @@ import com.example.cardhub.inventory.Card;
 import org.junit.Before;
 import org.junit.Test;
 
-public class CardCreationTest {
+public class CardCreationStateTest {
     CardCreationState testState;
     @Before
     public void initState() {
