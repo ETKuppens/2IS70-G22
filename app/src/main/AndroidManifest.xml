@@ -53,10 +53,6 @@
             android:name=".PairingMode.PairingModeActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.cardhub.MainActivity"
-            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
-            android:exported="false" />
-        <activity
             android:name="com.example.cardhub.authentication.ForgotPasswordActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:exported="false" />
