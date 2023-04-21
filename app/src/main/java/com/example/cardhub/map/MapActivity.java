@@ -31,7 +31,7 @@ import com.example.cardhub.BuildConfig;
 import com.example.cardhub.CardRecyclerViewAdapter;
 import com.example.cardhub.PairingModeActivity;
 import com.example.cardhub.R;
-import com.example.cardhub.authentification.LoginActivity;
+import com.example.cardhub.authentication.LoginActivity;
 import com.example.cardhub.collector_navigation.CollectorBaseActivity;
 import com.example.cardhub.inventory.Card;
 import com.example.cardhub.inventory.InventoryActivity;

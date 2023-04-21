@@ -74,6 +74,8 @@ public class TradingSessionData {
         this.repository = repository;
         this.clientid = clientId;
         this.docRef = db.collection("lobbies").document(lobbyId);
+
+        getInfo();
     }
 
     private void startCardDiffListener() {

@@ -2,15 +2,12 @@ package com.example.cardhub;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
-import android.view.animation.AnticipateInterpolator;
 
-import com.example.cardhub.authentification.LoginActivity;
+import com.example.cardhub.authentication.LoginActivity;
 
 public class SplashActivity extends AppCompatActivity {
     Handler handler;

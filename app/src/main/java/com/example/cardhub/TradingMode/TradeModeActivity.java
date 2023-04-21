@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cardhub.CardRecyclerViewAdapter;
 import com.example.cardhub.R;
-import com.example.cardhub.authentification.LoginActivity;
+import com.example.cardhub.authentication.LoginActivity;
 import com.example.cardhub.inventory.Card;
 import com.example.cardhub.inventory.InventoryActivity;
 import com.google.firebase.auth.FirebaseAuth;
