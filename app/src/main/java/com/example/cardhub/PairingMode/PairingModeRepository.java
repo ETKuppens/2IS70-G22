@@ -8,13 +8,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public interface PairingModeRepository {
     public String getUid();
 
-    public FirebaseFirestore getDb();
-
     public void generateQR(String lobby);
 
-    void lobbyCreated();
+    void lobbyCreated(String lobby);
 
-    void joinedLobby();
+    void joinedLobby(String lobby);
 
     void generateLobby();
 

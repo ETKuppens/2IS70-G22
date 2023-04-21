@@ -143,7 +143,7 @@ public class PairingModeActivity extends CollectorBaseActivity {
         qrCodeIV.setImageBitmap(state.generateBitmap(code,manager));
     }
 
-    public void lobbyCreated() {
+    public void lobbyCreated(String lobby) {
         Intent intent = new Intent(getApplicationContext(), TradeModeActivity.class);
         intent.putExtra("lobbyid", lobby);
         intent.putExtra("clientid", state.getUid());
@@ -156,7 +156,7 @@ public class PairingModeActivity extends CollectorBaseActivity {
         startActivity(intent);
     }
 
-    public void joinedLobby() {
+    public void joinedLobby(String lobby) {
         Toast.makeText(PairingModeActivity.this, "Logged in on " + lobby, Toast.LENGTH_SHORT).show();
         Log.d("WORRY", "DocumentSnapshot successfully written!");
         Intent intent = new Intent(getApplicationContext(), TradeModeActivity.class);

@@ -54,10 +54,6 @@ public class PairingModeData {
         return user.getUid();
     }
 
-    public FirebaseFirestore getDb() {
-        return db;
-    }
-
     /**
      * Generate a HashMap for a new lobby.
      */
@@ -96,8 +92,8 @@ public class PairingModeData {
 
                                 if (snapshot != null && snapshot.exists() && !snapshot.getData().get("playerBName").equals("")&&active) {
                                     //TODO: Deregister listener, instead of using active boolean
-                                    repository.lobbyCreated();
-                                    active =false;
+                                    repository.lobbyCreated(lobby);
+                                    active = false;
                                 }
                             }
                         });
@@ -131,7 +127,7 @@ public class PairingModeData {
                             .set(lobbyMap)
                             .addOnSuccessListener(aVoid -> {
 
-                                repository.joinedLobby();
+                                repository.joinedLobby(lobby);
                             })
                             .addOnFailureListener(e -> Log.w("WoRRY", "Error writing document", e));
                 } else {

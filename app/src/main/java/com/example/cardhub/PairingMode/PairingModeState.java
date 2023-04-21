@@ -34,10 +34,6 @@ public class PairingModeState implements PairingModeRepositoryReceiver {
         return repository.getUid();
     }
 
-    public FirebaseFirestore getDb() {
-        return repository.getDb();
-    }
-
     public Bitmap generateBitmap(String code, WindowManager manager){
         // initializing a variable for default display.
         Display display = manager.getDefaultDisplay();
@@ -71,13 +67,13 @@ public class PairingModeState implements PairingModeRepositoryReceiver {
     }
 
     @Override
-    public void lobbyCreated() {
-        activity.lobbyCreated();
+    public void lobbyCreated(String lobby) {
+        activity.lobbyCreated(lobby);
     }
 
     @Override
-    public void joinedLobby() {
-        activity.joinedLobby();
+    public void joinedLobby(String lobby) {
+        activity.joinedLobby(lobby);
     }
 
     public void generateLobby() {

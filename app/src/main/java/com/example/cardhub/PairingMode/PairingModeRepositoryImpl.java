@@ -18,23 +18,19 @@ public class PairingModeRepositoryImpl implements PairingModeRepository{
         return data.getUid();
     }
 
-    public FirebaseFirestore getDb() {
-        return data.getDb();
-    }
-
     @Override
     public void generateQR(String lobby) {
         receiver.generateQR(lobby);
     }
 
     @Override
-    public void lobbyCreated() {
-        receiver.lobbyCreated();
+    public void lobbyCreated(String lobby) {
+        receiver.lobbyCreated(lobby);
     }
 
     @Override
-    public void joinedLobby() {
-        receiver.joinedLobby();
+    public void joinedLobby(String lobby) {
+        receiver.joinedLobby(lobby);
     }
 
     @Override

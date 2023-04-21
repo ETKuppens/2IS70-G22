@@ -52,6 +52,7 @@ public class TradingSessionData {
                               String clientId) {
         this.repository = repository;
         this.clientid = clientId;
+        Log.d("NULLIN", "bruh: " + lobbyId);
         this.docRef = db.collection("lobbies").document(lobbyId);
         this.db = db;
 
