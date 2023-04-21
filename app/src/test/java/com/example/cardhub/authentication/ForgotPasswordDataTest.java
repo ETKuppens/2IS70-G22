@@ -43,6 +43,7 @@ public class ForgotPasswordDataTest {
         String emailAddress = "rebuilded2.0@gmail.com";
         Task sendPasswordResetEmailTask = Mockito.mock(Task.class);
 
+
         // Adjust mock
         Mockito.when(sendPasswordResetEmailTask.isSuccessful()).thenReturn(true);
 
