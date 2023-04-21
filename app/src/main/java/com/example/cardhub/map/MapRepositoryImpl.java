@@ -17,7 +17,13 @@ public class MapRepositoryImpl implements MapRepository {
     MapData data;
     MapRepositoryImpl(MapState state) {
         this.state = state;
-        this.data = new MapData(this, FirebaseFirestore.getInstance(), FirebaseAuth.getInstance());
+        this.data = new MapData(this,
+                FirebaseFirestore.getInstance(), FirebaseAuth.getInstance());
+    }
+
+    MapRepositoryImpl(MapState state, MapData data) {
+        this.state = state;
+        this.data = data;
     }
 
     @Override
@@ -27,8 +33,6 @@ public class MapRepositoryImpl implements MapRepository {
 
     @Override
     public void receivePacks(List<Map<String, Object>> packsRaw) {
-        Log.d("BRUH", "receivePacks: " + packsRaw.get(0).get("image"));
-
         List<CardPack> packs = packsRaw.stream().map((Map<String, Object> pack) -> new CardPack(
                 new LatLng(
                         ((GeoPoint) pack.get("position")).getLatitude(),

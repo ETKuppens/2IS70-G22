@@ -1,7 +1,6 @@
-map api: app.src.main.java.com.example.cardhub.map
-
-Firebase: app.src.main.java.com.example.cardhub
-
-Mockito: app.src.main.test
-
-QRGContents, QRGEncoder: app.src.main.java.com.example.cardhub.PairingMode
+3rd party Java sources:
+-org.junit.*
+-org.mockito.*
+-com.google.android.gms.*
+-androidmads.library.qrgenearator.*
+-com.google.firebase.*

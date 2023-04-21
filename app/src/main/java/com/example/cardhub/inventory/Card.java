@@ -1,5 +1,9 @@
 package com.example.cardhub.inventory;
 
+import androidx.annotation.Nullable;
+
+import com.example.cardhub.map.CardPack;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -54,5 +58,17 @@ public class Card implements Serializable {
         data.put("imageurl", this.IMAGE_URL);
 
         return data;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (!(obj instanceof Card)) {return false;}
+        else {
+            Card other = (Card) obj;
+            return other.NAME.equals(this.NAME) &&
+                    other.DESCRIPTION.equals(this.DESCRIPTION) &&
+                    other.RARITY.equals(this.RARITY) &&
+                    other.IMAGE_URL.equals(this.IMAGE_URL);
+        }
     }
 }
