@@ -39,12 +39,21 @@ import java.util.stream.Collectors;
  */
 public class TradingSessionData {
     TradingSessionRepository repository;
-    private FirebaseFirestore db;
+    protected FirebaseFirestore db;
     private DocumentReference docRef;
     private String clientid;
     private String currentPlayer;
     private String otherPlayer;
     private ListenerRegistration listenerRegistration;
+
+    /**
+     * Constructor for the TradingSessionData that should never be used, except for when
+     * instantiating child classes that do not require access to the FirebaseFirestore instance,
+     * e.g. DummyTradingSessionData.
+     */
+    public TradingSessionData() {
+
+    }
 
     public TradingSessionData(TradingSessionRepository repository,
                               FirebaseFirestore db,
@@ -56,6 +65,15 @@ public class TradingSessionData {
         this.db = db;
 
         getInfo();
+    }
+
+    public TradingSessionData(TradingSessionRepository repository,
+            String lobbyId,
+            String clientId) {
+        this.db = FirebaseFirestore.getInstance();
+        this.repository = repository;
+        this.clientid = clientId;
+        this.docRef = db.collection("lobbies").document(lobbyId);
     }
 
     private void startCardDiffListener() {
@@ -237,7 +255,7 @@ public class TradingSessionData {
      * @param diffs    a set of CardDiffs that should be applied to the other clients' instance of
      *                 TradingSession.
      */
-    void changeProposedCards(String clientID, Set<CardDiff> diffs) {
+    public void changeProposedCards(String clientID, Set<CardDiff> diffs) {
         List<Map<String, Object>> data = diffs.stream().map(diff  -> diff.serialize()).collect(Collectors.toList());
 
 //        Log.d(TAG, "DocumentSnapshot written with ID: " + db.collection("lobbies").document(lid).document.getId());

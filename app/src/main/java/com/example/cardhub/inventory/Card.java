@@ -50,7 +50,7 @@ public class Card implements Serializable {
 
         data.put("name", this.NAME);
         data.put("description", this.DESCRIPTION);
-        data.put("rarity", this.RARITY);
+        data.put("rarity", this.RARITY.toString());
         data.put("imageurl", this.IMAGE_URL);
 
         return data;
